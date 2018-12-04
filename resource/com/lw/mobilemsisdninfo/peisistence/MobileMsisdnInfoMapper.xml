@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.mobilemsisdninfo.peisistence.MobileMsisdnInfoMapper">
+  
+  <parameterMap type="MobileMsisdnInfo" id="MobileMsisdnInfoparaMap">
+  	<parameter resultMap="id" property="id" />
+    <parameter resultMap="type" property="type" />
+    <parameter resultMap="msisdnInfoList" property="msisdninfolist" />
+    <parameter resultMap="msisdnInfo" property="msisdninfo" />
+    <parameter resultMap="msisdn" property="msisdn" />
+    <parameter resultMap="iccid" property="iccid" />
+    <parameter resultMap="code" property="code" />
+    <parameter resultMap="error" property="error" />
+    <parameter resultMap="apnList" property="apnlist" />
+    <parameter resultMap="apnInfo" property="apninfo" />
+    <parameter resultMap="apnName" property="apnname" />
+    <parameter resultMap="apnInfo_totalFlow" property="apninfoTotalflow" />
+    <parameter resultMap="apnInfo_usedFlow" property="apninfoUsedflow" />
+    <parameter resultMap="apnInfo_restFlow" property="apninfoRestflow" />
+    <parameter resultMap="extraPkgFlow" property="extrapkgflow" />
+    <parameter resultMap="lastFlowTime" property="lastflowtime" />
+    <parameter resultMap="pkgInfoList" property="pkginfolist" />
+    <parameter resultMap="pkgInfo" property="pkginfo" />
+    <parameter resultMap="pkgCode" property="pkgcode" />
+    <parameter resultMap="pkgName" property="pkgname" />
+    <parameter resultMap="subSprodId" property="subsprodid" />
+    <parameter resultMap="pkgInfo_totalFlow" property="pkginfoTotalflow" />
+    <parameter resultMap="pkgInfo_usedFlow" property="pkginfoUsedflow" />
+    <parameter resultMap="pkgInfo_restFlow" property="pkginfoRestflow" />
+    <parameter resultMap="pkgEffDate" property="pkgeffdate" />
+    <parameter resultMap="pkgExpireDate" property="pkgexpiredate" />
+  </parameterMap>
+  
+  <resultMap id="MobileMsisdnInfoResultMap" type="MobileMsisdnInfo">
+    <id column="id" property="id" />
+    <result column="type" property="type" />
+    <result column="msisdnInfoList" property="msisdninfolist" />
+    <result column="msisdnInfo" property="msisdninfo" />
+    <result column="msisdn" property="msisdn" />
+    <result column="iccid" property="iccid" />
+    <result column="code" property="code" />
+    <result column="error" property="error" />
+    <result column="apnList" property="apnlist" />
+    <result column="apnInfo" property="apninfo" />
+    <result column="apnName" property="apnname" />
+    <result column="apnInfo_totalFlow" property="apninfoTotalflow" />
+    <result column="apnInfo_usedFlow" property="apninfoUsedflow" />
+    <result column="apnInfo_restFlow" property="apninfoRestflow" />
+    <result column="extraPkgFlow" property="extrapkgflow" />
+    <result column="lastFlowTime" property="lastflowtime" />
+    <result column="pkgInfoList" property="pkginfolist" />
+    <result column="pkgInfo" property="pkginfo" />
+    <result column="pkgCode" property="pkgcode" />
+    <result column="pkgName" property="pkgname" />
+    <result column="subSprodId" property="subsprodid" />
+    <result column="pkgInfo_totalFlow" property="pkginfoTotalflow" />
+    <result column="pkgInfo_usedFlow" property="pkginfoUsedflow" />
+    <result column="pkgInfo_restFlow" property="pkginfoRestflow" />
+    <result column="pkgEffDate" property="pkgeffdate" />
+    <result column="pkgExpireDate" property="pkgexpiredate" />
+  </resultMap>
+  <sql id="MobileMsisdnInfoColumn">
+    id, `type`, msisdnInfoList, msisdnInfo, msisdn, iccid, code, error, apnList, apnInfo, 
+    apnName, apnInfo_totalFlow, apnInfo_usedFlow, apnInfo_restFlow, extraPkgFlow, lastFlowTime, 
+    pkgInfoList, pkgInfo, pkgCode, pkgName, subSprodId, pkgInfo_totalFlow, pkgInfo_usedFlow, 
+    pkgInfo_restFlow, pkgEffDate, pkgExpireDate
+  </sql>
+  <insert id="save" keyColumn="id" keyProperty="id" parameterType="MobileMsisdnInfo" useGeneratedKeys="true">
+   <![CDATA[
+    insert into mobile_msisdn_info (`type`, msisdnInfoList, msisdnInfo, 
+      msisdn, iccid, code, 
+      error, apnList, apnInfo, 
+      apnName, apnInfo_totalFlow, apnInfo_usedFlow, 
+      apnInfo_restFlow, extraPkgFlow, lastFlowTime, 
+      pkgInfoList, pkgInfo, pkgCode, 
+      pkgName, subSprodId, pkgInfo_totalFlow, 
+      pkgInfo_usedFlow, pkgInfo_restFlow, pkgEffDate, 
+      pkgExpireDate)
+    values (#{type}, #{msisdninfolist}, #{msisdninfo}, 
+      #{msisdn}, #{iccid}, #{code}, 
+      #{error}, #{apnlist}, #{apninfo}, 
+      #{apnname}, #{apninfoTotalflow}, #{apninfoUsedflow}, 
+      #{apninfoRestflow}, #{extrapkgflow}, #{lastflowtime}, 
+      #{pkginfolist}, #{pkginfo}, #{pkgcode}, 
+      #{pkgname}, #{subsprodid}, #{pkginfoTotalflow}, 
+      #{pkginfoUsedflow}, #{pkginfoRestflow}, #{pkgeffdate}, 
+      #{pkgexpiredate})
+      ]]>
+  </insert>
+  
+  <select id="getList" resultMap="MobileMsisdnInfoResultMap" parameterType="map">
+		SELECT <include refid="MobileMsisdnInfoColumn"/> FROM mobile_msisdn_info  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		 <if test="type != null">
+      	 and  `type` = #{type}
+      </if>
+      <if test="msisdninfolist != null">
+       and msisdnInfoList = #{msisdninfolist}
+      </if>
+      <if test="msisdninfo != null">
+       and msisdnInfo = #{msisdninfo}
+      </if>
+      <if test="msisdn != null">
+       and msisdn = #{msisdn}
+      </if>
+      <if test="iccid != null">
+       and iccid = #{iccid}
+      </if>
+      <if test="code != null">
+       and code = #{code}
+      </if>
+      <if test="error != null">
+       and error = #{error}
+      </if>
+      <if test="apnlist != null">
+       and apnList = #{apnlist}
+      </if>
+      <if test="apninfo != null">
+       and apnInfo = #{apninfo}
+      </if>
+      <if test="apnname != null">
+       and apnName = #{apnname}
+      </if>
+      <if test="apninfoTotalflow != null">
+       and apnInfo_totalFlow = #{apninfoTotalflow}
+      </if>
+      <if test="apninfoUsedflow != null">
+       and apnInfo_usedFlow = #{apninfoUsedflow}
+      </if>
+      <if test="apninfoRestflow != null">
+       and apnInfo_restFlow = #{apninfoRestflow}
+      </if>
+      <if test="extrapkgflow != null">
+       and extraPkgFlow = #{extrapkgflow}
+      </if>
+      <if test="lastflowtime != null">
+       and lastFlowTime = #{lastflowtime}
+      </if>
+      <if test="pkginfolist != null">
+      and pkgInfoList = #{pkginfolist}
+      </if>
+      <if test="pkginfo != null">
+       and pkgInfo = #{pkginfo}
+      </if>
+      <if test="pkgcode != null">
+         and pkgCode = #{pkgcode}
+      </if>
+      <if test="pkgname != null">
+      and  pkgName = #{pkgname}
+      </if>
+      <if test="subsprodid != null">
+       and subSprodId = #{subsprodid}
+      </if>
+      <if test="pkginfoTotalflow != null">
+       and pkgInfo_totalFlow = #{pkginfoTotalflow}
+      </if>
+      <if test="pkginfoUsedflow != null">
+       and pkgInfo_usedFlow = #{pkginfoUsedflow}
+      </if>
+      <if test="pkginfoRestflow != null">
+      and  pkgInfo_restFlow = #{pkginfoRestflow}
+      </if>
+      <if test="pkgeffdate != null">
+      and  pkgEffDate = #{pkgeffdate}
+      </if>
+      <if test="pkgexpiredate != null">
+      and  pkgExpireDate = #{pkgexpiredate}
+      </if>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from mobile_msisdn_info where 1=1
+	   	<if test="id!=null">and id=#{id}</if>
+		 <if test="type != null">
+      	 and  `type` = #{type}
+      </if>
+      <if test="msisdninfolist != null">
+       and msisdnInfoList = #{msisdninfolist}
+      </if>
+      <if test="msisdninfo != null">
+       and msisdnInfo = #{msisdninfo}
+      </if>
+      <if test="msisdn != null">
+       and msisdn = #{msisdn}
+      </if>
+      <if test="iccid != null">
+       and iccid = #{iccid}
+      </if>
+      <if test="code != null">
+       and code = #{code}
+      </if>
+      <if test="error != null">
+       and error = #{error}
+      </if>
+      <if test="apnlist != null">
+       and apnList = #{apnlist}
+      </if>
+      <if test="apninfo != null">
+       and apnInfo = #{apninfo}
+      </if>
+      <if test="apnname != null">
+       and apnName = #{apnname}
+      </if>
+      <if test="apninfoTotalflow != null">
+       and apnInfo_totalFlow = #{apninfoTotalflow}
+      </if>
+      <if test="apninfoUsedflow != null">
+       and apnInfo_usedFlow = #{apninfoUsedflow}
+      </if>
+      <if test="apninfoRestflow != null">
+       and apnInfo_restFlow = #{apninfoRestflow}
+      </if>
+      <if test="extrapkgflow != null">
+       and extraPkgFlow = #{extrapkgflow}
+      </if>
+      <if test="lastflowtime != null">
+       and lastFlowTime = #{lastflowtime}
+      </if>
+      <if test="pkginfolist != null">
+      and pkgInfoList = #{pkginfolist}
+      </if>
+      <if test="pkginfo != null">
+       and pkgInfo = #{pkginfo}
+      </if>
+      <if test="pkgcode != null">
+         and pkgCode = #{pkgcode}
+      </if>
+      <if test="pkgname != null">
+      and  pkgName = #{pkgname}
+      </if>
+      <if test="subsprodid != null">
+       and subSprodId = #{subsprodid}
+      </if>
+      <if test="pkginfoTotalflow != null">
+       and pkgInfo_totalFlow = #{pkginfoTotalflow}
+      </if>
+      <if test="pkginfoUsedflow != null">
+       and pkgInfo_usedFlow = #{pkginfoUsedflow}
+      </if>
+      <if test="pkginfoRestflow != null">
+      and  pkgInfo_restFlow = #{pkginfoRestflow}
+      </if>
+      <if test="pkgeffdate != null">
+      and  pkgEffDate = #{pkgeffdate}
+      </if>
+      <if test="pkgexpiredate != null">
+      and  pkgExpireDate = #{pkgexpiredate}
+      </if>
+	</select>
+	
+	<select id="getById" resultMap="MobileMsisdnInfoResultMap" parameterType="int">
+	   select <include refid="MobileMsisdnInfoColumn"/> from mobile_msisdn_info where id = #{id}
+	</select>
+  
+  <update id="editById" parameterType="MobileMsisdnInfo">
+    update mobile_msisdn_info
+    <set>
+      <if test="type != null">
+        `type` = #{type},
+      </if>
+      <if test="msisdninfolist != null">
+        msisdnInfoList = #{msisdninfolist},
+      </if>
+      <if test="msisdninfo != null">
+        msisdnInfo = #{msisdninfo},
+      </if>
+      <if test="msisdn != null">
+        msisdn = #{msisdn},
+      </if>
+      <if test="iccid != null">
+        iccid = #{iccid},
+      </if>
+      <if test="code != null">
+        code = #{code},
+      </if>
+      <if test="error != null">
+        error = #{error},
+      </if>
+      <if test="apnlist != null">
+        apnList = #{apnlist},
+      </if>
+      <if test="apninfo != null">
+        apnInfo = #{apninfo},
+      </if>
+      <if test="apnname != null">
+        apnName = #{apnname},
+      </if>
+      <if test="apninfoTotalflow != null">
+        apnInfo_totalFlow = #{apninfoTotalflow},
+      </if>
+      <if test="apninfoUsedflow != null">
+        apnInfo_usedFlow = #{apninfoUsedflow},
+      </if>
+      <if test="apninfoRestflow != null">
+        apnInfo_restFlow = #{apninfoRestflow},
+      </if>
+      <if test="extrapkgflow != null">
+        extraPkgFlow = #{extrapkgflow},
+      </if>
+      <if test="lastflowtime != null">
+        lastFlowTime = #{lastflowtime},
+      </if>
+      <if test="pkginfolist != null">
+        pkgInfoList = #{pkginfolist},
+      </if>
+      <if test="pkginfo != null">
+        pkgInfo = #{pkginfo},
+      </if>
+      <if test="pkgcode != null">
+        pkgCode = #{pkgcode},
+      </if>
+      <if test="pkgname != null">
+        pkgName = #{pkgname},
+      </if>
+      <if test="subsprodid != null">
+        subSprodId = #{subsprodid},
+      </if>
+      <if test="pkginfoTotalflow != null">
+        pkgInfo_totalFlow = #{pkginfoTotalflow},
+      </if>
+      <if test="pkginfoUsedflow != null">
+        pkgInfo_usedFlow = #{pkginfoUsedflow},
+      </if>
+      <if test="pkginfoRestflow != null">
+        pkgInfo_restFlow = #{pkginfoRestflow},
+      </if>
+      <if test="pkgeffdate != null">
+        pkgEffDate = #{pkgeffdate},
+      </if>
+      <if test="pkgexpiredate != null">
+        pkgExpireDate = #{pkgexpiredate},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+   <delete id="delById">
+	   delete from mobile_msisdn_info where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+	
+</mapper>

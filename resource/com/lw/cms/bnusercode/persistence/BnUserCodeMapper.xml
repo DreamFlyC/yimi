@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnusercode.persistence.BnUserCodeMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnUserCode" id="BnUserCodeparaMap">
+<parameter property="id" 		resultMap="id" />
+<parameter property="userid" 	resultMap="user_id"  	/>
+<parameter property="username" 	resultMap="user_name" 	/>
+<parameter property="type" 		resultMap="type"		/>
+<parameter property="strcode"	resultMap="str_code"	 />
+<parameter property="count" 	resultMap="count" 		/>
+<parameter property="status" 	resultMap="status" 		/>
+<parameter property="efftime" 	resultMap="eff_time"	 />
+<parameter property="addtime" 	resultMap="add_time" 	/>
+</parameterMap>
+
+<resultMap type="BnUserCode" id="BnUserCodeResultMap">
+        <id property="id" column="id" />
+        <result property="userid" 	 column="user_id"   />
+        <result property="username"	 column="user_name" />
+      	<result property="type" 	 column="type"			/>
+     	<result property="strcode"	 column="str_code"	/>
+        <result property="count" 	 column="count" 		 />
+        <result property="status" 	 column="status" 		/>
+        <result property="efftime"   column="eff_time"	 />
+        <result property="addtime" 	 column="add_time" />
+        
+        </resultMap>
+        <sql id="BnUserCodeColumn">id,user_id,user_name,type,str_code,count,status,eff_time,add_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnUserCode">
+		<![CDATA[
+    		insert into bn_user_code (user_id,user_name,type,str_code,count,status,eff_time,add_time) 
+    		values (#{userid},#{username},#{type},#{strcode},#{count},#{status},#{efftime},now());
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnUserCode" resultMap="BnUserCodeResultMap">
+ 		select * from bn_user_code where 1=1
+ 		<if test="userid != null and userid !=''">
+ 			and user_id=#{userid}
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			and user_name=#{username}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="strcode != null and strcode !=''">
+ 			and str_code=#{strcode}
+ 		</if>
+ 		<if test="count != null and count !=''">
+ 			and count=#{count}
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			and status=#{status}
+ 		</if>
+ 		<if test="efftime != null and efftime !=''">
+ 			and eff_time=#{efftime}
+ 		</if>
+ 		<if test="addtime != null and addtime !=''">
+ 			and add_time=#{addtime}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_user_code where 1=1
+	  <if test="userid != null and userid !=''">
+ 			and user_id=#{userid}
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			and user_name=#{username}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="strcode != null and strcode !=''">
+ 			and str_code=#{strcode}
+ 		</if>
+ 		<if test="count != null and count !=''">
+ 			and count=#{count}
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			and status=#{status}
+ 		</if>
+ 		<if test="efftime != null and efftime !=''">
+ 			and eff_time=#{efftime}
+ 		</if>
+ 		<if test="addtime != null and addtime !=''">
+ 			and add_time=#{addtime}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnUserCodeResultMap" parameterType="int">
+	   select <include refid="BnUserCodeColumn"/> from bn_user_code where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnUserCodeparaMap">
+		UPDATE
+		bn_user_code
+		<set>
+			<if test="userid != null and userid !=''">
+ 			 user_id=#{userid},
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			 user_name=#{username},
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			 type=#{type},
+ 		</if>
+ 		<if test="strcode != null and strcode !=''">
+ 			 str_code=#{strcode},
+ 		</if>
+ 		<if test="count != null and count !=''">
+ 			 count=#{count},
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			 status=#{status},
+ 		</if>
+ 		<if test="efftime != null and efftime !=''">
+ 			 eff_time=#{efftime}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_user_code where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

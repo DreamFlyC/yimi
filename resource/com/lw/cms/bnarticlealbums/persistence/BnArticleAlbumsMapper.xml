@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnarticlealbums.persistence.BnArticleAlbumsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnArticleAlbums" id="BnArticleAlbumsparaMap">
+<parameter property="id" resultMap="id" />
+<parameter property="articleid" resultMap="article_id" />
+<parameter property="bigimg" resultMap="big_img" />
+<parameter property="smallimg" resultMap="small_img" />
+<parameter property="remark" resultMap="remark" />
+</parameterMap>
+
+<resultMap type="BnArticleAlbums" id="BnArticleAlbumsResultMap">
+        <id property="id" column="id" />
+        <result property="articleid" column="article_id" />
+        <result property="bigimg" column="big_img" />
+        <result property="smallimg" column="small_img" />
+        <result property="remark" column="remark" />
+        
+        </resultMap>
+        <sql id="BnArticleAlbumsColumn">id,article_id,big_img,small_img,remark</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnArticleAlbums"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into bn_article_albums (article_id,big_img,small_img,remark) values (#{articleid},#{bigimg},#{smallimg},#{remark});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnArticleAlbums" resultMap="BnArticleAlbumsResultMap">
+ 		select * from bn_article_albums 
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_article_albums
+	</select>
+	
+	<select id="getById" resultMap="BnArticleAlbumsResultMap" parameterType="int">
+	   select <include refid="BnArticleAlbumsColumn"/> from bn_article_albums where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnArticleAlbumsparaMap">
+		UPDATE
+		bn_article_albums
+		<set>
+			<if test="articleid != null and articleid != ''">
+				article_id = #{articleid},
+			</if>
+			<if test="bigimg != null and bigimg != ''">
+				big_img = #{bigimg},
+			</if>
+			<if test="smallimg != null and smallimg != ''">
+				small_img = #{smallimg},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_article_albums where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

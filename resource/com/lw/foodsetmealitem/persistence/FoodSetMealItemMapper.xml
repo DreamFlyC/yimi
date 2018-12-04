@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.foodsetmealitem.persistence.FoodSetMealItemMapper">
+  <parameterMap type="FoodSetMealItem" id="FoodSetMealItemparaMap">
+  	<parameter property="id"  resultMap="id" />
+    <parameter property="name" resultMap="name" />
+    <parameter property="en_name" resultMap="en_name" />
+    <parameter property="logo" resultMap="logo" />
+     <parameter property="type" resultMap="type" />
+    <parameter property="unit" resultMap="unit" />
+    <parameter property="adddate" resultMap="adddate" />
+    <parameter property="editdate" resultMap="editdate" />
+    <parameter property="used_val" resultMap="used_val" />
+    <parameter property="food_set_meal_id" resultMap="food_set_meal_id" />
+    <parameter property="food_info_id" resultMap="food_info_id" />
+  </parameterMap>
+  <resultMap id="FoodSetMealItemResultMap" type="FoodSetMealItem">
+    <id     property="id"  column="id" />
+    <result property="name" column="name" />
+    <result property="en_name" column="en_name" />
+    <result property="logo" column="logo" />
+      <result property="type" column="type" />
+    <result property="unit" column="unit" />
+    <result property="adddate" column="adddate" />
+    <result property="editdate" column="editdate" />
+    <result property="used_val" column="used_val" />
+    <result property="food_set_meal_id" column="food_set_meal_id" />
+    <result property="food_info_id" column="food_info_id" />
+  </resultMap>
+  
+  <sql id="FoodSetMealItemColumn">
+  	id,name,en_name,logo,type,unit,adddate,editdate,used_val,food_set_meal_id,food_info_id
+  </sql>
+  
+  <!-- 新建任务（save）方法 -->
+	<insert id="save" parameterType="FoodSetMealItem"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into food_set_meal_item
+    			(name,en_name,logo,type,unit,adddate,used_val,food_set_meal_id,food_info_id) 
+    		values
+    			(#{name},#{en_name},#{logo},#{type},#{unit},now(),#{used_val},#{food_set_meal_id},#{food_info_id});
+    	]]>
+	</insert>
+
+	<select id="getList" resultMap="FoodSetMealItemResultMap" parameterType="map">
+		SELECT <include refid="FoodSetMealItemColumn"/> FROM food_set_meal_item 
+		<where>
+			<if test="name != null and name !=''">
+			   and	 name = #{name}
+			</if>
+			<if test="en_name != null and en_name != ''">
+			and	en_name = #{en_name}
+			</if>
+			<if test="logo != null and logo != ''">
+			and	logo = #{logo}
+			</if>
+			<if test="type != null and type != ''">
+			and	type = #{type}
+			</if>
+			<if test="unit != null and unit != ''">
+			and	unit = #{unit}
+			</if>
+			<if test="adddate != null and adddate != ''">
+				and adddate = #{adddate}
+			</if>
+			<if test="editdate != null and editdate !=''">
+				and editdate = #{editdate}
+			</if>
+			<if test="used_val != null and used_val !=''">
+				and used_val = #{used_val}
+			</if>
+			<if test="food_set_meal_id != null and food_set_meal_id !=''">
+				and food_set_meal_id = #{food_set_meal_id}
+			</if>
+			<if test="food_info_id != null and food_info_id !=''">
+				and food_info_id = #{food_info_id}
+			</if>
+		</where>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from food_set_meal_item 
+	   	<where>
+	 		<if test="name != null and name !=''">
+			   and	 name = #{name}
+			</if>
+			<if test="en_name != null and en_name != ''">
+			and	en_name = #{en_name}
+			</if>
+			<if test="logo != null and logo != ''">
+			and	logo = #{logo}
+			</if>
+			<if test="type != null and type != ''">
+			and	type = #{type}
+			</if>
+			<if test="unit != null and unit != ''">
+			and	unit = #{unit}
+			</if>
+			<if test="adddate != null and adddate != ''">
+				and adddate = #{adddate}
+			</if>
+			<if test="editdate != null and editdate !=''">
+				and editdate = #{editdate}
+			</if>
+			<if test="used_val != null and used_val !=''">
+				and used_val = #{used_val}
+			</if>
+			<if test="food_set_meal_id != null and food_set_meal_id !=''">
+				and food_set_meal_id = #{food_set_meal_id}
+			</if>
+			<if test="food_info_id != null and food_info_id !=''">
+				and food_info_id = #{food_info_id}
+			</if>
+ 		</where>
+	</select>
+	
+	<select id="getById" resultMap="FoodSetMealItemResultMap" parameterType="int">
+	   select <include refid="FoodSetMealItemColumn"/> from food_set_meal_item where id = #{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="editById"  parameterType="FoodSetMealItem">
+		UPDATE
+		food_set_meal_item
+		<set>
+			<if test="name != null and name !=''">
+			   	 name = #{name},
+			</if>
+			<if test="en_name != null and en_name != ''">
+				en_name = #{en_name},
+			</if>
+			<if test="logo != null and logo != ''">
+				logo = #{logo},
+			</if>
+			<if test="type != null and type != ''">
+				type = #{type},
+			</if>
+			<if test="unit != null and unit != ''">
+				unit = #{unit},
+			</if>
+			editdate = now(),
+			<if test="used_val != null and used_val !=''">
+				 used_val = #{used_val},
+			</if>
+			<if test="food_set_meal_id != null and food_set_meal_id !=''">
+				 food_set_meal_id = #{food_set_meal_id},
+			</if>
+			<if test="food_info_id != null and food_info_id !=''">
+				 food_info_id = #{food_info_id}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from food_set_meal_item where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+	
+</mapper>

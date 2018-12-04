@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.aliyunmonitoossinfo.persistence.AliyunMonitoOssinfoMapper">
+
+  <parameterMap type="AliyunMonitoOssinfo" id="AliyunMonitoOssinfoparaMap">
+  	<parameter resultMap="id" property="id" />
+    <parameter resultMap="connectionUsage" property="connectionusage" />
+    <parameter resultMap="usedConnection" property="usedconnection" />
+    <parameter resultMap="cpuUsage" property="cpuusage" />
+    <parameter resultMap="cailedCount" property="cailedcount" />
+    <parameter resultMap="intranetIn" property="intranetin" />
+    <parameter resultMap="intranetInRatio" property="intranetinratio" />
+    <parameter resultMap="intranetOut" property="intranetout" />
+    <parameter resultMap="intranetOutRatio" property="intranetoutratio" />
+    <parameter resultMap="memoryUsage" property="memoryusage" />
+    <parameter resultMap="usedMemory" property="usedmemory" />
+  </parameterMap>
+  <resultMap id="AliyunMonitoOssinfoResultMap" type="AliyunMonitoOssinfo">
+    <id column="id" property="id" />
+    <result column="connectionUsage" property="connectionusage" />
+    <result column="usedConnection" property="usedconnection" />
+    <result column="cpuUsage" property="cpuusage" />
+    <result column="cailedCount" property="cailedcount" />
+    <result column="intranetIn" property="intranetin" />
+    <result column="intranetInRatio" property="intranetinratio" />
+    <result column="intranetOut" property="intranetout" />
+    <result column="intranetOutRatio" property="intranetoutratio" />
+    <result column="memoryUsage" property="memoryusage" />
+    <result column="usedMemory" property="usedmemory" />
+  </resultMap>
+  <sql id="AliyunMonitoOssinfoColumn">
+    id, connectionUsage, usedConnection, cpuUsage, cailedCount, intranetIn, intranetInRatio, 
+    intranetOut, intranetOutRatio, memoryUsage, usedMemory
+  </sql>
+  <insert id="save" parameterType="AliyunMonitoOssinfo"
+		keyColumn="id" useGeneratedKeys="true">
+		<![CDATA[
+		    insert into aliyun_monito_ossinfo (connectionUsage, usedConnection, 
+		      cpuUsage, cailedCount, intranetIn, 
+		      intranetInRatio, intranetOut, intranetOutRatio, 
+		      memoryUsage, usedMemory)
+		    values (#{connectionusage}, #{usedconnection}, 
+		      #{cpuusage}, #{cailedcount}, #{intranetin}, 
+		      #{intranetinratio}, #{intranetout}, #{intranetoutratio}, 
+		      #{memoryusage}, #{usedmemory})
+		 ]]>
+	</insert>
+	
+  <select id="getList" resultMap="AliyunMonitoOssinfoResultMap" parameterType="map">
+		SELECT <include refid="AliyunMonitoOssinfoColumn"/> FROM aliyun_monito_ossinfo  where 1=1
+		<if test="id!=null">and id=#{id}
+		</if>
+	  <if test="connectionusage != null">
+       and  connectionUsage = #{connectionusage}
+      </if>
+      <if test="usedconnection != null">
+       and usedConnection = #{usedconnection}
+      </if>
+      <if test="cpuusage != null">
+       and cpuUsage = #{cpuusage}
+      </if>
+      <if test="cailedcount != null">
+       and cailedCount = #{cailedcount}
+      </if>
+      <if test="intranetin != null">
+       and intranetIn = #{intranetin}
+      </if>
+      <if test="intranetinratio != null">
+      and  intranetInRatio = #{intranetinratio}
+      </if>
+      <if test="intranetout != null">
+      and  intranetOut = #{intranetout}
+      </if>
+      <if test="intranetoutratio != null">
+       and intranetOutRatio = #{intranetoutratio}
+      </if>
+      <if test="memoryusage != null">
+       and memoryUsage = #{memoryusage}
+      </if>
+      <if test="usedmemory != null">
+      and  usedMemory = #{usedmemory}
+      </if>
+		 order by id desc
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from aliyun_monito_ossinfo where 1=1
+	   <if test="id!=null">and id=#{id}
+		</if>
+	  <if test="connectionusage != null">
+       and  connectionUsage = #{connectionusage}
+      </if>
+      <if test="usedconnection != null">
+       and usedConnection = #{usedconnection}
+      </if>
+      <if test="cpuusage != null">
+       and cpuUsage = #{cpuusage}
+      </if>
+      <if test="cailedcount != null">
+       and cailedCount = #{cailedcount}
+      </if>
+      <if test="intranetin != null">
+       and intranetIn = #{intranetin}
+      </if>
+      <if test="intranetinratio != null">
+      and  intranetInRatio = #{intranetinratio}
+      </if>
+      <if test="intranetout != null">
+      and  intranetOut = #{intranetout}
+      </if>
+      <if test="intranetoutratio != null">
+       and intranetOutRatio = #{intranetoutratio}
+      </if>
+      <if test="memoryusage != null">
+       and memoryUsage = #{memoryusage}
+      </if>
+      <if test="usedmemory != null">
+      and  usedMemory = #{usedmemory}
+      </if>
+	</select>
+	
+	<select id="getById" resultMap="AliyunMonitoOssinfoResultMap" parameterType="int">
+	   select <include refid="AliyunMonitoOssinfoColumn"/> from aliyun_monito_ossinfo where id = #{id}
+	</select>
+	
+  <update id="editById" parameterType="AliyunMonitoOssinfo">
+    update aliyun_monito_ossinfo
+    <set>
+      <if test="connectionusage != null">
+        connectionUsage = #{connectionusage},
+      </if>
+      <if test="usedconnection != null">
+        usedConnection = #{usedconnection},
+      </if>
+      <if test="cpuusage != null">
+        cpuUsage = #{cpuusage},
+      </if>
+      <if test="cailedcount != null">
+        cailedCount = #{cailedcount},
+      </if>
+      <if test="intranetin != null">
+        intranetIn = #{intranetin},
+      </if>
+      <if test="intranetinratio != null">
+        intranetInRatio = #{intranetinratio},
+      </if>
+      <if test="intranetout != null">
+        intranetOut = #{intranetout},
+      </if>
+      <if test="intranetoutratio != null">
+        intranetOutRatio = #{intranetoutratio},
+      </if>
+      <if test="memoryusage != null">
+        memoryUsage = #{memoryusage},
+      </if>
+      <if test="usedmemory != null">
+        usedMemory = #{usedmemory},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="delById">
+	   delete from aliyun_monito_ossinfo where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+	
+	
+</mapper>

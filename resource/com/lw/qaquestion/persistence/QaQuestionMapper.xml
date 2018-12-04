@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.qaquestion.persistence.QaQuestionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="QaQuestion" id="QaQuestionparaMap">
+	<parameter property="id" 			 resultMap="id" />
+	<parameter property="title" 		 resultMap="title" 				/>
+	<parameter property="qtype" 			     resultMap="qtype"		  		/>
+	<parameter property="seq" 	 resultMap="seq"  	/>
+	<parameter property="content" resultMap="content" 	/>
+	<parameter property="remark"		 resultMap="remark"	 			/>
+	<parameter property="createtime" 		 resultMap="createtime" 		/>
+	<parameter property="oid" 		 resultMap="oid"		 />
+</parameterMap>
+
+<resultMap type="QaQuestion" id="QaQuestionResultMap">
+    <id property="id" column="id" />
+	<result property="id" 			 column="id" />
+	<result property="title" 		 column="title" 				/>
+	<result property="qtype" 			     column="qtype"		  		/>
+	<result property="seq" 	 column="seq"  	/>
+	<result property="content" column="content" 	/>
+	<result property="remark"		 column="remark"	 			/>
+	<result property="createtime" 		 column="createtime" 		/>
+	<result property="oid" 		 column="oid"		 />
+</resultMap>
+        <sql id="QaQuestionColumn">id,title,qtype,seq,content,remark,createtime,oid</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="QaQuestion">
+		<![CDATA[
+    		insert into qa_question (title,qtype,seq,content,remark,createtime,oid) 
+    		values (#{title},#{qtype},#{seq},#{content},
+    		#{remark},now(),#{oid});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="QaQuestion" resultMap="QaQuestionResultMap">
+ 		select * from qa_question where 1=1
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="qtype != null and qtype !=''">
+ 			and qtype=#{qtype}
+ 		</if>
+ 		<if test="seq != null and seq !=''">
+ 			and seq=#{seq}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="createtime != null and createtime !=''">
+ 			and createtime=#{createtime}
+ 		</if>
+ 		<if test="oid != null and oid !=''">
+ 			and oid=#{oid}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from qa_question where 1=1
+	 <if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="qtype != null and qtype !=''">
+ 			and qtype=#{qtype}
+ 		</if>
+ 		<if test="seq != null and seq !=''">
+ 			and seq=#{seq}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="createtime != null and createtime !=''">
+ 			and createtime=#{createtime}
+ 		</if>
+ 		<if test="oid != null and oid !=''">
+ 			and oid=#{oid}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="QaQuestionResultMap" parameterType="int">
+	   select <include refid="QaQuestionColumn"/> from qa_question where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="QaQuestionparaMap">
+		UPDATE
+		qa_question
+		<set>
+			<if test="title != null and title !=''">
+	 			 title=#{title},
+	 		</if>
+	 		<if test="qtype != null and qtype !=''">
+	 			 qtype=#{qtype},
+	 		</if>
+	 		<if test="seq != null and seq !=''">
+	 			 seq=#{seq},
+	 		</if>
+	 		<if test="content != null and content !=''">
+	 			 content=#{content},
+	 		</if>
+	 		<if test="remark != null and remark !=''">
+	 			 remark=#{remark},
+	 		</if>
+	 		<if test="oid != null and oid !=''">
+	 			 oid=#{oid}
+	 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from qa_question where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

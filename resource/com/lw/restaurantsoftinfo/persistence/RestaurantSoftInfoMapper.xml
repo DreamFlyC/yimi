@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.restaurantsoftinfo.persistence.RestaurantSoftInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="RestaurantSoftInfo" id="RestaurantSoftInfoparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="name" resultMap="name" />
+	<parameter property="address" resultMap="address" />
+	<parameter property="phone" resultMap="phone" />
+	<parameter property="longitude" resultMap="longitude" />
+	<parameter property="latitude" resultMap="latitude" />
+	<parameter property="remark" resultMap="remark" />
+	<parameter property="authorkey" resultMap="authorkey" />
+	<parameter property="description" resultMap="description" />
+	<parameter property="enable" resultMap="enable" />
+	<parameter property="lastlogindate" resultMap="last_login_date" />
+	<parameter property="lastloginip" resultMap="last_login_ip" />
+	<parameter property="status" resultMap="status" />
+	<parameter property="upinfo" resultMap="up_info" />
+	<parameter property="update" resultMap="up_date" />
+</parameterMap>
+
+<resultMap type="RestaurantSoftInfo" id="RestaurantSoftInfoResultMap">
+   <id property="id" column="id" />
+   <result property="name" column="name" /> 
+   <result property="address" column="address" /> 
+   <result property="phone" column="phone" /> 
+   <result property="longitude" column="longitude" /> 
+   <result property="latitude" column="latitude" /> 
+   <result property="remark" column="remark" /> 
+   <result property="authorkey" column="authorkey" /> 
+   <result property="description" column="description" /> 
+   <result property="enable" column="enable" /> 
+   <result property="lastlogindate" column="last_login_date" /> 
+   <result property="lastloginip" column="last_login_ip" /> 
+   <result property="status" column="status" /> 
+   <result property="upinfo" column="up_info" /> 
+   <result property="update" column="up_date" /> 
+   
+ </resultMap>
+<sql id="RestaurantSoftInfoColumn">id,name,address,phone,longitude,latitude,remark,authorkey,description,enable,
+last_login_date,last_login_ip,status,up_info,up_date</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="RestaurantSoftInfo"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into restaurant_soft_info (name,address,phone,longitude,latitude,remark,authorkey,description,enable,
+    		last_login_date,last_login_ip,status,up_info) 
+    		values (#{name},#{address},#{phone},#{longitude},#{latitude},#{remark},#{authorkey},#{description},
+    		#{enable},#{lastlogindate},#{lastloginip},#{status},#{upinfo});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="RestaurantSoftInfo" resultMap="RestaurantSoftInfoResultMap">
+ 		select * from restaurant_soft_info
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from restaurant_soft_info
+	</select>
+	
+	<select id="getById" resultMap="RestaurantSoftInfoResultMap" parameterType="int">
+	   select <include refid="RestaurantSoftInfoColumn"/> from restaurant_soft_info where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="RestaurantSoftInfoparaMap">
+		UPDATE
+		restaurant_soft_info
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="phone != null and phone != ''">
+				phone = #{phone},
+			</if>
+			<if test="longitude != null and longitude != ''">
+				longitude = #{longitude},
+			</if>
+			
+			<if test="latitude != null and latitude != ''">
+				latitude = #{latitude},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark},
+			</if>
+			<if test="authorkey != null and authorkey != ''">
+				authorkey = #{authorkey},
+			</if>
+			
+			<if test="description != null and description != ''">
+				description = #{description},
+			</if>
+				enable = #{enable},
+			<if test="lastlogindate != null and lastlogindate != ''">
+				last_login_date = #{lastlogindate},
+			</if>
+			<if test="lastloginip != null and lastloginip != ''">
+				last_login_ip = #{lastloginip},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status},
+			</if>
+			<if test="upinfo != null and upinfo != ''">
+				up_info = #{upinfo},
+			</if>
+				up_date = now()
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from restaurant_soft_info where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+</mapper>

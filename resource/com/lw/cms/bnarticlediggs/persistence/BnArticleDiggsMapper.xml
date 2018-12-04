@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnarticlediggs.persistence.BnArticleDiggsMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnArticleDiggs" id="BnArticleDiggsparaMap">
+<parameter property="id" resultMap="id" />
+<parameter property="digggood" resultMap="digg_good" />
+<parameter property="diggbad" resultMap="digg_bad" />
+</parameterMap>
+
+<resultMap type="BnArticleDiggs" id="BnArticleDiggsResultMap">
+        <id property="id" column="id" />
+        <result property="digggood" column="digg_good" />
+        <result property="diggbad" column="digg_bad" />
+        
+        </resultMap>
+        <sql id="BnArticleDiggsColumn">id,digg_good,digg_bad</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnArticleDiggs">
+		<![CDATA[
+    		insert into bn_article_diggs (id,digg_good,digg_bad) values (#{id},#{digggood},#{diggbad});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnArticleDiggs" resultMap="BnArticleDiggsResultMap">
+ 		select * from bn_article_diggs where 1=1
+ 		<if test="digggood != null and digggood !=''">
+ 			and digg_good=#{digggood}
+ 		</if>
+ 		<if test="diggbad != null and diggbad !=''">
+ 			and digg_bad=#{diggbad}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_article_diggs where 1=1
+	   <if test="digggood != null and digggood !=''">
+ 			and digg_good=#{digggood}
+ 		</if>
+ 		<if test="diggbad != null and diggbad !=''">
+ 			and digg_bad=#{diggbad}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnArticleDiggsResultMap" parameterType="int">
+	   select <include refid="BnArticleDiggsColumn"/> from bn_article_diggs where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnArticleDiggsparaMap">
+		UPDATE
+		bn_article_diggs
+		<set>
+			<if test="id != null and id !=''">
+	 			 id=#{id},
+	 		</if>
+			<if test="digggood != null and digggood !=''">
+	 			 digg_good=#{digggood},
+	 		</if>
+	 		<if test="diggbad != null and diggbad !=''">
+	 			 digg_bad=#{diggbad}
+	 		</if>
+			
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_article_diggs where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

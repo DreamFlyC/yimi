@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lw.newsinfo.persistence.NewsInfoMapper">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<parameterMap type="NewsInfo" id="NewsInfoparaMap">
+		<parameter property="id" resultMap="id"/>
+		<parameter property="title" resultMap="title"/>
+		<parameter property="url" resultMap="url"/>
+		<parameter property="img" resultMap="img"/>
+		<parameter property="content" resultMap="content"/>
+		<parameter property="seoKeywords" resultMap="seoKeywords"/>
+		<parameter property="seoDescribe" resultMap="seoDescribe"/>
+		<parameter property="num" resultMap="num"/>
+		<parameter property="clicknum" resultMap="clicknum"/>
+		<parameter property="creatime" resultMap="creatime"/>
+		<parameter property="uptime" resultMap="uptime"/>
+		<parameter property="istop" resultMap="istop"/>
+		<parameter property="type" resultMap="type"/>
+	</parameterMap>
+	
+	<resultMap type="NewsInfo" id="NewsInfoResultMap">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="url" column="url"/>
+		<result property="img" column="img"/>
+		<result property="content" column="content"/>
+		<result property="seoKeywords" column="seoKeywords"/>
+		<result property="seoDescribe" column="seoDescribe"/>
+		<result property="num" column="num"/>
+		<result property="clicknum" column="clicknum"/>
+		<result property="creatime" column="creatime"/>
+		<result property="uptime" column="uptime"/>
+		<result property="istop" column="istop"/>
+		<result property="type" column="type"/>
+	</resultMap>
+	
+	<sql id="NewsInfoColumn">id,title,url,img,content,seoKeywords,seoDescribe,num,clicknum,creatime,uptime,istop,type</sql>
+	
+	<insert id="save" parameterMap="NewsInfoparaMap" keyProperty="id" useGeneratedKeys="true">
+    	<![CDATA[
+    		insert into yimi_news(title,url,img,content,seoKeywords,seoDescribe,num,clicknum,creatime,istop,type) 
+    		values(#{title},#{url},#{img},#{content},#{seoKeywords},#{seoDescribe},#{num},#{clicknum},#{creatime},#{istop},#{type});
+    	]]>
+	</insert>
+	
+	<select id="getList" resultMap="NewsInfoResultMap" parameterType="map">
+	
+		SELECT <include refid="NewsInfoColumn"/> 
+		FROM yimi_news  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		<if test="type !=null and type !=''">and type=#{type}</if>
+		 order by istop=0,istop,id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	
+	   select count(1) from yimi_news
+	   where 1=1 
+	   <if test="type !=null and type !=''">and type=#{type}</if>
+	</select>
+	
+	<select id="getById" resultMap="NewsInfoResultMap" parameterType="int">
+	   select <include refid="NewsInfoColumn"/> from yimi_news where id = #{id}
+	</select>
+	
+	<update id="editById" parameterMap="NewsInfoparaMap">
+		   update yimi_news 
+		   <set>
+			   <if test="title != null and title !=''">
+				   title = #{title},
+			   </if>
+			   <if test="url != null and url !=''">
+				   url = #{url},
+			   </if>
+			   <if test="img != null and img !=''">
+				   img = #{img},
+			   </if>
+			   <if test="content != null and content !=''">
+				   content = #{content},
+			   </if>
+			   <if test="seoKeywords != null and seoKeywords !=''">
+				   seoKeywords = #{seoKeywords},
+			   </if>
+			   <if test="seoDescribe != null and seoDescribe !=''">
+				   seoDescribe = #{seoDescribe},
+			   </if>
+			    <if test="num != null and num !=''">
+				   num = #{num},
+			   </if>
+		       <if test="clicknum != null and clicknum !=''">
+				   clicknum = #{clicknum},
+			   </if>
+			    <if test="uptime != null and uptime !=''">
+				   uptime = #{uptime},
+			   </if>
+			   
+		   </set>
+		   where id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from yimi_news where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+</mapper>

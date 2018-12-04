@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.crm.crmpurchacse.persistence.CrmPurchacseMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="CrmPurchacse" id="CrmPurchacseMap">
+<parameter property="id" resultMap="id" />
+<parameter property="number" resultMap="number" />
+<parameter property="num" resultMap="num" />
+<parameter property="sid" resultMap="sid" />
+<parameter property="title" resultMap="title" />
+<parameter property="name" resultMap="name" />
+<parameter property="date" resultMap="date" />
+<parameter property="uid" resultMap="uid" />
+<parameter property="price" resultMap="price" />
+<parameter property="note" resultMap="note" />
+<parameter property="type" resultMap="type" />
+<parameter property="ids" resultMap="ids" />
+</parameterMap>
+
+<resultMap type="CrmPurchacse" id="CrmPurchacseResultMap">
+<id property="id" column="id" />
+		<result property="number" column="number" />
+		<result property="num" column="num" />
+		<result property="sid" column="sid" />
+		<result property="title" column="title" />
+		<result property="name" column="name" />
+		<result property="date" column="date" />
+		<result property="uid" column="uid" />
+		<result property="price" column="price" />
+		<result property="note" column="note" />
+		<result property="type" column="type" />
+		<result property="ids" column="ids" />
+		<association property="crmUser" fetchType="lazy" column="uid" select="com.lw.crm.crmuser.persistence.CrmUserMapper.getById"></association>
+		<association property="crmSupplier" fetchType="lazy" column="sid" select="com.lw.crm.crmsupplier.persistence.CrmSupplierMapper.getById"></association>
+</resultMap>
+
+<sql id="CrmPurchacseColumn">
+id,number,num,sid,title,name,date,uid,price,note,type
+</sql>
+
+<!--查询信息总条数 -->
+	<select id="getCount" resultType="int" parameterType="String">
+		select count(1) from crm_purchacse
+		<where>
+			1 = 1
+			<if test="number != null and number != ''">
+				<bind name="pattern" value="'%' + number + '%'" />
+				AND number LIKE #{pattern}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="pattern" value="'%' + name + '%'" />
+				AND name LIKE #{pattern}
+			</if>
+			<if test="type != null and type !=0">
+				AND type=#{type}
+			</if>
+		</where>
+	</select>
+	
+	<!--根据产品编号,日期,查询  -->
+	<select id="getAll" resultMap="CrmPurchacseResultMap" parameterType="CrmPurchacse">
+	    select
+		<include refid="CrmPurchacseColumn" />
+		from crm_purchacse  
+		<where>
+			1 = 1
+			<if test="number != null and number != ''">
+				<bind name="pattern" value="'%' + number + '%'" />
+				AND number LIKE #{pattern}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="pattern" value="'%' + name + '%'" />
+				AND name LIKE #{pattern}
+			</if>
+			<if test="type != null and type !=0 ">
+				AND type = #{type}
+			</if>
+		</where>
+		 order by id desc limit #{currentpage},#{pagesize} 
+	</select>
+
+	<!--保存  -->
+	<!--<insert id="save" parameterType="CrmPurchacse"
+		keyColumn="id" useGeneratedKeys="true">
+		<![CDATA[
+    		insert into crm_purchacse
+    		(number,name,price,num,note,date,uid,sid,type,title)
+    		values(#{number},#{name},#{price},#{num},#{note},#{date},#{uid},#{sid},#{type},#{title});
+    	]]>
+	</insert>-->
+
+	<insert id="save" parameterType="CrmPurchacse" keyColumn="id" useGeneratedKeys="true">
+    insert into crm_purchacse
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="number != null and number != ''">
+			number,
+		</if>
+		<if test="name != null and name != ''">
+			name,
+		</if>
+		<if test="price != null and price != ''">
+			price,
+		</if>
+        <if test="num != null and num != ''">
+            num,
+        </if>
+		<if test="note != null and note != ''">
+			note,
+		</if>
+		<if test="uid != null and uid != ''">
+			uid,
+		</if>
+		<if test="sid != null and sid != ''">
+			sid,
+		</if>
+		<if test="type != null and type != ''">
+			type,
+		</if>
+		<if test="title != null and title != ''">
+			title,
+		</if>
+		date
+	</trim>
+	<trim prefix="values(" suffix=")" suffixOverrides=",">
+		<if test="number != null and number != ''">
+			#{number},
+		</if>
+		<if test="name != null and name != ''">
+			#{name},
+		</if>
+		<if test="price != null and price != ''">
+			#{price},
+		</if>
+        <if test="num != null and num != ''">
+            #{num},
+        </if>
+		<if test="note != null and note != ''">
+			#{note},
+		</if>
+		<if test="uid != null and uid != ''">
+			#{uid},
+		</if>
+		<if test="sid != null and sid != ''">
+			#{sid},
+		</if>
+		<if test="type != null and type != ''">
+			#{type},
+
+		</if>
+		<if test="title != null and title != ''">
+			#{title},
+		</if>
+		now()
+	</trim>
+</insert>
+	
+	<!--获取记录列表  -->
+	<select id="getList" parameterType="CrmPurchacse" resultMap="CrmPurchacseResultMap">
+	select
+		<include refid="CrmPurchacseColumn" />
+		from crm_purchacse  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		order by date desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<!--根据id查询  -->
+	<select id="getById" resultMap="CrmPurchacseResultMap"
+		parameterType="CrmPurchacse">
+	    select
+		<include refid="CrmPurchacseColumn" />
+		from crm_purchacse 
+		 where id=#{_parameter} 
+	</select>
+	
+	<!--批量删除  -->
+	<delete id="delete" parameterType="int">
+		delete from crm_purchacse where id in
+		<foreach item="crm_purchacseItem" collection="array" open="("
+			separator="," close=")">
+			#{crm_purchacseItem}
+		</foreach>
+	</delete>
+	
+	<!--修改 -->
+	<update id="editById" parameterType="CrmPurchacse">
+		UPDATE
+		crm_purchacse
+		<set>
+			<if test="number != null">
+				number = #{number},
+			</if>
+			<if test="num != null">
+				num = #{num},
+			</if>
+			<if test="sid != null">
+				sid = #{sid},
+			</if>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="date != null and date != ''">
+				date = #{date},
+			</if>
+			<if test="uid != null">
+				uid = #{uid},
+			</if>
+			<if test="price != null">
+				price = #{price},
+			</if>
+			<if test="note != null">
+				note = #{note},
+			</if>
+			<if test="type != null">
+				type = #{type}
+			</if> 
+		</set>
+		WHERE id = #{id}
+		<selectKey keyProperty="id" resultType="int"><!--必须 否则会修改失败 找不到id  -->
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</update>
+</mapper>

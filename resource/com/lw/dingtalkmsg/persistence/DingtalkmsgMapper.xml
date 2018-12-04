@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.dingtalkmsg.persistence.DingtalkmsgMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="Dingtalkmsg" id="DingtalkmsgparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="errcode" resultMap="errcode" />
+	<parameter property="errmsg" resultMap="errmsg" />
+	<parameter property="send_result" resultMap="send_result" />
+	<parameter property="invalid_user_id_list" resultMap="invalid_user_id_list" />
+	<parameter property="forbidden_user_id_list" resultMap="forbidden_user_id_list" />
+	<parameter property="failed_user_id_list" resultMap="failed_user_id_list" />
+	<parameter property="read_user_id_list" resultMap="read_user_id_list" />
+	<parameter property="unread_user_id_list" resultMap="unread_user_id_list" />
+	<parameter property="invalid_dept_id_list" resultMap="invalid_dept_id_list" />
+</parameterMap>
+<resultMap type="Dingtalkmsg" id="DingtalkmsgResultmap">
+	<id property="id" column="id" />
+		<result property="errcode" column="errcode" />
+		<result property="errmsg" column="errmsg" />
+		<result property="send_result" column="send_result" />
+		<result property="invalid_user_id_list" column="invalid_user_id_list" />
+		<result property="forbidden_user_id_list" column="forbidden_user_id_list" />
+		<result property="failed_user_id_list" column="failed_user_id_list" />
+		<result property="read_user_id_list" column="read_user_id_list" />
+		<result property="unread_user_id_list" column="unread_user_id_list" />
+		<result property="invalid_dept_id_list" column="invalid_dept_id_list" />
+	
+</resultMap>
+<sql id="DingtalkmsgColumn">
+	id,errcode,errmsg,send_result,invalid_user_id_list,forbidden_user_id_list,failed_user_id_list,read_user_id_list,unread_user_id_list,invalid_dept_id_list
+</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="com.lw.dingtalkmsg.entity.Dingtalkmsg"
+		keyColumn="id" useGeneratedKeys="true">
+		<![CDATA[
+    		insert into dingtalk_message_sendresult(errcode,errmsg,send_result,invalid_user_id_list,forbidden_user_id_list,failed_user_id_list,read_user_id_list,unread_user_id_list,invalid_dept_id_list) 
+    		values(#{errcode},#{errmsg},#{send_result},#{invalid_user_id_list},#{forbidden_user_id_list},#{failed_user_id_list},#{read_user_id_list},#{unread_user_id_list},#{invalid_dept_id_list});
+    	]]>
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="getList" resultMap="DingtalkmsgResultmap" parameterType="map">
+		SELECT <include refid="DingtalkmsgColumn"/> FROM dingtalk_message_sendresult  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from dingtalk_message_sendresult
+	</select>
+	
+	<select id="getById" resultMap="DingtalkmsgResultmap" parameterType="int">
+	   select <include refid="DingtalkmsgColumn"/> from dingtalk_message_sendresult where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="DingtalkmsgparaMap">
+		UPDATE
+		dingtalk_message_sendresult
+		<set>
+			<if test="id != null and id!= ''">
+				id = #{id},
+			</if>
+			<if test="name != null and name !=''">
+				name = #{name},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="phone != null and phone != ''">
+				phone = #{phone},
+			</if>
+			<if test="logo != null">
+				logo = #{logo},
+			</if>
+			<if test="longitude != null and longitude !=''">
+				longitude = #{longitude},
+			</if>
+			<if test="latitude != null and latitude !=''">
+				latitude = #{latitude},
+			</if>
+			<if test="remark != null and remark !=''">
+				remark = #{remark},
+			</if>
+			<if test="authorkey != null and authorkey !=''">
+				authorkey = #{authorkey},
+			</if> 
+			<if test="user_name != null and user_name !=''">
+				user_name = #{user_name},
+			</if> 
+			<if test="password != null and password !=''">
+				password = #{password},
+			</if> 
+			<if test="salt != null and salt !=''">
+				salt = #{salt},
+			</if> 
+			<if test="enable != null and enable !=''">
+				enable = #{enable}
+			</if> 
+		</set>
+		WHERE id = #{id}
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</update>
+	
+	<delete id="delById">
+	   delete from dingtalk_message_sendresult where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

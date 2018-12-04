@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnmanager.persistence.BnManagerMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnManager" id="BnManagerparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="role_id" resultMap="role_id" />
+	<parameter property="role_type" resultMap="role_type" />
+	<parameter property="user_name" resultMap="user_name" />
+	<parameter property="user_pwd" resultMap="user_pwd" />
+	<parameter property="real_name" resultMap="real_name" />
+	<parameter property="telephone" resultMap="telephone" />
+	<parameter property="email" resultMap="email" />
+	<parameter property="is_lock" resultMap="is_lock" />
+	<parameter property="add_time" resultMap="add_time" />
+</parameterMap>
+
+<resultMap type="BnManager" id="BnManagerResultMap">
+    <id property="id" column="id" />
+    <result property="role_id" column="role_id" />
+	<result property="role_type" column="role_type" />
+	<result property="user_name" column="user_name" />
+	<result property="user_pwd" column="user_pwd" />
+	<result property="real_name" column="real_name" />
+	<result property="telephone" column="telephone" />
+	<result property="email" column="email" />
+	<result property="is_lock" column="is_lock" />
+	<result property="add_time" column="add_time" />
+</resultMap>
+        <sql id="BnManagerColumn">id,role_id,role_type,user_name,user_pwd,real_name,telephone,email,is_lock,add_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnManager">
+		<![CDATA[
+    		insert into bn_manager (role_id,role_type,user_name,user_pwd,real_name,telephone,email,is_lock,add_time) 
+    		values 
+    		(#{role_id},#{role_type},#{user_name},#{user_pwd},#{real_name},#{telephone},#{email},#{is_lock},now());
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnManager" resultMap="BnManagerResultMap">
+ 		select * from bn_manager where 1=1
+ 		<if test="role_id != null and role_id !=''">
+ 			and role_id=#{role_id}
+ 		</if>
+ 		<if test="role_type != null and role_type !=''">
+ 			and role_type=#{role_type}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_pwd != null and user_pwd !=''">
+ 			and `user_pwd`=#{user_pwd}
+ 		</if>
+ 		<if test="real_name != null and real_name !=''">
+ 			and real_name=#{real_name}
+ 		</if>
+ 		<if test="telephone != null and telephone !=''">
+ 			and telephone=#{telephone}
+ 		</if>
+ 		<if test="email != null and email !=''">
+ 			and email=#{email}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_manager where 1=1
+	   	<if test="role_id != null and role_id !=''">
+ 			and role_id=#{role_id}
+ 		</if>
+ 		<if test="role_type != null and role_type !=''">
+ 			and role_type=#{role_type}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_pwd != null and user_pwd !=''">
+ 			and `user_pwd`=#{user_pwd}
+ 		</if>
+ 		<if test="real_name != null and real_name !=''">
+ 			and real_name=#{real_name}
+ 		</if>
+ 		<if test="telephone != null and telephone !=''">
+ 			and telephone=#{telephone}
+ 		</if>
+ 		<if test="email != null and email !=''">
+ 			and email=#{email}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnManagerResultMap" parameterType="int">
+	   select <include refid="BnManagerColumn"/> from bn_manager where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnManagerparaMap">
+		UPDATE
+		bn_manager
+		<set>
+		<if test="role_id != null and role_id !=''">
+ 			 role_id=#{role_id},
+ 		</if>
+ 		<if test="role_type != null and role_type !=''">
+ 			 role_type=#{role_type},
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			 user_name=#{user_name},
+ 		</if>
+ 		<if test="user_pwd != null and user_pwd !=''">
+ 			 `user_pwd`=#{user_pwd},
+ 		</if>
+ 		<if test="real_name != null and real_name !=''">
+ 			 real_name=#{real_name},
+ 		</if>
+ 		<if test="telephone != null and telephone !=''">
+ 			 telephone=#{telephone},
+ 		</if>
+ 		<if test="email != null and email !=''">
+ 			 email=#{email},
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			 is_lock=#{is_lock}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_manager where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

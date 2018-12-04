@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnusermessage.persistence.BnUserMessageMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnUserMessage" id="BnUserMessageparaMap">
+	<parameter property="id" 			 resultMap="id" />
+<parameter property="type" 			     resultMap="type"		  		/>
+	<parameter property="postusername" 	 resultMap="post_user_name"  	/>
+	<parameter property="acceptusername" resultMap="accept_user_name" 	/>
+	<parameter property="isread"		 resultMap="is_read"	 			/>
+	<parameter property="title" 		 resultMap="title" 				/>
+	<parameter property="content" 		 resultMap="content" 		/>
+	<parameter property="posttime" 		 resultMap="post_time"		 />
+	<parameter property="readtime" 		 resultMap="read_time" 		/>
+	</parameterMap>
+
+<resultMap type="BnUserMessage" id="BnUserMessageResultMap">
+        <id property="id" column="id" />
+	        <result property="type" 		     column="type"		  	 />
+       		<result property="postusername" 	 column="post_user_name"   />
+	      	<result property="acceptusername"	 column="accept_user_name"		/>
+	     	<result property="isread"			 column="is_read"	 			/>
+	        <result property="title" 			 column="title" 					 />
+	        <result property="content" 			 column="content" 				/>
+	        <result property="posttime" 		 column="post_time"			 />
+	        <result property="readtime" 		 column="read_time" 		/>
+        
+        </resultMap>
+        <sql id="BnUserMessageColumn">id,type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnUserMessage">
+		<![CDATA[
+    		insert into bn_user_message (type,post_user_name,accept_user_name,is_read,title,content,post_time,read_time) 
+    		values (#{type},#{postusername},#{acceptusername},#{isread},
+    		#{title},#{content},#{posttime},#{readtime});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnUserMessage" resultMap="BnUserMessageResultMap">
+ 		select * from bn_user_message where 1=1
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="postusername != null and postusername !=''">
+ 			and post_user_name=#{postusername}
+ 		</if>
+ 		<if test="accept_user_name != null and acceptusername !=''">
+ 			and accept_user_name=#{acceptusername}
+ 		</if>
+ 		<if test="isread != null and isread !=''">
+ 			and is_read=#{isread}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="posttime != null and posttime !=''">
+ 			and post_time=#{posttime}
+ 		</if>
+ 		<if test="readtime != null and readtime !=''">
+ 			and read_time=#{readtime}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_user_message where 1=1
+	  	<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="postusername != null and postusername !=''">
+ 			and post_user_name=#{postusername}
+ 		</if>
+ 		<if test="accept_user_name != null and acceptusername !=''">
+ 			and accept_user_name=#{acceptusername}
+ 		</if>
+ 		<if test="isread != null and isread !=''">
+ 			and is_read=#{isread}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="posttime != null and posttime !=''">
+ 			and post_time=#{posttime}
+ 		</if>
+ 		<if test="readtime != null and readtime !=''">
+ 			and read_time=#{readtime}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnUserMessageResultMap" parameterType="int">
+	   select <include refid="BnUserMessageColumn"/> from bn_user_message where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnUserMessageparaMap">
+		UPDATE
+		bn_user_message
+		<set>
+		<if test="type != null and type !=''">
+ 			 type=#{type},
+ 		</if>
+ 		<if test="postusername != null and postusername !=''">
+ 			 post_user_name=#{postusername},
+ 		</if>
+ 		<if test="accept_user_name != null and acceptusername !=''">
+ 			 accept_user_name=#{acceptusername},
+ 		</if>
+ 		<if test="isread != null and isread !=''">
+ 			 is_read=#{isread},
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			 title=#{title},
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			 content=#{content},
+ 		</if>
+ 		<if test="posttime != null and posttime !=''">
+ 			 post_time=#{posttime},
+ 		</if>
+ 		<if test="readtime != null and readtime !=''">
+ 			 read_time=#{readtime}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_user_message where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

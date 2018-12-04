@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnlink.persistence.BnLinkMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnLink" id="BnLinkparaMap">
+	<parameter property="id" 			 resultMap="id" />
+	<parameter property="title" 		 resultMap="title" 				/>
+	<parameter property="user_name" 			     resultMap="user_name"		  		/>
+	<parameter property="user_tel" 	 resultMap="user_tel"  	/>
+	<parameter property="email" resultMap="email" 	/>
+	<parameter property="site_url"		 resultMap="site_url"	 			/>
+	<parameter property="img_url" 		 resultMap="img_url" 		/>
+	<parameter property="is_image" 		 resultMap="is_image"		 />
+	<parameter property="sort_id" 		 resultMap="sort_id" 		/>
+	<parameter property="is_red" 		 resultMap="is_red" 		/>
+	<parameter property="is_lock" 		 resultMap="is_lock"		 />
+	<parameter property="add_time" 		 resultMap="add_time" 		/>
+	</parameterMap>
+
+<resultMap type="BnLink" id="BnLinkResultMap">
+        <id property="id" column="id" />
+	        <result property="title" 		 column="title" 				/>
+	<result property="user_name" 			     column="user_name"		  		/>
+	<result property="user_tel" 	 column="user_tel"  	/>
+	<result property="email" 		column="email" 	/>
+	<result property="site_url"		 column="site_url"	 			/>
+	<result property="img_url" 		 column="img_url" 		/>
+	<result property="is_image" 		 column="is_image"		 />
+	<result property="sort_id" 		 column="sort_id" 		/>
+	<result property="is_red" 		 column="is_red" 		/>
+	<result property="is_lock" 		 column="is_lock"		 />
+	<result property="add_time" 		 column="add_time" 		/>
+        
+        </resultMap>
+        <sql id="BnLinkColumn">id,title,user_name,user_tel,email,site_url,img_url,is_image,sort_id,is_red,is_lock,add_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnLink">
+		<![CDATA[
+    		insert into bn_link (title,user_name,user_tel,email,site_url,img_url,is_image,sort_id,is_red,is_lock,add_time) 
+    		values (#{title},#{user_name},#{user_tel},#{email},
+    		#{site_url},#{img_url},#{is_image},#{sort_id},#{is_red},#{is_lock},now());
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnLink" resultMap="BnLinkResultMap">
+ 		select * from bn_link where 1=1
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_tel != null and user_tel !=''">
+ 			and user_tel=#{user_tel}
+ 		</if>
+ 		<if test="email != null and email !=''">
+ 			and email=#{email}
+ 		</if>
+ 		<if test="site_url != null and site_url !=''">
+ 			and site_url=#{site_url}
+ 		</if>
+ 		<if test="img_url != null and img_url !=''">
+ 			and img_url=#{img_url}
+ 		</if>
+ 		<if test="is_image != null and is_image !=''">
+ 			and is_image=#{is_image}
+ 		</if>
+ 		<if test="sort_id != null and sort_id !=''">
+ 			and sort_id=#{sort_id}
+ 		</if>
+ 		<if test="is_red != null and is_red !=''">
+ 			and is_red=#{is_red}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_link where 1=1
+	  <if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_tel != null and user_tel !=''">
+ 			and user_tel=#{user_tel}
+ 		</if>
+ 		<if test="email != null and email !=''">
+ 			and email=#{email}
+ 		</if>
+ 		<if test="site_url != null and site_url !=''">
+ 			and site_url=#{site_url}
+ 		</if>
+ 		<if test="img_url != null and img_url !=''">
+ 			and img_url=#{img_url}
+ 		</if>
+ 		<if test="is_image != null and is_image !=''">
+ 			and is_image=#{is_image}
+ 		</if>
+ 		<if test="sort_id != null and sort_id !=''">
+ 			and sort_id=#{sort_id}
+ 		</if>
+ 		<if test="is_red != null and is_red !=''">
+ 			and is_red=#{is_red}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnLinkResultMap" parameterType="int">
+	   select <include refid="BnLinkColumn"/> from bn_link where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnLinkparaMap">
+		UPDATE
+		bn_link
+		<set>
+			<if test="title != null and title !=''">
+	 			 title=#{title},
+	 		</if>
+	 		<if test="user_name != null and user_name !=''">
+	 			 user_name=#{user_name},
+	 		</if>
+	 		<if test="user_tel != null and user_tel !=''">
+	 			 user_tel=#{user_tel},
+	 		</if>
+	 		<if test="email != null and email !=''">
+	 			 email=#{email},
+	 		</if>
+	 		<if test="site_url != null and site_url !=''">
+	 			 site_url=#{site_url},
+	 		</if>
+	 		<if test="img_url != null and img_url !=''">
+	 			 img_url=#{img_url},
+	 		</if>
+	 		<if test="is_image != null and is_image !=''">
+	 			 is_image=#{is_image},
+	 		</if>
+	 		<if test="sort_id != null and sort_id !=''">
+	 			 sort_id=#{sort_id},
+	 		</if>
+	 		<if test="is_red != null and is_red !=''">
+	 			 is_red=#{is_red},
+	 		</if>
+	 		<if test="is_lock != null and is_lock !=''">
+	 			 is_lock=#{is_lock},
+	 		</if>
+	 		<if test="add_time != null and add_time !=''">
+	 			 add_time=#{add_time}
+ 			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_link where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

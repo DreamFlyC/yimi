@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.foodinfotype.persistence.FoodInfoTypeMapper">
+  <parameterMap type="FoodInfoType" id="FoodInfoTypeparaMap">
+  	<parameter property="id"  resultMap="id" />
+    <parameter property="name" resultMap="name" />
+    <parameter property="en_name" resultMap="en_name" />
+    <parameter property="logo" resultMap="logo" />
+    <parameter property="adddate" resultMap="adddate" />
+    <parameter property="editdate" resultMap="editdate" />
+    <parameter property="parent_id" resultMap="parent_id" />
+  </parameterMap>
+  <resultMap id="FoodInfoTypeResultMap" type="FoodInfoType">
+    <id     property="id"  column="id" />
+    <result property="name" column="name" />
+    <result property="en_name" column="en_name" />
+    <result property="logo" column="logo" />
+    <result property="adddate" column="adddate" />
+    <result property="editdate" column="editdate" />
+    <result property="parent_id" column="parent_id" />
+  </resultMap>
+  
+  <sql id="FoodInfoTypeColumn">
+  	id,name,en_name,logo,adddate,editdate,parent_id
+  </sql>
+  
+  <!-- 新建任务（save）方法 -->
+	<insert id="save" parameterType="FoodInfoType"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into food_info_type
+    			(name,en_name,logo,adddate,parent_id) 
+    		values
+    			(#{name},#{en_name},#{logo},now(),#{parent_id});
+    	]]>
+	</insert>
+
+	<select id="getList" resultMap="FoodInfoTypeResultMap" parameterType="map">
+		SELECT <include refid="FoodInfoTypeColumn"/> FROM food_info_type  where 1=1
+			<if test="name != null and name !=''">
+			   and	 name = #{name}
+			</if>
+			<if test="en_name != null and en_name != ''">
+			and	en_name = #{en_name}
+			</if>
+			<if test="logo != null and logo != ''">
+			and	logo = #{logo}
+			</if>
+			<if test="adddate != null and adddate != ''">
+				and adddate = #{adddate}
+			</if>
+			<if test="editdate != null and editdate !=''">
+				and editdate = #{editdate}
+			</if>
+			<if test="parent_id != null and parent_id !=''">
+				and parent_id = #{parent_id}
+			</if>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from food_info_type where 1=1
+	  <if test="name != null and name !=''">
+			   and	 name = #{name}
+			</if>
+			<if test="en_name != null and en_name != ''">
+			and	en_name = #{en_name}
+			</if>
+			<if test="logo != null and logo != ''">
+			and	logo = #{logo}
+			</if>
+			<if test="adddate != null and adddate != ''">
+				and adddate = #{adddate}
+			</if>
+			<if test="editdate != null and editdate !=''">
+				and editdate = #{editdate}
+			</if>
+			<if test="parent_id != null and parent_id !=''">
+				and parent_id = #{parent_id}
+			</if>
+	</select>
+	
+	<select id="getById" resultMap="FoodInfoTypeResultMap" parameterType="int">
+	   select <include refid="FoodInfoTypeColumn"/> from food_info_type where id = #{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="editById"  parameterType="FoodInfoType">
+		UPDATE
+		food_info_type
+		<set>
+			<if test="name != null and name !=''">
+			   	 name = #{name},
+			</if>
+			<if test="en_name != null and en_name != ''">
+				en_name = #{en_name},
+			</if>
+			<if test="logo != null and logo != ''">
+				logo = #{logo},
+			</if>
+			 editdate = now(),
+			<if test="parent_id != null and parent_id !=''">
+				 parent_id = #{parent_id}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from food_info_type where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+	
+	<select id="getAllOne" resultMap="FoodInfoTypeResultMap">
+		select * from food_info_type where parent_id=0
+	</select>
+	
+	<select id="getByPid" resultMap="FoodInfoTypeResultMap" parameterType="java.lang.Integer">
+     	select * from food_info_type where parent_id = #{id,jdbcType=VARCHAR}
+ 	</select>
+</mapper>

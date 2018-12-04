@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnuserloginlog.persistence.BnUserLoginLogMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnUserLoginLog" id="BnUserLoginLogparaMap">
+<parameter property="id" 		resultMap="id" />
+<parameter property="userid" 	resultMap="user_id"  	/>
+<parameter property="username" 	resultMap="user_name" 	/>
+<parameter property="remark" 	resultMap="remark"		/>
+<parameter property="logintime"	resultMap="login_time"	 />
+<parameter property="loginip" 	resultMap="login_ip" 		/>
+</parameterMap>
+
+<resultMap type="BnUserLoginLog" id="BnUserLoginLogResultMap">
+	        <id property="id" column="id" />
+	        <result property="userid" 	 column="user_id"   />
+	        <result property="username"	 column="user_name" />
+	      	<result property="remark" 	 column="remark"			/>
+	     	<result property="logintime" column="login_time"	/>
+	        <result property="loginip" 	 column="login_ip" 		 />
+</resultMap>
+        <sql id="BnUserLoginLogColumn">id,user_id,user_name,remark,login_time,login_ip</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnUserLoginLog">
+		<![CDATA[
+    		insert into bn_user_login_log (user_id,user_name,remark,login_time,login_ip) 
+    		values (#{userid},#{username},#{remark},#{logintime},#{loginip});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnUserLoginLog" resultMap="BnUserLoginLogResultMap">
+ 		select * from bn_user_login_log where 1=1
+ 		<if test="userid != null and userid !=''">
+ 			and user_id=#{userid}
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			and user_name=#{username}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="logintime != null and logintime !=''">
+ 			and login_time=#{logintime}
+ 		</if>
+ 		<if test="loginip != null and loginip !=''">
+ 			and login_ip=#{loginip}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_user_login_log where 1=1
+	  	<if test="userid != null and userid !=''">
+ 			and user_id=#{userid}
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			and user_name=#{username}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="logintime != null and logintime !=''">
+ 			and login_time=#{logintime}
+ 		</if>
+ 		<if test="loginip != null and loginip !=''">
+ 			and login_ip=#{loginip}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnUserLoginLogResultMap" parameterType="int">
+	   select <include refid="BnUserLoginLogColumn"/> from bn_user_login_log where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnUserLoginLogparaMap">
+		UPDATE
+		bn_user_login_log
+		<set>
+			<if test="userid != null and userid !=''">
+ 			 user_id=#{userid},
+ 		</if>
+ 		<if test="username != null and username !=''">
+ 			 user_name=#{username},
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			 remark=#{remark},
+ 		</if>
+ 		<if test="logintime != null and logintime !=''">
+ 			 login_time=#{logintime},
+ 		</if>
+ 		<if test="loginip != null and loginip !=''">
+ 			 login_ip=#{loginip}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_user_login_log where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

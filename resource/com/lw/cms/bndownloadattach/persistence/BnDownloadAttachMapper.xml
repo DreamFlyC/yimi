@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bndownloadattach.persistence.BnDownloadAttachMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnDownloadAttach" id="BnDownloadAttachparaMap">
+	<parameter property="id" 			 resultMap="id" />
+	<parameter property="article_id" 	 resultMap="article_id"		  		/>
+	<parameter property="title" 	 resultMap="title"  	/>
+	<parameter property="file_path" resultMap="file_path" 	/>
+	<parameter property="file_ext"		 resultMap="file_ext"	 			/>
+	<parameter property="file_size" 		 resultMap="file_size" 				/>
+	<parameter property="down_num" 		 resultMap="down_num" 		/>
+	<parameter property="point" 		 resultMap="point"		 />
+	</parameterMap>
+
+<resultMap type="BnDownloadAttach" id="BnDownloadAttachResultMap">
+        <id property="id" column="id" />
+        <result property="article_id" 	 column="article_id"		  		/>
+		<result property="title" 		 column="title"  	/>
+		<result property="file_path" 	 column="file_path" 	/>
+		<result property="file_ext"		 column="file_ext"	 			/>
+	    <result property="file_size" 	 column="file_size" 				/>
+	    <result property="down_num" 	 column="down_num" 		/>
+		<result property="point" 		 column="point"		 />
+        
+        </resultMap>
+        <sql id="BnDownloadAttachColumn">id,article_id,title,file_path,file_ext,file_size,down_num,point</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnDownloadAttach">
+		<![CDATA[
+    		insert into bn_download_attach (article_id,title,file_path,file_ext,file_size,down_num,point) 
+    		values (#{article_id},#{title},#{file_path},#{file_ext},
+    		#{file_size},#{down_num},#{point});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnDownloadAttach" resultMap="BnDownloadAttachResultMap">
+ 		select * from bn_download_attach where 1=1
+ 		<if test="article_id != null and article_id !=''">
+ 			and article_id=#{article_id}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="file_path != null and file_path !=''">
+ 			and file_path=#{file_path}
+ 		</if>
+ 		<if test="file_ext != null and file_ext !=''">
+ 			and file_ext=#{file_ext}
+ 		</if>
+ 		<if test="file_size != null and file_size !=''">
+ 			and file_size=#{file_size}
+ 		</if>
+ 		<if test="down_num != null and down_num !=''">
+ 			and down_num=#{down_num}
+ 		</if>
+ 		<if test="point != null and point !=''">
+ 			and point=#{point}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_download_attach where 1=1
+	  	<if test="article_id != null and article_id !=''">
+ 			and article_id=#{article_id}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="file_path != null and file_path !=''">
+ 			and file_path=#{file_path}
+ 		</if>
+ 		<if test="file_ext != null and file_ext !=''">
+ 			and file_ext=#{file_ext}
+ 		</if>
+ 		<if test="file_size != null and file_size !=''">
+ 			and file_size=#{file_size}
+ 		</if>
+ 		<if test="down_num != null and down_num !=''">
+ 			and down_num=#{down_num}
+ 		</if>
+ 		<if test="point != null and point !=''">
+ 			and point=#{point}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnDownloadAttachResultMap" parameterType="int">
+	   select <include refid="BnDownloadAttachColumn"/> from bn_download_attach where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnDownloadAttachparaMap">
+		UPDATE
+		bn_download_attach
+		<set>
+			<if test="article_id != null and article_id !=''">
+	 			 article_id=#{article_id},
+	 		</if>
+	 		<if test="title != null and title !=''">
+	 			 title=#{title},
+	 		</if>
+	 		<if test="file_path != null and file_path !=''">
+	 			 file_path=#{file_path},
+	 		</if>
+	 		<if test="file_ext != null and file_ext !=''">
+	 			 file_ext=#{file_ext},
+	 		</if>
+	 		<if test="file_size != null and file_size !=''">
+	 			 file_size=#{file_size},
+	 		</if>
+	 		<if test="down_num != null and down_num !=''">
+	 			 down_num=#{down_num},
+	 		</if>
+	 		<if test="point != null and point !=''">
+	 			 point=#{point}
+	 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_download_attach where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnmanagerlog.persistence.BnManagerLogMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnManagerLog" id="BnManagerLogparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="user_id" resultMap="user_id" />
+	<parameter property="user_name" resultMap="user_name" />
+	<parameter property="action_type" resultMap="action_type" />
+	<parameter property="note" resultMap="note" />
+	<parameter property="login_ip" resultMap="login_ip" />
+	<parameter property="login_time" resultMap="login_time" />
+</parameterMap>
+
+<resultMap type="BnManagerLog" id="BnManagerLogResultMap">
+    <id property="id" column="id" />
+   	<result property="user_id" column="user_id" />
+	<result property="user_name" column="user_name" />
+	<result property="action_type" column="action_type" />
+	<result property="note" column="note" />
+	<result property="login_ip" column="login_ip" />
+	<result property="login_time" column="login_time" />
+</resultMap>
+        <sql id="BnManagerLogColumn">id,user_id,user_name,action_type,note,login_ip,login_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnManagerLog">
+		<![CDATA[
+    		insert into bn_manager_log (user_id,user_name,action_type,note,login_ip,login_time) 
+    		values 
+    		(#{user_id},#{user_name},#{action_type},#{note},#{login_ip},#{login_time});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnManagerLog" resultMap="BnManagerLogResultMap">
+ 		select * from bn_manager_log where 1=1
+ 		<if test="user_id != null and user_id !=''">
+ 			and user_id=#{user_id}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			and action_type=#{action_type}
+ 		</if>
+ 		<if test="note != null and note !=''">
+ 			and `note`=#{note}
+ 		</if>
+ 		<if test="login_ip != null and login_ip !=''">
+ 			and login_ip=#{login_ip}
+ 		</if>
+ 		<if test="login_time != null and login_time !=''">
+ 			and login_time=#{login_time}
+ 		</if>
+ 		
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_manager_log where 1=1
+	  <if test="user_id != null and user_id !=''">
+ 			and user_id=#{user_id}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			and action_type=#{action_type}
+ 		</if>
+ 		<if test="note != null and note !=''">
+ 			and `note`=#{note}
+ 		</if>
+ 		<if test="login_ip != null and login_ip !=''">
+ 			and login_ip=#{login_ip}
+ 		</if>
+ 		<if test="login_time != null and login_time !=''">
+ 			and login_time=#{login_time}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnManagerLogResultMap" parameterType="int">
+	   select <include refid="BnManagerLogColumn"/> from bn_manager_log where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnManagerLogparaMap">
+		UPDATE
+		bn_manager_log
+		<set>
+		<if test="user_id != null and user_id !=''">
+ 			 user_id=#{user_id},
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			 user_name=#{user_name},
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			 action_type=#{action_type},
+ 		</if>
+ 		<if test="note != null and note !=''">
+ 			 `note`=#{note},
+ 		</if>
+ 		<if test="login_ip != null and login_ip !=''">
+ 			 login_ip=#{login_ip},
+ 		</if>
+ 		<if test="login_time != null and login_time !=''">
+ 			 login_time=#{login_time}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_manager_log where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

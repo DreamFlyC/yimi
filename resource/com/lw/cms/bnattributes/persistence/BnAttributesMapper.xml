@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnattributes.persistence.BnAttributesMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnAttributes" id="BnAttributesparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="channelid" resultMap="channel_id" />
+	<parameter property="title" resultMap="title" />
+	<parameter property="remark" resultMap="remark" />
+	<parameter property="type" resultMap="type" />
+	<parameter property="defaultvalue" resultMap="default_value" />
+	<parameter property="sortid" resultMap="sort_id" />
+	<parameter property="addtime" resultMap="add_time" />
+</parameterMap>
+
+<resultMap type="BnAttributes" id="BnAttributesResultMap">
+    <id property="id" column="id" />
+    <result property="channelid" column="channel_id" />
+	<result property="title" column="title" />
+	<result property="remark" column="remark" />
+	<result property="type" column="type" />
+	<result property="defaultvalue" column="default_value" />
+	<result property="sortid" column="sort_id" />
+	<result property="addtime" column="add_time" />
+</resultMap>
+        <sql id="BnAttributesColumn">id,channel_id,title,remark,type,default_value,sort_id,add_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnAttributes">
+		<![CDATA[
+    		insert into bn_attributes (channel_id,title,remark,type,default_value,sort_id,add_time) 
+    		values 
+    		(#{channelid},#{title},#{remark},#{type},#{defaultvalue},#{sortid},now());
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnAttributes" resultMap="BnAttributesResultMap">
+ 		select * from bn_attributes where 1=1
+ 		<if test="channelid != null and channelid !=''">
+ 			and channel_id=#{channelid}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and `type`=#{type}
+ 		</if>
+ 		<if test="defaultvalue != null and defaultvalue !=''">
+ 			and default_value=#{tdefaultvalueype}
+ 		</if>
+ 		<if test="sortid != null and sortid !=''">
+ 			and sort_id=#{sortid}
+ 		</if>
+ 		<if test="addtime != null and addtime !=''">
+ 			and add_time=#{addtime}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_attributes where 1=1
+	   	<if test="channelid != null and channelid !=''">
+ 			and channel_id=#{channelid}
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="defaultvalue != null and defaultvalue !=''">
+ 			and default_value=#{tdefaultvalueype}
+ 		</if>
+ 		<if test="sortid != null and sortid !=''">
+ 			and sort_id=#{sortid}
+ 		</if>
+ 		<if test="addtime != null and addtime !=''">
+ 			and add_time=#{addtime}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnAttributesResultMap" parameterType="int">
+	   select <include refid="BnAttributesColumn"/> from bn_attributes where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnAttributesparaMap">
+		UPDATE
+		bn_attributes
+		<set>
+			<if test="channelid != null and channelid !=''">
+ 			 channel_id=#{channelid},
+ 		</if>
+ 		<if test="title != null and title !=''">
+ 			 title=#{title},
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			 remark=#{remark},
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			 type=#{type},
+ 		</if>
+ 		<if test="defaultvalue != null and defaultvalue !=''">
+ 			 default_value=#{defaultvalue},
+ 		</if>
+ 		<if test="sortid != null and sortid !=''">
+ 			 sort_id=#{sortid}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_attributes where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

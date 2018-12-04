@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.kitchendevice.persistence.KitchenDeviceMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="KitchenDevice" id="KitchenDeviceparaMap">
+	<parameter property="id" 			resultMap="id" />
+	<parameter property="name" 		 	resultMap="name" 				/>
+	<parameter property="remark" 		resultMap="remark"		  		/>
+	<parameter property="author_key" 	resultMap="author_key"  	/>
+	<parameter property="kitchen_id" 	resultMap="kitchen_id" 	/>
+	<parameter property="device_sn" 	resultMap="device_sn" 		/>
+	</parameterMap>
+
+<resultMap type="KitchenDevice" id="KitchenDeviceResultMap">
+        <id property="id" column="id" />
+	    <result property="id" 			column="id" />
+		<result property="name" 		column="name" 				/>
+		<result property="remark" 		column="remark"		  		/>
+		<result property="author_key" 	column="author_key"  	/>
+		<result property="kitchen_id" 	column="kitchen_id" 	/>
+		<result property="device_sn" 	column="device_sn" 		/>
+        
+        </resultMap>
+        <sql id="KitchenDeviceColumn">id,name,remark,author_key,kitchen_id,device_sn</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="KitchenDevice">
+		<![CDATA[
+    		insert into kitchen_device (name,remark,author_key,kitchen_id,device_sn)
+    		values (#{name},#{remark},#{author_key},#{kitchen_id},#{device_sn})
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="KitchenDevice" resultMap="KitchenDeviceResultMap">
+ 		select * from kitchen_device where 1=1
+ 		<if test="name != null and name !=''">
+ 			and name=#{name}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="author_key != null and author_key !=''">
+ 			and author_key=#{author_key}
+ 		</if>
+ 		<if test="kitchen_id != null and kitchen_id !=''">
+ 			and kitchen_id=#{kitchen_id}
+ 		</if>
+ 		<if test="device_sn != null and device_sn !=''">
+ 			and device_sn=#{device_sn}
+ 		</if>
+ 		
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from kitchen_device where 1=1
+	  	<if test="name != null and name !=''">
+ 			and name=#{name}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="author_key != null and author_key !=''">
+ 			and author_key=#{author_key}
+ 		</if>
+ 		<if test="kitchen_id != null and kitchen_id !=''">
+ 			and kitchen_id=#{kitchen_id}
+ 		</if>
+ 		<if test="device_sn != null and device_sn !=''">
+ 			and device_sn=#{device_sn}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="KitchenDeviceResultMap" parameterType="int">
+	   select <include refid="KitchenDeviceColumn"/> from kitchen_device where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="KitchenDeviceparaMap">
+		UPDATE
+		kitchen_device
+		<set>
+		<if test="name != null and name !=''">
+ 			 name=#{name},
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			 remark=#{remark},
+ 		</if>
+ 		<if test="author_key != null and author_key !=''">
+ 			 author_key=#{author_key},
+ 		</if>
+ 		<if test="kitchen_id != null and kitchen_id !=''">
+ 			 kitchen_id=#{kitchen_id},
+ 		</if>
+ 		<if test="device_sn != null and device_sn !=''">
+ 			 device_sn=#{device_sn}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from kitchen_device where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

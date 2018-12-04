@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.adpic.persistence.AdpicMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="Adpic" id="AdpicparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="type" resultMap="type" />
+	<parameter property="smallpic" resultMap="smallpic" />
+	<parameter property="largepic" resultMap="largepic" />
+	<parameter property="title" resultMap="title" />
+	<parameter property="description" resultMap="description" />
+	<parameter property="isshow" resultMap="isshow" />
+	<parameter property="addtime" resultMap="addtime" />
+	<parameter property="starttime" resultMap="starttime" />
+	<parameter property="endtime" resultMap="endtime" />	
+	<parameter property="component" resultMap="component" />
+</parameterMap>
+
+<resultMap type="Adpic" id="AdpicResultMap">
+	<id property="id" column="id"/>
+	<result property="type" column="type" />
+	<result property="smallpic" column="smallpic" />
+	<result property="largepic" column="largepic" />
+	<result property="title" column="title" />
+	<result property="description" column="description" />
+	<result property="isshow" column="isshow" />
+	<result property="addtime" column="addtime" />
+	<result property="starttime" column="starttime" />
+	<result property="endtime" column="endtime" />
+	<result property="component" column="component" />
+</resultMap>
+<sql id="AdpicColumn">id,type,smallpic,largepic,title,description,isshow,addtime,starttime,endtime,component</sql>
+	
+	<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="Adpic"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into ad_pic(type,smallpic,largepic,title,description,isshow,addtime,starttime,endtime,component) 
+    		values(#{type},#{smallpic},#{largepic},#{title},#{description},#{isshow},#{addtime},#{starttime},#{endtime},#{component});
+    	]]>
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!--查询列表  -->
+	<select id="getList" resultMap="AdpicResultMap" parameterType="map">
+		SELECT <include refid="AdpicColumn"/> FROM ad_pic  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		<if test="type !=null and type !=''">and type=#{type}</if>
+		<if test="title != null and title != ''">
+				<bind name="pattern" value="'%' + title + '%'" />
+				AND title LIKE #{pattern}
+		</if>
+		<if test="component !=null and component !=''">and component=#{component}</if>
+		 order by component asc ,id asc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<!--获取总数  -->
+	<select id="getCount" resultType="int">
+	   select count(1) from ad_pic where 1=1 
+	   <if test="id!=null">and id=#{id}</if>
+	   <if test="type !=null and type !=''">and type=#{type}</if>
+	   <if test="title != null and title != ''">
+				<bind name="pattern" value="'%' + title + '%'" />
+				AND title LIKE #{pattern}
+		</if>
+		<if test="component !=null and component !=''">and component=#{component}</if>
+		 order by component asc ,id asc
+	   <if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getById" resultMap="AdpicResultMap" parameterType="int">
+	   select <include refid="AdpicColumn"/> from ad_pic where id = #{id}
+	</select>
+	
+	<select id="getByType" resultMap="AdpicResultMap" parameterType="int">
+	   select <include refid="AdpicColumn"/> from ad_pic where type =#{type} 
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="AdpicparaMap">
+		UPDATE
+		ad_pic
+		<set>
+			<if test="type != null and type != ''">
+				type = #{type},
+			</if>
+			<if test="smallpic != null and smallpic != ''">
+				smallpic = #{smallpic},
+			</if>
+			<if test="largepic != null and largepic != ''">
+				largepic = #{largepic},
+			</if>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="description != null and description != ''">
+				description = #{description},
+			</if>
+			<if test="isshow != null and isshow != ''">
+				isshow = #{isshow},
+			</if>
+			<if test="addtime != null and addtime != ''">
+				type = #{type},
+			</if>
+			<if test="starttime != null and starttime != ''">
+				starttime = #{starttime},
+			</if>
+			<if test="endtime != null and endtime!= ''">
+				endtime = #{endtime},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from ad_pic where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+	
+	<select id="getListByType" resultMap="AdpicResultMap">
+		select * from ad_pic where type in
+		<foreach collection="list" item="item" separator="," open="(" close=")" index="">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

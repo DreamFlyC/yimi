@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.dingtalkrecord.persistence.DingtalkRecordMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="DingtalkRecord" id="DingtalkRecordparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="groupId" resultMap="groupId" />
+	<parameter property="planId" resultMap="planId" />
+	<parameter property="workDate" resultMap="workDate"/>
+	<parameter property="userId" resultMap="userId" />
+	<parameter property="checkType" resultMap="checkType" />
+	<parameter property="sourceType" resultMap="sourceType" />
+	<parameter property="timeResult" resultMap="timeResult" />
+	<parameter property="locationResult" resultMap="locationResult" />
+	<parameter property="approveId" resultMap="approveId" />
+	<parameter property="procInstId" resultMap="procInstId" />
+	<parameter property="baseCheckTime" resultMap="baseCheckTime"/>
+	<parameter property="userCheckTime" resultMap="userCheckTime"/>
+	<parameter property="classId" resultMap="classId" />
+	<parameter property="isLegal" resultMap="isLegal" />
+	<parameter property="locationMethod" resultMap="locationMethod" />
+	<parameter property="deviceId" resultMap="deviceId" />
+	<parameter property="userAddress" resultMap="userAddress" />
+	<parameter property="userLongitude" resultMap="userLongitude" />
+	<parameter property="userLatitude" resultMap="userLatitude" />
+	<parameter property="userAccuracy" resultMap="userAccuracy" />
+	<parameter property="userSsid" resultMap="userSsid" />
+	<parameter property="userMacAddr" resultMap="userMacAddr" />
+	<parameter property="planCheckTime" resultMap="planCheckTime"/>
+	<parameter property="baseAddress" resultMap="baseAddress" />
+	<parameter property="baseLongitude" resultMap="baseLongitude" />
+	<parameter property="baseLatitude" resultMap="baseLatitude" />
+	<parameter property="baseAccuracy" resultMap="baseAccuracy" />
+	<parameter property="baseSsid" resultMap="baseSsid" />
+	<parameter property="baseMacAddr" resultMap="baseMacAddr" />
+	<parameter property="outsideRemark" resultMap="outsideRemark" />
+</parameterMap>
+<resultMap type="DingtalkRecord" id="DingtalkRecordResultMap">
+	<id property="id" column="id" />
+	<result property="groupId" column="groupId" />
+	<result property="planId" column="planId" />
+	<result property="workDate" column="workDate" />
+	<result property="userId" column="userId" />
+	<result property="checkType" column="checkType" />
+	<result property="sourceType" column="sourceType" />
+	<result property="timeResult" column="timeResult" />
+	<result property="locationResult" column="locationResult" />
+	<result property="approveId" column="approveId" />
+	<result property="procInstId" column="procInstId" />
+	<result property="baseCheckTime" column="baseCheckTime" />
+	<result property="userCheckTime" column="userCheckTime" />
+	<result property="classId" column="classId" />
+	<result property="isLegal" column="isLegal" />
+	<result property="locationMethod" column="locationMethod" />
+	<result property="deviceId" column="deviceId" />
+	<result property="userAddress" column="userAddress" />
+	<result property="userLongitude" column="userLongitude" />
+	<result property="userLatitude" column="userLatitude" />
+	<result property="userAccuracy" column="userAccuracy" />
+	<result property="userSsid" column="userSsid" />
+	<result property="userMacAddr" column="userMacAddr" />
+	<result property="planCheckTime" column="planCheckTime" />
+	<result property="baseAddress" column="baseAddress" />
+	<result property="baseLongitude" column="baseLongitude" />
+	<result property="baseLatitude" column="baseLatitude" />
+	<result property="baseAccuracy" column="baseAccuracy" />
+	<result property="baseSsid" column="baseSsid" />
+	<result property="baseMacAddr" column="baseMacAddr" />
+	<result property="outsideRemark" column="outsideRemark" />
+</resultMap>
+<sql id="DingtalkRecordColumn">
+id,groupId,planId,workDate,userId,checkType,sourceType,timeResult,locationResult,approveId,procInstId,baseCheckTime,userCheckTime,classId,isLegal,locationMethod,deviceId,userAddress,userLongitude,userLatitude,userAccuracy,userSsid,userMacAddr,planCheckTime,baseAddress,baseLongitude,baseLatitude,baseAccuracy,baseSsid,baseMacAddr,outsideRemark
+</sql>
+
+<!-- 新建任务（save）方法 -->
+	<insert id="save" parameterType="com.lw.dingtalkrecord.entity.DingtalkRecord"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into dingtalk_attendance_record(
+    		groupId,planId,workDate,userId,checkType,sourceType,timeResult,locationResult,approveId,procInstId,baseCheckTime,userCheckTime
+			,classId,isLegal,locationMethod,deviceId,userAddress,userLongitude,userLatitude,userAccuracy,userSsid,userMacAddr,planCheckTime
+			,baseAddress,baseLongitude,baseLatitude,baseAccuracy,baseSsid,baseMacAddr,outsideRemark
+    		) 
+    		values(#{groupId},#{planId},#{workDate},#{userId},#{checkType},#{sourceType},#{timeResult},#{locationResult},#{approveId},
+    		#{procInstId},#{baseCheckTime},#{userCheckTime},#{classId},#{isLegal},#{locationMethod},#{deviceId},#{userAddress},#{userLongitude},
+    		#{userLatitude},#{userAccuracy},#{userSsid},#{userMacAddr},#{planCheckTime},#{baseAddress},#{baseLongitude},#{baseLatitude},#{baseAccuracy},
+    		#{baseSsid},#{baseMacAddr},#{outsideRemark}
+    		);
+    	]]>
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="getList" resultMap="DingtalkRecordResultMap" parameterType="map">
+		SELECT <include refid="DingtalkRecordColumn"/> FROM dingtalk_attendance_record  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from dingtalk_attendance_record
+	   <if test="id!=null">and id=#{id}</if>
+		 order by id desc
+	</select>
+	
+	<select id="getById" resultMap="DingtalkRecordResultMap" parameterType="int">
+	   select <include refid="DingtalkRecordColumn"/> from dingtalk_attendance_record where id = #{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="editById"  parameterMap="DingtalkRecordparaMap">
+		UPDATE
+		dingtalk_attendance_record
+		<set>
+			<if test="groupId != null and groupId !=''">
+				groupId = #{groupId},
+			</if>
+			<if test="planId != null and planId != ''">
+				planId = #{planId},
+			</if>
+			<if test="workDate != null and workDate != ''">
+				workDate = #{workDate},
+			</if>
+			<if test="userId != null and userId != ''">
+				userId = #{userId},
+			</if>
+			<if test="checkType != null and checkType !=''">
+				checkType = #{checkType},
+			</if>
+			<if test="sourceType != null and sourceType !=''">
+				sourceType = #{sourceType},
+			</if>
+			<if test="timeResult != null and timeResult !=''">
+				timeResult = #{timeResult},
+			</if>
+			<if test="locationResult != null and locationResult !=''">
+				locationResult = #{locationResult},
+			</if> 
+			<if test="approveId != null and approveId !=''">
+				approveId = #{approveId},
+			</if> 
+			<if test="procInstId != null and procInstId !=''">
+				procInstId = #{procInstId},
+			</if> 
+			<if test="baseCheckTime != null and baseCheckTime !=''">
+				baseCheckTime = #{baseCheckTime},
+			</if> 
+			<if test="userCheckTime != null and userCheckTime !=''">
+				userCheckTime = #{userCheckTime}
+			</if> 
+			<if test="procInstId != null and procInstId !=''">
+				procInstId = #{procInstId},
+			</if> 
+			<if test="classId != null and classId !=''">
+				classId = #{classId},
+			</if> 
+			<if test="isLegal != null and isLegal !=''">
+				isLegal = #{isLegal}
+			</if> 
+			<if test="locationMethod != null and locationMethod !=''">
+				locationMethod = #{locationMethod},
+			</if> 
+			<if test="deviceId != null and deviceId !=''">
+				deviceId = #{deviceId},
+			</if> 
+			<if test="userAddress != null and userAddress !=''">
+				userAddress = #{userAddress}
+			</if> 
+			<if test="userLongitude != null and userLongitude !=''">
+				userLongitude = #{userLongitude},
+			</if> 
+			<if test="userLatitude != null and userLatitude !=''">
+				userLatitude = #{userLatitude},
+			</if> 
+			<if test="userAccuracy != null and userAccuracy !=''">
+				userAccuracy = #{userAccuracy}
+			</if> 
+			<if test="userSsid != null and userSsid !=''">
+				userSsid = #{userSsid},
+			</if> 
+			<if test="userMacAddr != null and userMacAddr !=''">
+				userMacAddr = #{userMacAddr},
+			</if> 
+			<if test="planCheckTime != null and planCheckTime !=''">
+				planCheckTime = #{planCheckTime}
+			</if> 
+			<if test="baseAddress != null and baseAddress !=''">
+				baseAddress = #{baseAddress},
+			</if> 
+			<if test="baseLongitude != null and baseLongitude !=''">
+				baseLongitude = #{baseLongitude},
+			</if> 
+			<if test="baseLatitude != null and baseLatitude !=''">
+				baseLatitude = #{baseLatitude}
+			</if> 
+			<if test="baseAccuracy != null and baseAccuracy !=''">
+				baseAccuracy = #{baseAccuracy}
+			</if> 
+			<if test="baseSsid != null and baseSsid !=''">
+				baseSsid = #{baseSsid},
+			</if> 
+			<if test="baseMacAddr != null and baseMacAddr !=''">
+				baseMacAddr = #{baseMacAddr},
+			</if> 
+			<if test="outsideRemark != null and outsideRemark !=''">
+				outsideRemark = #{outsideRemark}
+			</if> 
+		</set>
+		WHERE id = #{id}
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</update>
+	
+	<delete id="delById">
+	   delete from dingtalk_attendance_record where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

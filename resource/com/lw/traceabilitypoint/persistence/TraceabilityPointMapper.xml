@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.traceabilitypoint.persistence.TraceabilityPointMapper">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<parameterMap type="TraceabilityPoint" id="TraceabilityPointparaMap">
+		<parameter property="id" resultMap="id" />
+		<parameter property="name" resultMap="name" />
+		<parameter property="address" resultMap="address" />
+		<parameter property="phone" resultMap="phone" />
+		<parameter property="logo" resultMap="logo" />
+		<parameter property="longitude" resultMap="longitude" />
+		<parameter property="latitude" resultMap="latitude" />
+		<parameter property="remark" resultMap="remark" />
+		<parameter property="authorkey" resultMap="authorkey" />
+		<parameter property="user_name" resultMap="user_name" />
+		<parameter property="password" resultMap="password" />
+		<parameter property="salt" resultMap="salt" />
+		<parameter property="enable" resultMap="enable" />
+	</parameterMap>
+	<resultMap type="TraceabilityPoint" id="TraceabilityPointReslutMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="address" column="address" />
+		<result property="phone" column="phone" />
+		<result property="logo" column="logo" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="remark" column="remark" />
+		<result property="authorkey" column="authorkey" />
+		<result property="user_name" column="user_name" />
+		<result property="password" column="password" />
+		<result property="salt" column="salt" />
+		<result property="enable" column="enable" />
+	</resultMap>
+	<sql id="TraceabilityPointColumn">id,name,address,phone,logo,longitude,latitude,remark,authorkey,user_name,password,salt,enable</sql>
+	
+	<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="TraceabilityPoint"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into traceability_point(name,address,phone,logo,longitude,latitude,remark,authorkey,user_name,password,salt,enable) 
+    		values(#{name},#{address},#{phone},#{logo},#{longitude},#{latitude},#{remark},#{authorkey},#{user_name},#{password},#{salt},#{enable});
+    	]]>
+		<selectKey keyProperty="id" resultType="int">
+			select
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<select id="getList" resultMap="TraceabilityPointReslutMap" parameterType="map">
+		SELECT <include refid="TraceabilityPointColumn"/> FROM traceability_point  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from traceability_point
+	</select>
+	
+	<select id="getById" resultMap="TraceabilityPointReslutMap" parameterType="int">
+	   select <include refid="TraceabilityPointColumn"/> from traceability_point where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="TraceabilityPointparaMap">
+		UPDATE
+		traceability_point
+		<set>
+			<if test="id != null and id!= ''">
+				id = #{id},
+			</if>
+			<if test="name != null and name !=''">
+				name = #{name},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="phone != null and phone != ''">
+				phone = #{phone},
+			</if>
+			<if test="logo != null">
+				logo = #{logo},
+			</if>
+			<if test="longitude != null and longitude !=''">
+				longitude = #{longitude},
+			</if>
+			<if test="latitude != null and latitude !=''">
+				latitude = #{latitude},
+			</if>
+			<if test="remark != null and remark !=''">
+				remark = #{remark},
+			</if>
+			<if test="authorkey != null and authorkey !=''">
+				authorkey = #{authorkey},
+			</if> 
+			<if test="user_name != null and user_name !=''">
+				user_name = #{user_name},
+			</if> 
+			<if test="password != null and password !=''">
+				password = #{password},
+			</if> 
+			<if test="salt != null and salt !=''">
+				salt = #{salt},
+			</if> 
+			<if test="enable != null and enable !=''">
+				enable = #{enable}
+			</if> 
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from traceability_point where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+</mapper>

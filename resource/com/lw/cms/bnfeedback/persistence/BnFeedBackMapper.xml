@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnfeedback.persistence.BnFeedBackMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnFeedBack" id="BnFeedBackparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="title" resultMap="title" />
+	<parameter property="content" resultMap="content" />
+	<parameter property="user_name" resultMap="user_name" />
+	<parameter property="user_tel" resultMap="user_tel" />
+	<parameter property="user_qq" resultMap="user_qq" />
+	<parameter property="user_email" resultMap="user_email" />
+	<parameter property="reply_content" resultMap="reply_content" />
+	<parameter property="reply_time" resultMap="reply_time" />
+	<parameter property="is_lock" resultMap="is_lock" />
+	<parameter property="add_time" resultMap="add_time" />
+</parameterMap>
+
+<resultMap type="BnFeedBack" id="BnFeedBackResultMap">
+    <id property="id" column="id" />
+    <result property="title" column="title" />
+	<result property="content" column="content" />
+	<result property="user_name" column="user_name" />
+	<result property="user_tel" column="user_tel" />
+	<result property="user_qq" column="user_qq" />
+	<result property="user_email" column="user_email" />
+	<result property="reply_content" column="reply_content" />
+	<result property="reply_time" column="reply_time" />
+	<result property="is_lock" column="is_lock" />
+	<result property="add_time" column="add_time" />
+</resultMap>
+        <sql id="BnFeedBackColumn">id,title,content,user_name,user_tel,user_qq,user_email,reply_content,reply_time,is_lock,add_time</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnFeedBack">
+		<![CDATA[
+    		insert into bn_feedback (title,content,user_name,user_tel,user_qq,user_email,reply_content,reply_time,is_lock,add_time) 
+    		values 
+    		(#{title},#{content},#{user_name},#{user_tel},#{user_qq},#{user_email},#{reply_content},#{reply_time},#{is_lock},now());
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnFeedBack" resultMap="BnFeedBackResultMap">
+ 		select * from bn_feedback where 1=1
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_tel != null and user_tel !=''">
+ 			and `user_tel`=#{user_tel}
+ 		</if>
+ 		<if test="user_qq != null and user_qq !=''">
+ 			and user_qq=#{user_qq}
+ 		</if>
+ 		<if test="user_email != null and user_email !=''">
+ 			and user_email=#{user_email}
+ 		</if>
+ 		<if test="reply_time != null and reply_time !=''">
+ 			and reply_time=#{reply_time}
+ 		</if>
+ 		<if test="reply_content != null and reply_content !=''">
+ 			and reply_content=#{reply_content}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_feedback where 1=1
+	   	<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			and content=#{content}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>
+ 		<if test="user_tel != null and user_tel !=''">
+ 			and `user_tel`=#{user_tel}
+ 		</if>
+ 		<if test="user_qq != null and user_qq !=''">
+ 			and user_qq=#{user_qq}
+ 		</if>
+ 		<if test="user_email != null and user_email !=''">
+ 			and user_email=#{user_email}
+ 		</if>
+ 		<if test="reply_time != null and reply_time !=''">
+ 			and reply_time=#{reply_time}
+ 		</if>
+ 		<if test="reply_content != null and reply_content !=''">
+ 			and reply_content=#{reply_content}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		<if test="add_time != null and add_time !=''">
+ 			and add_time=#{add_time}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnFeedBackResultMap" parameterType="int">
+	   select <include refid="BnFeedBackColumn"/> from bn_feedback where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnFeedBackparaMap">
+		UPDATE
+		bn_feedback
+		<set>
+	<if test="title != null and title !=''">
+ 			 title=#{title},
+ 		</if>
+ 		<if test="content != null and content !=''">
+ 			 content=#{content},
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			 user_name=#{user_name},
+ 		</if>
+ 		<if test="user_tel != null and user_tel !=''">
+ 			 `user_tel`=#{user_tel},
+ 		</if>
+ 		<if test="user_qq != null and user_qq !=''">
+ 			 user_qq=#{user_qq},
+ 		</if>
+ 		<if test="user_email != null and user_email !=''">
+ 			 user_email=#{user_email},
+ 		</if>
+ 		<if test="reply_time != null and reply_time !=''">
+ 			 reply_time=#{reply_time},
+ 		</if>
+ 		<if test="reply_content != null and reply_content !=''">
+ 			 reply_content=#{reply_content},
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			 is_lock=#{is_lock}
+ 		</if>
+ 		
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_feedback where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

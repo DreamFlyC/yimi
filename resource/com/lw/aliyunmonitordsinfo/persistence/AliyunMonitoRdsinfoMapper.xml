@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.aliyunmonitordsinfo.persistence.AliyunMonitoRdsinfoMapper">
+  <parameterMap type="AliyunMonitoRdsinfo" id="AliyunMonitoRdsinfoparaMap">
+  	<parameter resultMap="id"  property="id" />
+    <parameter resultMap="cpuusage" property="cpuusage" />
+    <parameter resultMap="diskusage" property="diskusage" />
+    <parameter resultMap="iopsusage" property="iopsusage" />
+    <parameter resultMap="connectionusage" property="connectionusage" />
+    <parameter resultMap="datadelay" property="datadelay" />
+    <parameter resultMap="memoryusage" property="memoryusage" />
+    <parameter resultMap="mysql_networkinnew" property="mysqlNetworkinnew" />
+    <parameter resultMap="mysql_networkoutnew" property="mysqlNetworkoutnew" />
+    <parameter resultMap="sqlserver_networkinnew" property="sqlserverNetworkinnew" />
+    <parameter resultMap="sqlserver_networkoutnew" property="sqlserverNetworkoutnew" />
+  </parameterMap>
+  <resultMap id="AliyunMonitoRdsinfoResultMap" type="AliyunMonitoRdsinfo">
+    <id column="id"  property="id" />
+    <result column="cpuusage" property="cpuusage" />
+    <result column="diskusage" property="diskusage" />
+    <result column="iopsusage" property="iopsusage" />
+    <result column="connectionusage" property="connectionusage" />
+    <result column="datadelay" property="datadelay" />
+    <result column="memoryusage" property="memoryusage" />
+    <result column="mysql_networkinnew" property="mysqlNetworkinnew" />
+    <result column="mysql_networkoutnew" property="mysqlNetworkoutnew" />
+    <result column="sqlserver_networkinnew" property="sqlserverNetworkinnew" />
+    <result column="sqlserver_networkoutnew" property="sqlserverNetworkoutnew" />
+  </resultMap>
+  
+  <sql id="AliyunMonitoRdsinfoColumn">
+  	id,cpuusage,diskusage,iopsusage,connectionusage,datadelay,memoryusage,mysql_networkinnew,
+  	mysql_networkoutnew,sqlserver_networkinnew,sqlserver_networkoutnew
+  </sql>
+  
+  <!-- 新建任务（save）方法 -->
+	<insert id="save" parameterType="AliyunMonitoRdsinfo"
+		keyColumn="id" useGeneratedKeys="true">
+<![CDATA[
+    		insert into aliyun_monito_rdsinfo(
+    		cpuusage,diskusage,iopsusage,connectionusage,datadelay,memoryusage,mysql_networkinnew,
+  			mysql_networkoutnew,sqlserver_networkinnew,sqlserver_networkoutnew
+    		) 
+    		values(#{cpuusage},#{diskusage},#{iopsusage},#{connectionusage},#{datadelay},
+    		#{memoryusage},#{mysqlNetworkinnew},#{mysqlNetworkoutnew},#{sqlserverNetworkinnew},#{sqlserverNetworkoutnew}
+    		);
+    	]]>
+	</insert>
+
+	<select id="getList" resultMap="AliyunMonitoRdsinfoResultMap" parameterType="map">
+		SELECT <include refid="AliyunMonitoRdsinfoColumn"/> FROM aliyun_monito_rdsinfo  where 1=1
+		<if test="id!=null">and id=#{id}</if>
+		<if test="cpuusage != null and cpuusage !=''">
+			   and	 cpuusage = #{cpuusage}
+			</if>
+			<if test="diskusage != null and diskusage != ''">
+			and	diskusage = #{diskusage}
+			</if>
+			<if test="iopsusage != null and iopsusage != ''">
+			and	iopsusage = #{iopsusage}
+			</if>
+			<if test="connectionusage != null and connectionusage != ''">
+				and connectionusage = #{connectionusage}
+			</if>
+			<if test="datadelay != null and datadelay !=''">
+				and datadelay = #{datadelay}
+			</if>
+			<if test="memoryusage != null and memoryusage !=''">
+				and memoryusage = #{memoryusage}
+			</if>
+			<if test="mysqlNetworkinnew != null and mysqlNetworkinnew !=''">
+				 and mysql_networkinnew = #{mysqlNetworkinnew}
+			</if>
+			<if test="mysqlNetworkoutnew != null and mysqlNetworkoutnew !=''">
+				and mysql_networkoutnew = #{mysqlNetworkoutnew}
+			</if> 
+			<if test="sqlserverNetworkinnew != null and sqlserverNetworkinnew !=''">
+				and sqlserver_networkinnew = #{sqlserverNetworkinnew}
+			</if>
+			<if test="sqlserverNetworkoutnew != null and sqlserverNetworkoutnew !=''">
+				and sqlserver_networkoutnew = #{sqlserverNetworkoutnew}
+			</if> 
+		 order by id desc
+		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+	   select count(1) from aliyun_monito_rdsinfo where 1=1
+	   <if test="id!=null">and id=#{id}</if>
+		<if test="cpuusage != null and cpuusage !=''">
+			   and	 cpuusage = #{cpuusage}
+			</if>
+			<if test="diskusage != null and diskusage != ''">
+			and	diskusage = #{diskusage}
+			</if>
+			<if test="iopsusage != null and iopsusage != ''">
+			and	iopsusage = #{iopsusage}
+			</if>
+			<if test="connectionusage != null and connectionusage != ''">
+				and connectionusage = #{connectionusage}
+			</if>
+			<if test="datadelay != null and datadelay !=''">
+				and datadelay = #{datadelay}
+			</if>
+			<if test="memoryusage != null and memoryusage !=''">
+				and memoryusage = #{memoryusage}
+			</if>
+			<if test="mysqlNetworkinnew != null and mysqlNetworkinnew !=''">
+				 and mysql_networkinnew = #{mysqlNetworkinnew}
+			</if>
+			<if test="mysqlNetworkoutnew != null and mysqlNetworkoutnew !=''">
+				and mysql_networkoutnew = #{mysqlNetworkoutnew}
+			</if> 
+			<if test="sqlserverNetworkinnew != null and sqlserverNetworkinnew !=''">
+				and sqlserver_networkinnew = #{sqlserverNetworkinnew}
+			</if>
+			<if test="sqlserverNetworkoutnew != null and sqlserverNetworkoutnew !=''">
+				and sqlserver_networkoutnew = #{sqlserverNetworkoutnew}
+			</if> 
+	</select>
+	
+	<select id="getById" resultMap="AliyunMonitoRdsinfoResultMap" parameterType="int">
+	   select <include refid="AliyunMonitoRdsinfoColumn"/> from aliyun_monito_rdsinfo where id = #{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="editById"  parameterType="AliyunMonitoRdsinfo">
+		UPDATE
+		aliyun_monito_rdsinfo
+		<set>
+			<if test="cpuusage != null and cpuusage !=''">
+				cpuusage = #{cpuusage},
+			</if>
+			<if test="diskusage != null and diskusage != ''">
+				diskusage = #{diskusage},
+			</if>
+			<if test="iopsusage != null and iopsusage != ''">
+				iopsusage = #{iopsusage},
+			</if>
+			<if test="connectionusage != null and connectionusage != ''">
+				connectionusage = #{connectionusage},
+			</if>
+			<if test="datadelay != null and datadelay !=''">
+				datadelay = #{datadelay},
+			</if>
+			<if test="memoryusage != null and memoryusage !=''">
+				memoryusage = #{memoryusage},
+			</if>
+			<if test="mysqlNetworkinnew != null and mysqlNetworkinnew !=''">
+				mysql_networkinnew = #{mysqlNetworkinnew},
+			</if>
+			<if test="mysqlNetworkoutnew != null and mysqlNetworkoutnew !=''">
+				mysql_networkoutnew = #{mysqlNetworkoutnew},
+			</if> 
+			<if test="sqlserverNetworkinnew != null and sqlserverNetworkinnew !=''">
+				sqlserver_networkinnew = #{sqlserverNetworkinnew},
+			</if>
+			<if test="sqlserverNetworkoutnew != null and sqlserverNetworkoutnew !=''">
+				sqlserver_networkoutnew = #{sqlserverNetworkoutnew},
+			</if> 
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from aliyun_monito_rdsinfo where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+</mapper>

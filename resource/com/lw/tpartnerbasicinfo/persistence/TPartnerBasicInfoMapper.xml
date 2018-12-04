@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.tpartnerbasicinfo.persistence.TPartnerBasicInfoMapper">
+ <parameterMap id="TPartnerBasicInfoparaMap" type="TPartnerBasicInfo">
+    <parameter resultMap="partner_id" jdbcType="VARCHAR" property="partnerId" />
+    <parameter resultMap="parent_partner_id" jdbcType="VARCHAR" property="parentPartnerId" />
+    <parameter resultMap="code" jdbcType="VARCHAR" property="code" />
+    <parameter resultMap="name" jdbcType="VARCHAR" property="name" />
+    <parameter resultMap="province" jdbcType="VARCHAR" property="province" />
+    <parameter resultMap="city" jdbcType="VARCHAR" property="city" />
+    <parameter resultMap="district" jdbcType="VARCHAR" property="district" />
+    <parameter resultMap="address" jdbcType="VARCHAR" property="address" />
+    <parameter resultMap="contacter_name" jdbcType="VARCHAR" property="contacterName" />
+    <parameter resultMap="contacter_mobile" jdbcType="VARCHAR" property="contacterMobile" />
+    <parameter resultMap="contacter_telephone" jdbcType="VARCHAR" property="contacterTelephone" />
+    <parameter resultMap="contacter_email" jdbcType="VARCHAR" property="contacterEmail" />
+    <parameter resultMap="contacter_certificate_type" jdbcType="VARCHAR" property="contacterCertificateType" />
+    <parameter resultMap="contacter_certificate_no" jdbcType="VARCHAR" property="contacterCertificateNo" />
+    <parameter resultMap="property" jdbcType="VARCHAR" property="property" />
+    <parameter resultMap="trading_certificate" jdbcType="VARCHAR" property="tradingCertificate" />
+    <parameter resultMap="company_code" jdbcType="VARCHAR" property="companyCode" />
+    <parameter resultMap="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <parameter resultMap="principal_mobile" jdbcType="VARCHAR" property="principalMobile" />
+    <parameter resultMap="principal_telephone" jdbcType="VARCHAR" property="principalTelephone" />
+    <parameter resultMap="principal_email" jdbcType="VARCHAR" property="principalEmail" />
+    <parameter resultMap="principal_certificate_type" jdbcType="VARCHAR" property="principalCertificateType" />
+    <parameter resultMap="principal_certificate_no" jdbcType="VARCHAR" property="principalCertificateNo" />
+    <parameter resultMap="company_website" jdbcType="VARCHAR" property="companyWebsite" />
+    <parameter resultMap="create_by" jdbcType="VARCHAR" property="createBy" />
+    <parameter resultMap="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <parameter resultMap="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy" />
+    <parameter resultMap="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+  </parameterMap>
+  
+  <resultMap id="TPartnerBasicInfoResultMap" type="TPartnerBasicInfo">
+    <id column="partner_id" jdbcType="VARCHAR" property="partnerId" />
+    <result column="parent_partner_id" jdbcType="VARCHAR" property="parentPartnerId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="contacter_name" jdbcType="VARCHAR" property="contacterName" />
+    <result column="contacter_mobile" jdbcType="VARCHAR" property="contacterMobile" />
+    <result column="contacter_telephone" jdbcType="VARCHAR" property="contacterTelephone" />
+    <result column="contacter_email" jdbcType="VARCHAR" property="contacterEmail" />
+    <result column="contacter_certificate_type" jdbcType="VARCHAR" property="contacterCertificateType" />
+    <result column="contacter_certificate_no" jdbcType="VARCHAR" property="contacterCertificateNo" />
+    <result column="property" jdbcType="VARCHAR" property="property" />
+    <result column="trading_certificate" jdbcType="VARCHAR" property="tradingCertificate" />
+    <result column="company_code" jdbcType="VARCHAR" property="companyCode" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <result column="principal_mobile" jdbcType="VARCHAR" property="principalMobile" />
+    <result column="principal_telephone" jdbcType="VARCHAR" property="principalTelephone" />
+    <result column="principal_email" jdbcType="VARCHAR" property="principalEmail" />
+    <result column="principal_certificate_type" jdbcType="VARCHAR" property="principalCertificateType" />
+    <result column="principal_certificate_no" jdbcType="VARCHAR" property="principalCertificateNo" />
+    <result column="company_website" jdbcType="VARCHAR" property="companyWebsite" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_modify_by" jdbcType="VARCHAR" property="lastModifyBy" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+  </resultMap>
+  <sql id="TPartnerBasicInfoColumn">
+    partner_id, parent_partner_id, code, `name`, province, city, district, address, contacter_name, 
+    contacter_mobile, contacter_telephone, contacter_email, contacter_certificate_type, 
+    contacter_certificate_no, property, trading_certificate, company_code, principal_name, 
+    principal_mobile, principal_telephone, principal_email, principal_certificate_type, 
+    principal_certificate_no, company_website, create_by, create_time, last_modify_by, 
+    last_modify_time
+  </sql>
+  
+  <insert id="save" keyColumn="partner_id" keyProperty="partnerId" parameterType="TPartnerBasicInfo" useGeneratedKeys="true">
+    insert into t_partner_basic_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partnerId != null">
+        partner_id,
+      </if>
+      <if test="parentPartnerId != null">
+        parent_partner_id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="contacterName != null">
+        contacter_name,
+      </if>
+      <if test="contacterMobile != null">
+        contacter_mobile,
+      </if>
+      <if test="contacterTelephone != null">
+        contacter_telephone,
+      </if>
+      <if test="contacterEmail != null">
+        contacter_email,
+      </if>
+      <if test="contacterCertificateType != null">
+        contacter_certificate_type,
+      </if>
+      <if test="contacterCertificateNo != null">
+        contacter_certificate_no,
+      </if>
+      <if test="property != null">
+        property,
+      </if>
+      <if test="tradingCertificate != null">
+        trading_certificate,
+      </if>
+      <if test="companyCode != null">
+        company_code,
+      </if>
+      <if test="principalName != null">
+        principal_name,
+      </if>
+      <if test="principalMobile != null">
+        principal_mobile,
+      </if>
+      <if test="principalTelephone != null">
+        principal_telephone,
+      </if>
+      <if test="principalEmail != null">
+        principal_email,
+      </if>
+      <if test="principalCertificateType != null">
+        principal_certificate_type,
+      </if>
+      <if test="principalCertificateNo != null">
+        principal_certificate_no,
+      </if>
+      <if test="companyWebsite != null">
+        company_website,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <!-- <if test="createTime != null"> -->
+        create_time,
+      <if test="lastModifyBy != null">
+        last_modify_by
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partnerId != null">
+        #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPartnerId != null">
+        #{parentPartnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterName != null">
+        #{contacterName,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterMobile != null">
+        #{contacterMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterTelephone != null">
+        #{contacterTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterEmail != null">
+        #{contacterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterCertificateType != null">
+        #{contacterCertificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterCertificateNo != null">
+        #{contacterCertificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null">
+        #{property,jdbcType=VARCHAR},
+      </if>
+      <if test="tradingCertificate != null">
+        #{tradingCertificate,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCode != null">
+        #{companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="principalName != null">
+        #{principalName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalMobile != null">
+        #{principalMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="principalTelephone != null">
+        #{principalTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="principalEmail != null">
+        #{principalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="principalCertificateType != null">
+        #{principalCertificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="principalCertificateNo != null">
+        #{principalCertificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyWebsite != null">
+        #{companyWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <!--  <if test="createTime != null"> -->
+       now(),
+      <if test="lastModifyBy != null">
+        #{lastModifyBy,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getList" parameterType="map" resultMap="TPartnerBasicInfoResultMap">
+    select 
+    <include refid="TPartnerBasicInfoColumn" />
+    from t_partner_basic_info where 1=1
+  </select>
+  
+  <select id="getById" parameterType="int" resultMap="TPartnerBasicInfoResultMap">
+    select 
+    <include refid="TPartnerBasicInfoColumn" />
+    from t_partner_basic_info
+    where partner_id = #{partnerId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getCount" resultType="int">
+	   select count(1) from t_partner_basic_info where 1=1
+   </select>
+    
+  <update id="editById" parameterType="TPartnerBasicInfo">
+    update t_partner_basic_info
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterName != null">
+        contacter_name = #{contacterName,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterMobile != null">
+        contacter_mobile = #{contacterMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterTelephone != null">
+        contacter_telephone = #{contacterTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterEmail != null">
+        contacter_email = #{contacterEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterCertificateType != null">
+        contacter_certificate_type = #{contacterCertificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="contacterCertificateNo != null">
+        contacter_certificate_no = #{contacterCertificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null">
+        property = #{property,jdbcType=VARCHAR},
+      </if>
+      <if test="tradingCertificate != null">
+        trading_certificate = #{tradingCertificate,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCode != null">
+        company_code = #{companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="principalName != null">
+        principal_name = #{principalName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalMobile != null">
+        principal_mobile = #{principalMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="principalTelephone != null">
+        principal_telephone = #{principalTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="principalEmail != null">
+        principal_email = #{principalEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="principalCertificateType != null">
+        principal_certificate_type = #{principalCertificateType,jdbcType=VARCHAR},
+      </if>
+      <if test="principalCertificateNo != null">
+        principal_certificate_no = #{principalCertificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyWebsite != null">
+        company_website = #{companyWebsite,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifyBy != null">
+        last_modify_by = #{lastModifyBy,jdbcType=VARCHAR},
+      </if>
+     <!--  <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if> -->
+     last_modify_time=now()
+    </set>
+    where partner_id = #{partnerId}
+  </update>
+  
+  <delete id="delById">
+	   delete from t_partner_basic_info where partner_id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	
+	   <!-- 开启扫描包  --> 
+	 <context:component-scan base-package="com.lw"></context:component-scan> 
+	<!-- 分解配置jdbc.properites -->
+	<!-- 数据库连接 begin -->
+	
+	<bean id="dataSource" name="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driver" value="com.mysql.jdbc.Driver"/>
+		<property name="driverUrl" value="jdbc:mysql://127.0.0.1:3306/traceability?useUnicode=true&amp;characterEncoding=UTF8&amp;"/>
+		<property name="user" value="root"/>
+		<property name="password" value="742003942"/>	
+		<property name="houseKeepingTestSql" value="select now()"/>
+	</bean>
+ 	<!-- 数据库连接 end -->
+
+ 	<!-- Session工厂 begin -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+ 		<property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+	</bean>
+     <!-- Session 工厂 end -->
+
+	<!--
+		3. mybatis自动扫描加载Sql映射文件/接口 : MapperScannerConfigurer sqlSessionFactory
+
+		basePackage:指定sql映射文件/接口所在的包（自动扫描）
+	-->
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		 <property name="basePackage"
+		 value="com.lw.traceabilitytype.persistence,
+		 com.lw.traceabilitypoint.persistence,
+		 com.lw.crm.crm.persistence,
+		 com.lw.crm.crmbusiness.persistence,
+		 com.lw.crm.crmbuyinfo.persistence,
+		 com.lw.crm.crmname.persistence,
+		 com.lw.crm.crmhistory.persistence,
+		 com.lw.crm.crmproduct.persistence,
+		 com.lw.crm.crmpurchacse.persistence,
+		 com.lw.crm.crmstock.persistence,
+		 com.lw.crm.crmstocktype.persistence,
+		 com.lw.crm.crmsupplier.persistence,
+		  com.lw.crm.crmsupplierprice.persistence,
+		 com.lw.crm.crmuser.persistence,
+		 com.lw.crm.crmcompany.persistence,
+		 com.lw.crm.crmcontact.persistence,
+		 com.lw.crm.crmservicecustomer.persistence,
+		 com.lw.crm.crmpayment.persistence,
+		 com.lw.crm.crmprice.persistence,
+		 com.lw.crm.crmunit.persistence,
+		 com.lw.crm.crmstockinoroutlog.persistence,
+		 com.lw.crm.crmstockinoroutlogitem.persistence,
+		 com.lw.crm.crmleavingmessage.persistence,
+		 com.lw.crm.complaints.persistence,
+		 com.lw.crm.complaintstype.persistence,
+		 com.lw.cms.bnarticlealbums.persistence,
+		 com.lw.cms.bnarticledownload.persistence,
+		 com.lw.cms.bnarticlediggs.persistence,
+		 com.lw.cms.bnattributes.persistence,
+		 com.lw.cms.bnmanager.persistence,
+		 com.lw.cms.bnmanagerlog.persistence,
+		 com.lw.cms.bnusercode.persistence,
+		 com.lw.cms.bnuserloginlog.persistence,
+		 com.lw.cms.bnusermessage.persistence,
+		 com.lw.cms.bnfeedback.persistence,
+		 com.lw.cms.bndistribution.persistence,
+		 com.lw.cms.bndownloadattach.persistence,
+		 com.lw.cms.bnlink.persistence,
+		 com.lw.cms.bnmanagerrolevalue.persistence,
+		 com.lw.crm.crmuserscertificate.persistence,
+		 com.lw.restaurantsoftinfo.persistence,
+		 com.lw.duty.persistence,
+		 com.lw.adpic.persistence,
+		 com.lw.yiminews.persistence,
+		 com.lw.toabbslog.persistence,
+		 com.lw.newsinfo.persistence,
+		 com.lw.dingtalkmsg.persistence,
+		 com.lw.dingtalkrecord.persistence,
+		 com.lw.redpackage.persistence,
+		 com.lw.aliyunmonitordsinfo.persistence,
+		 com.lw.aliyunmonitoossinfo.persistence,
+		 com.lw.mobilemsisdninfo.peisistence,
+		 com.lw.shiroaction.model.persistence,
+		 com.lw.shiroaction.rolevalue.persistence,
+		 com.lw.shiroaction.usersgroup.persistence,
+		 com.lw.weixin.users.persistence,
+		 com.lw.foodinfotype.persistence,
+		 com.lw.sysmobmsnaccount.persistence,
+		 com.lw.kitchendevice.persistence,
+		 com.lw.kitcheninfo.persistence,
+		 com.lw.qaquestion.persistence,
+		 com.lw.tpartnerbasicinfo.persistence,
+		 com.lw.foodsetmealitem.persistence,
+		 com.lw.foodsetmealitemtype.persistence">
+
+		 </property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- 事务 begin -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<context:component-scan base-package="com.lw">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<!--事务 end -->
+	
+     <!-- 事物管理注解 -->
+     <tx:annotation-driven transaction-manager="transactionManager"/>
+     
+</beans>

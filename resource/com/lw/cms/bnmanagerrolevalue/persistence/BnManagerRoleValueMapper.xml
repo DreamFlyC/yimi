@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bnmanagerrolevalue.persistence.BnManagerRoleValueMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnManagerRoleValue" id="BnManagerRoleValueparaMap">
+	<parameter property="id" resultMap="id" />
+	<parameter property="role_id" resultMap="role_id" />
+	<parameter property="channel_name" resultMap="channel_name" />
+	<parameter property="channel_id" resultMap="channel_id" />
+	<parameter property="action_type" resultMap="action_type" />
+</parameterMap>
+
+<resultMap type="BnManagerRoleValue" id="BnManagerRoleValueResultMap">
+    <id property="id" column="id" />
+   	<result property="role_id" column="role_id" />
+	<result property="channel_name" column="channel_name" />
+	<result property="channel_id" column="channel_id" />
+	<result property="action_type" column="action_type" />
+</resultMap>
+        <sql id="BnManagerRoleValueColumn">id,role_id,channel_name,channel_id,action_type</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnManagerRoleValue">
+		<![CDATA[
+    		insert into bn_manager_role_value (role_id,channel_name,channel_id,action_type) 
+    		values 
+    		(#{role_id},#{channel_name},#{channel_id},#{action_type});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnManagerRoleValue" resultMap="BnManagerRoleValueResultMap">
+ 		select * from bn_manager_role_value where 1=1
+ 		<if test="role_id != null and role_id !=''">
+ 			and role_id=#{role_id}
+ 		</if>
+ 		<if test="channel_name != null and channel_name !=''">
+ 			and channel_name=#{channel_name}
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			and action_type=#{action_type}
+ 		</if>
+ 		<if test="channel_id != null and channel_id !=''">
+ 			and `channel_id`=#{channel_id}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_manager_role_value where 1=1
+	  <if test="role_id != null and role_id !=''">
+ 			and role_id=#{role_id}
+ 		</if>
+ 		<if test="channel_name != null and channel_name !=''">
+ 			and channel_name=#{channel_name}
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			and action_type=#{action_type}
+ 		</if>
+ 		<if test="channel_id != null and channel_id !=''">
+ 			and `channel_id`=#{channel_id}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnManagerRoleValueResultMap" parameterType="int">
+	   select <include refid="BnManagerRoleValueColumn"/> from bn_manager_role_value where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnManagerRoleValueparaMap">
+		UPDATE
+		bn_manager_role_value
+		<set>
+		<if test="role_id != null and role_id !=''">
+ 			 role_id=#{role_id},
+ 		</if>
+ 		<if test="channel_name != null and channel_name !=''">
+ 			 channel_name=#{channel_name},
+ 		</if>
+ 		<if test="action_type != null and action_type !=''">
+ 			 action_type=#{action_type},
+ 		</if>
+ 		<if test="channel_id != null and channel_id !=''">
+ 			 `channel_id`=#{channel_id},
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_manager_role_value where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

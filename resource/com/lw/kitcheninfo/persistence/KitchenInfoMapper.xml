@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.kitcheninfo.persistence.KitchenInfoMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="KitchenInfo" id="KitchenInfoparaMap">
+	<parameter property="id" 			 resultMap="id" />
+	<parameter property="name" 		 resultMap="name" 				/>
+	<parameter property="address" 			     resultMap="address"		  		/>
+	<parameter property="phone" 	 resultMap="phone"  	/>
+	<parameter property="logo" resultMap="logo" 	/>
+	<parameter property="longitude"		 resultMap="longitude"	 			/>
+	<parameter property="latitude" 		 resultMap="latitude" 		/>
+	<parameter property="remark" 		 resultMap="remark"		 />
+	<parameter property="authorkey" 		 resultMap="authorkey" 		/>
+	<parameter property="nick_name" 		 resultMap="nick_name" 		/>
+	<parameter property="user_name" 		 resultMap="user_name"		 />
+	<parameter property="password" 		 resultMap="password" 		/>
+	<parameter property="enable" resultMap="enable" 	/>
+	<parameter property="contacts"		 resultMap="contacts"	 			/>
+	<parameter property="last_login_date" 		 resultMap="last_login_date" 		/>
+	<parameter property="last_login_ip" 		 resultMap="last_login_ip"		 />
+	<parameter property="status" 		 resultMap="status" 		/>
+	<parameter property="regist_date" 		 resultMap="regist_date" 		/>
+	<parameter property="regist_ip" 		 resultMap="regist_ip"		 />
+	<parameter property="notice" 		 resultMap="notice" 		/>
+	</parameterMap>
+
+<resultMap type="KitchenInfo" id="KitchenInfoResultMap">
+        <id property="id" column="id" />
+    <result property="name" 		 column="name" 				/>
+	<result property="address" 			     column="address"		  		/>
+	<result property="phone" 	 column="phone"  	/>
+	<result property="logo" column="logo" 	/>
+	<result property="longitude"		 column="longitude"	 			/>
+	<result property="latitude" 		 column="latitude" 		/>
+	<result property="remark" 		 column="remark"		 />
+	<result property="authorkey" 		 column="authorkey" 		/>
+	<result property="nick_name" 		 column="nick_name" 		/>
+	<result property="user_name" 		 column="user_name"		 />
+	<result property="password" 		 column="password" 		/>
+	<result property="enable" column="enable" 	/>
+	<result property="contacts"		 column="contacts"	 			/>
+	<result property="last_login_date" 		 column="last_login_date" 		/>
+	<result property="last_login_ip" 		 column="last_login_ip"		 />
+	<result property="status" 		 column="status" 		/>
+	<result property="regist_date" 		 column="regist_date" 		/>
+	<result property="regist_ip" 		 column="regist_ip"		 />
+	<result property="notice" 		 column="notice" 		/>
+        
+        </resultMap>
+        <sql id="KitchenInfoColumn">id,name,address,phone,logo,longitude,latitude,remark,
+        authorkey,nick_name,user_name,password,enable,contacts,last_login_date,last_login_ip,status,regist_date,regist_ip,notice</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="KitchenInfo">
+		<![CDATA[
+    		insert into kitchen_info (name,address,phone,logo,longitude,latitude,remark,
+       		 authorkey,nick_name,user_name,password,enable,contacts,last_login_date,last_login_ip,status,regist_date,regist_ip,notice) 
+    		values (#{name},#{address},#{phone},#{logo},
+    		#{longitude},#{latitude},#{remark},#{authorkey},#{nick_name},#{user_name},
+    		#{password},#{enable},#{contacts},#{last_login_date},#{last_login_ip},#{status},
+    		#{regist_date},#{regist_ip},#{notice});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="KitchenInfo" resultMap="KitchenInfoResultMap">
+ 		select * from kitchen_info where 1=1
+ 		<if test="name != null and name !=''">
+ 			and name=#{name}
+ 		</if>
+ 		<if test="address != null and address !=''">
+ 			and address=#{address}
+ 		</if>
+ 		<if test="phone != null and phone !=''">
+ 			and phone=#{phone}
+ 		</if>
+ 		<if test="logo != null and logo !=''">
+ 			and logo=#{logo}
+ 		</if>
+ 		<if test="longitude != null and longitude !=''">
+ 			and longitude=#{longitude}
+ 		</if>
+ 		<if test="latitude != null and latitude !=''">
+ 			and latitude=#{latitude}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="authorkey != null and authorkey !=''">
+ 			and authorkey=#{authorkey}
+ 		</if>
+ 		<if test="nick_name != null and nick_name !=''">
+ 			and nick_name=#{nick_name}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>  
+ 		<if test="password != null and password !=''">
+ 			and password=#{password}
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			and enable=#{enable}
+ 		</if>
+ 		<if test="contacts != null and contacts !=''">
+ 			and contacts=#{contacts}
+ 		</if>
+ 		<if test="last_login_date != null and last_login_date !=''">
+ 			and last_login_date=#{last_login_date}
+ 		</if>
+ 		<if test="last_login_ip != null and last_login_ip !=''">
+ 			and last_login_ip=#{last_login_ip}
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			and status=#{status}
+ 		</if>
+ 		<if test="regist_date != null and regist_date !=''">
+ 			and regist_date=#{regist_date}
+ 		</if>
+ 		<if test="regist_ip != null and regist_ip !=''">
+ 			and regist_ip=#{regist_ip}
+ 		</if>
+ 		<if test="notice != null and notice !=''">
+ 			and notice=#{notice}
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			and enable=#{enable}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from kitchen_info where 1=1
+	  	<if test="name != null and name !=''">
+ 			and name=#{name}
+ 		</if>
+ 		<if test="address != null and address !=''">
+ 			and address=#{address}
+ 		</if>
+ 		<if test="phone != null and phone !=''">
+ 			and phone=#{phone}
+ 		</if>
+ 		<if test="logo != null and logo !=''">
+ 			and logo=#{logo}
+ 		</if>
+ 		<if test="longitude != null and longitude !=''">
+ 			and longitude=#{longitude}
+ 		</if>
+ 		<if test="latitude != null and latitude !=''">
+ 			and latitude=#{latitude}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="authorkey != null and authorkey !=''">
+ 			and authorkey=#{authorkey}
+ 		</if>
+ 		<if test="nick_name != null and nick_name !=''">
+ 			and nick_name=#{nick_name}
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			and user_name=#{user_name}
+ 		</if>  
+ 		<if test="password != null and password !=''">
+ 			and password=#{password}
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			and enable=#{enable}
+ 		</if>
+ 		<if test="contacts != null and contacts !=''">
+ 			and contacts=#{contacts}
+ 		</if>
+ 		<if test="last_login_date != null and last_login_date !=''">
+ 			and last_login_date=#{last_login_date}
+ 		</if>
+ 		<if test="last_login_ip != null and last_login_ip !=''">
+ 			and last_login_ip=#{last_login_ip}
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			and status=#{status}
+ 		</if>
+ 		<if test="regist_date != null and regist_date !=''">
+ 			and regist_date=#{regist_date}
+ 		</if>
+ 		<if test="regist_ip != null and regist_ip !=''">
+ 			and regist_ip=#{regist_ip}
+ 		</if>
+ 		<if test="notice != null and notice !=''">
+ 			and notice=#{notice}
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			and enable=#{enable}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="KitchenInfoResultMap" parameterType="int">
+	   select <include refid="KitchenInfoColumn"/> from kitchen_info where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="KitchenInfoparaMap">
+		UPDATE
+		kitchen_info
+		<set>
+			<if test="name != null and name !=''">
+ 			 name=#{name},
+ 		</if>
+ 		<if test="address != null and address !=''">
+ 			 address=#{address},
+ 		</if>
+ 		<if test="phone != null and phone !=''">
+ 			 phone=#{phone},
+ 		</if>
+ 		<if test="logo != null and logo !=''">
+ 			 logo=#{logo},
+ 		</if>
+ 		<if test="longitude != null and longitude !=''">
+ 			 longitude=#{longitude},
+ 		</if>
+ 		<if test="latitude != null and latitude !=''">
+ 			 latitude=#{latitude},
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			 remark=#{remark},
+ 		</if>
+ 		<if test="authorkey != null and authorkey !=''">
+ 			 authorkey=#{authorkey},
+ 		</if>
+ 		<if test="nick_name != null and nick_name !=''">
+ 			 nick_name=#{nick_name},
+ 		</if>
+ 		<if test="user_name != null and user_name !=''">
+ 			 user_name=#{user_name},
+ 		</if>  
+ 		<if test="password != null and password !=''">
+ 			 password=#{password},
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			 enable=#{enable},
+ 		</if>
+ 		<if test="contacts != null and contacts !=''">
+ 			 contacts=#{contacts},
+ 		</if>
+ 		<if test="last_login_date != null and last_login_date !=''">
+ 			 last_login_date=#{last_login_date},
+ 		</if>
+ 		<if test="last_login_ip != null and last_login_ip !=''">
+ 			 last_login_ip=#{last_login_ip},
+ 		</if>
+ 		<if test="status != null and status !=''">
+ 			 status=#{status},
+ 		</if>
+ 		<if test="regist_date != null and regist_date !=''">
+ 			 regist_date=#{regist_date},
+ 		</if>
+ 		<if test="regist_ip != null and regist_ip !=''">
+ 			 regist_ip=#{regist_ip},
+ 		</if>
+ 		<if test="notice != null and notice !=''">
+ 			 notice=#{notice},
+ 		</if>
+ 		<if test="enable != null and enable !=''">
+ 			 enable=#{enable}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from kitchen_info where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>

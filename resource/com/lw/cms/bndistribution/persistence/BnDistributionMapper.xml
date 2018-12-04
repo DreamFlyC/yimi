@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lw.cms.bndistribution.persistence.BnDistributionMapper">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<parameterMap type="BnDistribution" id="BnDistributionparaMap">
+	<parameter property="id" 			 resultMap="id" />
+	<parameter property="title" 			     resultMap="title"		  		/>
+	<parameter property="remark" 	 resultMap="remark"  	/>
+	<parameter property="type" resultMap="type" 	/>
+	<parameter property="amount"		 resultMap="amount"	 			/>
+	<parameter property="sort_id" 		 resultMap="sort_id" 		/>
+	<parameter property="is_lock" 		 resultMap="is_lock"		 />
+	</parameterMap>
+
+<resultMap type="BnDistribution" id="BnDistributionResultMap">
+        <id property="id" column="id" />
+        <result property="title" 	     column="title"		  		/>
+		<result property="remark" 	 	 column="remark"  	/>
+		<result property="type" 		 column="type" 	/>
+		<result property="amount"		 column="amount"	 			/>
+		<result property="sort_id" 		 column="sort_id" 		/>
+		<result property="is_lock" 		 column="is_lock"		 />
+        
+        </resultMap>
+        <sql id="BnDistributionColumn">id,title,remark,type,amount,sort_id,is_lock</sql>
+
+<!--新建任务（save）方法 -->
+	<insert id="save" parameterType="BnDistribution">
+		<![CDATA[
+    		insert into bn_distribution (title,remark,type,amount,sort_id,is_lock) 
+    		values (#{title},#{remark},#{type},#{amount},
+    		#{sort_id},#{is_lock});
+    	]]>
+		
+	</insert>
+ <select id="getList" parameterType="BnDistribution" resultMap="BnDistributionResultMap">
+ 		select * from bn_distribution where 1=1
+ 		<if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="amount != null and amount !=''">
+ 			and amount=#{amount}
+ 		</if>
+ 		<if test="sort_id != null and sort_id !=''">
+ 			and sort_id=#{sort_id}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+ 		order by id desc
+ 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
+ </select>
+ 
+ <select id="getCount" resultType="int">
+	   select count(1) from bn_distribution where 1=1
+	  <if test="title != null and title !=''">
+ 			and title=#{title}
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			and remark=#{remark}
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			and type=#{type}
+ 		</if>
+ 		<if test="amount != null and amount !=''">
+ 			and amount=#{amount}
+ 		</if>
+ 		<if test="sort_id != null and sort_id !=''">
+ 			and sort_id=#{sort_id}
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			and is_lock=#{is_lock}
+ 		</if>
+	</select>
+	
+	<select id="getById" resultMap="BnDistributionResultMap" parameterType="int">
+	   select <include refid="BnDistributionColumn"/> from bn_distribution where id = #{id}
+	</select>
+	
+	<!--修改 -->
+	<update id="editById"  parameterMap="BnDistributionparaMap">
+		UPDATE
+		bn_distribution
+		<set>
+		<if test="title != null and title !=''">
+ 			 title=#{title},
+ 		</if>
+ 		<if test="remark != null and remark !=''">
+ 			 remark=#{remark},
+ 		</if>
+ 		<if test="type != null and type !=''">
+ 			 type=#{type},
+ 		</if>
+ 		<if test="amount != null and amount !=''">
+ 			 amount=#{amount},
+ 		</if>
+ 		<if test="sort_id != null and sort_id !=''">
+ 			 sort_id=#{sort_id},
+ 		</if>
+ 		<if test="is_lock != null and is_lock !=''">
+ 			 is_lock=#{is_lock}
+ 		</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delById">
+	   delete from bn_distribution where id in
+	   <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	</delete>
+
+</mapper>
