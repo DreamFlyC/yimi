@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.lw.crm.crmsupplierprice.utils;
+package com.lw.acommon.util;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,9 +28,9 @@ public class Upload {
 	           String filename = number+"_"+file.getOriginalFilename();
 	           File filepath = new File(path,filename);
 	           //判断路径是否存在，如果不存在就创建一个
-	           if (!filepath.getParentFile().exists()) { 
-	               filepath.getParentFile().mkdirs();
-	           }
+	           if (!filepath.getParentFile().exists()) {
+                   boolean mkdirs = filepath.getParentFile().mkdirs();
+               }
 	           //将上传文件保存到一个目标文件当中
 	           String systemPath=path + File.separator + filename;
 	          file.transferTo(new File(systemPath));

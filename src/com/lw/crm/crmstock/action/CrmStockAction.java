@@ -2,6 +2,7 @@ package com.lw.crm.crmstock.action;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lw.acommon.util.JsonMsgStatusEntity;
+import com.lw.acommon.util.Upload;
 import com.lw.common.page.Pager;
 import com.lw.common.util.ResponseUtil;
 import com.lw.core.base.action.BaseAction;
@@ -13,7 +14,6 @@ import com.lw.crm.crmstock.entity.CrmStock;
 import com.lw.crm.crmstock.service.ICrmStockService;
 import com.lw.crm.crmstock.utils.ExportExcelUtil;
 import com.lw.crm.crmstock.utils.ImportExcelUtil;
-import com.lw.crm.crmstock.utils.Upload;
 import com.lw.crm.crmsupplier.entity.CrmSupplier;
 import com.lw.crm.crmsupplier.service.ICrmSupplierService;
 import com.lw.crm.crmunit.entity.CrmUnit;
@@ -119,8 +119,7 @@ public class CrmStockAction extends BaseAction {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @ResponseBody
     public int Update(int[] ids) {
-       int i = crmStockService.delete(ids);
-       return i;
+        return crmStockService.delete(ids);
     }
 
     // 删除信息

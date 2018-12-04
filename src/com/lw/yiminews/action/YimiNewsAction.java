@@ -1,5 +1,6 @@
 package com.lw.yiminews.action;
 
+import com.lw.acommon.util.Upload;
 import com.lw.adpic.entity.Adpic;
 import com.lw.adpic.service.IAdpicService;
 import com.lw.common.page.Pager;
@@ -19,8 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.lw.cms.bnarticledownload.utils.Upload.upload;
 
 @Controller("YimiNewsAction")
 @RequestMapping(value="/yiminews")
@@ -68,7 +67,7 @@ public class YimiNewsAction extends BaseAction{
 	@RequestMapping(value="/post",method=RequestMethod.POST)
 	public String add(@ModelAttribute YimiNews news,@RequestParam(value="image") MultipartFile image,
 			HttpServletRequest request) throws Exception{
-		String img = upload(request, image);
+		String img = Upload.upload(request, image,null);
 		news.setImg(img);
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String date=sdf.format(new Date());
@@ -96,7 +95,7 @@ public class YimiNewsAction extends BaseAction{
 			@RequestParam(value="image",required=false) MultipartFile image) throws Exception{
 		String img=null;
 		if(image!=null) {
-			img=upload(request, image);
+			img=Upload.upload(request, image,null);
 			yimiNews.setImg(img);
 		}
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

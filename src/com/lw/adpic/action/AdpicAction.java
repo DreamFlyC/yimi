@@ -1,14 +1,14 @@
 
 package com.lw.adpic.action;
 
+import com.lw.acommon.util.Upload;
 import com.lw.adpic.entity.Adpic;
 import com.lw.adpic.service.IAdpicService;
-import com.lw.adpic.utils.Upload;
 import com.lw.common.page.Pager;
 import com.lw.core.base.action.BaseAction;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,14 +36,13 @@ public class AdpicAction extends BaseAction{
 	private IAdpicService adpicService;
 	
 	@RequestMapping(value= {"","adpic_list"})
-	public String index(Model model,String title,String component) {
-		instantPage(20); // 每页几条记录
-		Adpic obj = new Adpic();
-		Map param=new HashMap();
-		if(null !=title &&!title.equals("")) {
+	public String index(String title,String component) {
+		instantPage(20);
+		Map<String,Object> param=new HashMap<>(2);
+		if(StringUtils.isNotBlank(title)) {
 			param.put("title", title);
 		}
-		if(null !=component &&!component.equals("")) {
+		if(StringUtils.isNotBlank(component)) {
 			param.put("component", component);
 		}
 		List<Adpic> adList = adpicService.getList(param);
@@ -81,12 +80,11 @@ public class AdpicAction extends BaseAction{
 	public String addAdpic(@ModelAttribute Adpic adpic,@RequestParam("small") MultipartFile small,
 			@RequestParam("large") MultipartFile large,HttpServletRequest request) throws Exception{
 		SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
-		String smallpic = Upload.upload(request, small);// 返回路径给smallpic
-		String largepic = Upload.upload(request, large);// 返回路径给largepic
+		String smallpic = Upload.upload(request, small,null);
+		String largepic = Upload.upload(request, large,null);
 		adpic.setSmallpic(smallpic);
 		adpic.setLargepic(largepic);
 		adpic.setAddtime(sdf.format(new Date()));
-		System.out.println("smallpic为："+smallpic+"----largepic为："+largepic); 
 		adpicService.save(adpic);
 		return "redirect:/adpic.html";
 	}
@@ -103,15 +101,12 @@ public class AdpicAction extends BaseAction{
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String updateAdpic(Adpic adpic,@RequestParam(value="small",required=false) MultipartFile small,
 			@RequestParam(value="large",required=false) MultipartFile large,HttpServletRequest request)throws Exception{
-		String smallpic=null;
-		String largepic=null;
-		System.out.println("small为："+small+"large为："+large);
 		if(small!=null) {
-			 smallpic = Upload.upload(request, small);// 返回路径给smallpic
+            String smallpic = Upload.upload(request, small,null);
 			 adpic.setSmallpic(smallpic);
 		}
 		if(large!=null) {
-			 largepic = Upload.upload(request, large);// 返回路径给largepic
+            String largepic = Upload.upload(request, large,null);
 			 adpic.setLargepic(largepic);
 		}
 		adpicService.edit(adpic);
@@ -136,61 +131,51 @@ public class AdpicAction extends BaseAction{
 	
 	@RequestMapping(value="/doupload")
 	@ResponseBody
-	public Map<String, Object> uploadFile(MultipartFile myfile,HttpServletResponse response) throws IllegalStateException, IOException{
+	public Map<String, Object> uploadFile(@RequestParam(value = "myfile") MultipartFile myfile,HttpServletResponse response) throws IllegalStateException, IOException{
 		
 		//原始名称 获取文件上传原名
-		String oldFileName=null;
-		if(!myfile.isEmpty()){
-			oldFileName=myfile.getOriginalFilename();
-		}
+		String oldFileName=myfile.getOriginalFilename();
 		String saveFilePath="D:\\AdpicUpload";
-		//上传图片
-		if (myfile != null && oldFileName != null && oldFileName.length() > 0) {
-            // 新的图片名称
-			SimpleDateFormat sdf=new SimpleDateFormat("YYYYMMddHHmmss");
-			
-			String now=sdf.format(new Date());
-			int random=(int)(Math.random()*10000+1);
-            String newFileName =now+random+"_"+oldFileName;
-            // 新图片
-            File newFile = new File(saveFilePath + "\\" + newFileName);
-            // 将内存中的数据写入磁盘
-            myfile.transferTo(newFile);
-            // 将新图片名称返回到前端
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("success", "成功啦");
-            map.put("url", newFileName);
-            return map;
-        } else {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "图片不合法");
-            return map;
-        }
+        // 新的图片名称
+        SimpleDateFormat sdf=new SimpleDateFormat("YYYYMMddHHmmss");
+
+        String now=sdf.format(new Date());
+        int random=(int)(Math.random()*10000+1);
+        String newFileName =now+random+"_"+oldFileName;
+        // 新图片
+        File newFile = new File(saveFilePath + "\\" + newFileName);
+        // 将内存中的数据写入磁盘
+        myfile.transferTo(newFile);
+        // 将新图片名称返回到前端
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", "成功啦");
+        map.put("url", newFileName);
+        return map;
 	}
 	
 	@RequestMapping("upload1")
 	public String up() {
 		return "/WEB-INF/adpic/upload1";
 	}
+
 	@RequestMapping(value="/uploadfile",method=RequestMethod.POST)
 	@ResponseBody
-	public String uploadFile(HttpServletRequest request,HttpServletResponse response,@RequestParam("file")MultipartFile[] file,ModelMap model) {
+	public String uploadFile(HttpServletResponse response,@RequestParam("file")MultipartFile[] file,ModelMap model) {
 		response.setHeader("Access-Control-Allow-Origin", "http://192.168.1.144:8848");
-		//String path=request.getSession().getServletContext().getRealPath("upload");
 		String path="D:\\java\\upload";
 		for(int i=0;i<file.length;i++) {
-			String fileName = file[i].getOriginalFilename();//获取文件名
+			//获取文件名
+			String fileName = file[i].getOriginalFilename();
 			// String fileName = new Date().getTime()+".jpg";//替换新名字
-			System.out.println(path);
 			//判断文件是否存在，不存在则创建，可创建文件夹
-			File targetFile = new File(path, fileName);
-			if (!targetFile.exists()) {
-				targetFile.mkdirs();
-				}
 			// 保存
 			try {
-				//使用transferTo（dest）方法将上传文件写到服务器上指定的文件。
-				file[i].transferTo(targetFile);//此方法在上传完成后才开始上传
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    boolean mkdirs = targetFile.mkdirs();
+                }
+				//使用transferTo（dest）方法将上传文件写到服务器上指定的文件。//此方法在上传完成后才开始上传
+				file[i].transferTo(targetFile);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
