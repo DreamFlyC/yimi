@@ -38,7 +38,9 @@
 		<typeAlias type="com.lw.crm.crmuserscertificate.entity.CrmUserScertificate" alias="CrmUserScertificate"/>
 		 <typeAlias type="com.lw.crm.complaints.entity.CrmComplaints" alias="CrmComplaints"/>
 		 <typeAlias type="com.lw.crm.complaintstype.entity.CrmComplaintsType" alias="CrmComplaintsType"/>
-
+		 <typeAlias type="com.lw.crm.crmreceipttype.entity.CrmReceiptType" alias="CrmReceiptType" />
+		 
+		 
 		 <typeAlias type="com.lw.cms.bnarticlealbums.entity.BnArticleAlbums" alias="BnArticleAlbums"/>
 		<typeAlias type="com.lw.cms.bnarticledownload.entity.BnArticleDownload" alias="BnArticleDownload"/>
 		<typeAlias type="com.lw.cms.bnarticlediggs.entity.BnArticleDiggs" alias="BnArticleDiggs"/>

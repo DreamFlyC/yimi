@@ -101,6 +101,18 @@ public class CrmComplaintsAction extends BaseAction {
         if (status != null) {
             map.put("status", status);
         }
+
+        String visdate=null;
+        String viedate=null;
+
+        if(status != null && status==0){
+            sDate=sDate+"-01";
+            DateUtil dateUtil=new DateUtil();
+            Date date=DateUtil.parseStrDate(sDate);
+            String month=dateUtil.getThisMonthDate(date);
+            visdate=month.split(",")[0];
+            viedate=month.split(",")[1];
+        }
         // 查询type类型的总数
         int typeCount = crmComplaintsTypeService.getCount();
         List<CrmComplaintsType> typeList = crmComplaintsTypeService.getList();
@@ -136,11 +148,15 @@ public class CrmComplaintsAction extends BaseAction {
             }
         }
         JSONObject json = new JSONObject();
-        if (formatList != null) {
+        if (formatList.size()>0) {
             json.put("code", 200);
             json.put("msg", formatList);
             json.put("typeCount", typeCount);
             json.put("name", name);
+            if(status==0){
+                json.put("visdate",visdate);
+                json.put("viedate",viedate);
+            }
             ResponseUtil.writeJson(response, json.toJSONString());
         } else {
             json.put("code", 200);
@@ -175,5 +191,4 @@ public class CrmComplaintsAction extends BaseAction {
 
         return date;
     }
-
 }
