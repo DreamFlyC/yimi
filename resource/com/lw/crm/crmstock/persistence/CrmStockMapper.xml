@@ -191,12 +191,12 @@
 				and id=#{id} 
 			</if>
 			<if test="ids != null and ids != ''">
-			and id in
-			<foreach item="CrmItem" collection="ids" open="(" separator=","
-				close=")">
-				#{CrmItem}
-			</foreach>
-		</if>
+				and id in
+				<foreach item="CrmItem" collection="ids" open="(" separator=","
+					close=")">
+					#{CrmItem}
+				</foreach>
+			</if>
 		</where>
 		order by id desc
 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>

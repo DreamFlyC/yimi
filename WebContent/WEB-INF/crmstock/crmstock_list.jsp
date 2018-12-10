@@ -127,32 +127,32 @@
 	});
 </script>
 <script type="text/javascript">
-$(function() {
-	$("#export").click(function() {
-		var ids = "";
-		$("input:checkbox[name='box']:checked").each(function() {
-			ids += $(this).val() + ",";
-		});
-		if (ids != "") { //选中导出
-			//window.confirm("确定要导出吗？");
-			LW.message.confirm("id","确定要导出吗？",function(r){
-				if(r){
-					window.location.href = "manage/crmstock/export?ids="
-					+ ids.substring(0, ids.length - 1); //去掉最后一个逗号
-					$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
-				}
+	$(function() {
+		$("#export").click(function() {
+			var ids = "";
+			$("input:checkbox[name='box']:checked").each(function() {
+				ids += $(this).val() + ",";
 			});
-			
-		} else if (window.confirm('要导出全部数据吗？')) {
-			//LW.message.show("确定");
-			window.location.href = "manage/crmstock/export";
-		} else {
-			//LW.message.show("取消");
-			$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
-			return false;
-		}
+			if (ids != "") { //选中导出
+				//window.confirm("确定要导出吗？");
+				LW.message.confirm("id","确定要导出吗？",function(r){
+					if(r){
+						window.location.href = "manage/crmstock/export?ids="
+						+ ids.substring(0, ids.length - 1); //去掉最后一个逗号
+						$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+					}
+				});
+
+			} else if (window.confirm('要导出全部数据吗？')) {
+				//LW.message.show("确定");
+				window.location.href = "manage/crmstock/export";
+			} else {
+				//LW.message.show("取消");
+				$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+				return false;
+			}
+		});
 	});
-});
 </script>
 <script type="text/javascript">
 	function isValid() {

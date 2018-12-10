@@ -3,7 +3,7 @@ package com.lw.crm.crmreceipttype.action;
 import com.lw.common.page.Pager;
 import com.lw.core.base.action.BaseAction;
 import com.lw.crm.crmreceipttype.entity.CrmReceiptType;
-import com.lw.crm.crmreceipttype.service.CrmReceiptTypeService;
+import com.lw.crm.crmreceipttype.service.ICrmReceiptTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +17,13 @@ import java.util.List;
 @RequestMapping(value="/manage/crmreceipttype")
 public class CrmReceiptTypeAction extends BaseAction{
 	@Autowired
-    private CrmReceiptTypeService crmReceiptTypeService;
+    private ICrmReceiptTypeService crmReceiptTypeService;
 			
         @RequestMapping(value= "")
    		public String list(){
    			instantPage(20);
-   			List<CrmReceiptType> list=crmReceiptTypeService.getList();
-   			int total=crmReceiptTypeService.getCount();
+   			List<CrmReceiptType> list= crmReceiptTypeService.getList();
+   			int total= crmReceiptTypeService.getCount();
    			Pager pager=new Pager(super.getPage(),super.getRows(),total);
    			pager.setDatas(list);
    			getRequest().setAttribute("pager",pager);
@@ -58,7 +58,7 @@ public class CrmReceiptTypeAction extends BaseAction{
    		@RequestMapping(value="/{id}")
    		public String viewCrmPayment(@PathVariable("id")int id)
    		{
-   			CrmReceiptType crmReceiptType=crmReceiptTypeService.get(id);
+   			CrmReceiptType crmReceiptType= crmReceiptTypeService.get(id);
    			getRequest().setAttribute("crmReceiptType",crmReceiptType);
    			return "/WEB-INF/crmreceipttype/crmreceipttype_detail";
    		}	

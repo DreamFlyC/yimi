@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lw.acommon.util.JsonMsgStatusEntity;
 import com.lw.common.page.Pager;
 import com.lw.common.util.ContextUtil;
+import com.lw.common.util.DateUtil;
 import com.lw.common.util.ResponseUtil;
 import com.lw.core.base.action.BaseAction;
 import com.lw.crm.crmname.entity.CrmName;
@@ -14,6 +15,7 @@ import com.lw.crm.crmstockinoroutlog.entity.CrmStockInorOutLog;
 import com.lw.crm.crmstockinoroutlog.service.ICrmStockInorOutLogService;
 import com.lw.crm.crmstockinoroutlogitem.entity.CrmStockInorOutLogItem;
 import com.lw.crm.crmstockinoroutlogitem.service.ICrmStockInorOutLogItemService;
+import com.lw.crm.crmstockinoroutlogitem.utils.ExportExcelUtil;
 import com.lw.crm.crmstocktype.entity.CrmStockType;
 import com.lw.crm.crmstocktype.service.ICrmStockTypeService;
 import com.lw.duty.entity.DutyUsername;
@@ -437,6 +439,24 @@ public class CrmStockInorOutLogItemAction extends BaseAction {
 			ResponseUtil.writeJson(response, json.toJSONString());
 		}
 		return null;
-
+	}
+	/*
+	 * create by: CZP
+	 * description:导出EXCEL
+	 * create time: 12:14 2018/12/7
+	 * @return
+	 */
+	@RequestMapping(value = "/export")
+	@ResponseBody
+	public void Export(@RequestParam(value = "ids", defaultValue = "") Integer[] ids, HttpServletResponse response) throws Exception {
+		Map map = new HashMap();
+		if (ids.length > 0) {
+			map.put("ids", ids);
+		}
+		List<CrmStockInorOutLogItem> dataList = crmStockInorOutLogItemService.getList(map);
+		String sheetName = "进出货明细详情";
+		String prefix = DateUtil.formatterDateTime(new Date(),"yyyyMMddHHmmss");
+		String fileName = prefix + sheetName;
+		ExportExcelUtil.exportExcel(response, dataList, sheetName, fileName);
 	}
 }

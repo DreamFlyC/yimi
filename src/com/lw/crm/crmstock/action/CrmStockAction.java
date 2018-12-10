@@ -252,7 +252,6 @@ public class CrmStockAction extends BaseAction {
 
     // 5.导出excel
     @RequestMapping(value = "/export")
-
     @ResponseBody
     public void Export(@RequestParam(value = "ids", defaultValue = "") Integer[] ids, HttpServletResponse response) throws Exception {
         Map map = new HashMap();

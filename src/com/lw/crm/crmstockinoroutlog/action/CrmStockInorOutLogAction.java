@@ -10,6 +10,7 @@ import com.lw.crm.crmname.entity.CrmName;
 import com.lw.crm.crmname.service.ICrmNameService;
 import com.lw.crm.crmstockinoroutlog.entity.CrmStockInorOutLog;
 import com.lw.crm.crmstockinoroutlog.service.ICrmStockInorOutLogService;
+import com.lw.crm.crmstockinoroutlog.utils.ExportExcelUtil;
 import com.lw.crm.crmstockinoroutlogitem.entity.CrmStockInorOutLogItem;
 import com.lw.crm.crmstockinoroutlogitem.service.ICrmStockInorOutLogItemService;
 import com.lw.crm.crmstocktype.entity.CrmStockType;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,5 +223,26 @@ public class CrmStockInorOutLogAction extends BaseAction{
 		}
 		return null;
 
+	}
+	
+	/*
+	 * create by: CZP
+	 * description:导出EXCEL
+	 * create time: 12:14 2018/12/7
+	 * @return 
+	 */
+	@RequestMapping(value = "/export")
+	@ResponseBody
+	public void Export(@RequestParam(value = "ids", defaultValue = "") Integer[] ids, HttpServletResponse response) throws Exception {
+		Map map = new HashMap();
+		if (ids.length > 0) {
+			map.put("ids", ids);
+		}
+		List<CrmStockInorOutLog> dataList = crmStockInorOutLogService.getList(map);
+		String sheetName = "进出货详情";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String prefix = sdf.format(new Date());
+		String fileName = prefix + sheetName;
+		ExportExcelUtil.exportExcel(response, dataList, sheetName, fileName);
 	}
 }

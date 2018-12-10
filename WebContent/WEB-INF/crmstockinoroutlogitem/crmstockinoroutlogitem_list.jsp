@@ -52,6 +52,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				text-align: center;
 			}
 		</style>
+		<script type="text/javascript">
+            $(function() {
+                $("#export").click(function() {
+                    var ids = "";
+                    $("input:checkbox[name='box']:checked").each(function() {
+                        ids += $(this).val() + ",";
+                    });
+                    if (ids != "") { //选中导出
+                        //window.confirm("确定要导出吗？");
+                        LW.message.confirm("id","确定要导出吗？",function(r){
+                            if(r){
+                                window.location.href = "manage/crmstockinoroutlogitem/export?ids="
+                                    + ids.substring(0, ids.length - 1); //去掉最后一个逗号
+                                $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+                            }
+                        });
+
+                    } else if (window.confirm('要导出全部数据吗？')) {
+                        //LW.message.show("确定");
+                        window.location.href = "manage/crmstockinoroutlogitem/export";
+                    } else {
+                        //LW.message.show("取消");
+                        $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+                        return false;
+                    }
+                });
+            });
+		</script>
 	</head>
 	<body>
 		<%@ include file="../top.jsp"%>
@@ -77,6 +105,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<button type="button" class="btn btn-primary" id="statistics"
 						onclick="LW.location.forward('<%=basePath%>manage/crmstockinoroutlogitem/crmstockinoroutlogitem_statistics')">
 					<span class="glyphicon glyphicon-glass"></span> 统计数据
+				</button>
+				<button type="button" class="btn btn-primary" id="export">
+					<span class="glyphicon glyphicon-download-alt"></span> 导出Excel列表
 				</button>
 				<button class="btn btn-primary" id="delete">
 					<span class="glyphicon glyphicon-trash"></span> 清理数据
