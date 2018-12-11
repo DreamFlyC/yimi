@@ -8,7 +8,6 @@
 <%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier"%>
 <%@ page import="com.lw.crm.crmuser.entity.CrmUser"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.UUID" %>
 <%
 		ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
 		ArrayList<CrmUser> crmUserList = (ArrayList) request.getAttribute("crmUserList");
@@ -56,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	<base href="<%=basePath%>" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8;"/>
 		<%@ include file="../tag.jsp" %>
-		<title>${appName}_库存信息管理</title>
+		<title>${appName}_采购信息管理</title>
 		
 		<script>
 			function IsNum(number) {

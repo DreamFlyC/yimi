@@ -316,7 +316,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</script>
     	<div class="cls"></div>
     	<script type="text/javascript">
-			$("#page_traceabilitypoint").parent().attr("class","active");
+			$("#page_crmstockinoroutlog_list").parent().attr("class","active");
 			$(function(){LW.form.validate("form1");});
 		</script>
     	<%@ include file="../foot.jsp"%>

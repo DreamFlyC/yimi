@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.*"%>
 <%@ page import="java.text.*"%>
 <%@ page import="java.lang.String"%>
-<%@ page import="java.util.ArrayList"%>
-<%@ page import="java.text.DecimalFormat"%>
 
 <%
 	java.util.Date date = new java.util.Date();
@@ -116,6 +113,10 @@ table thead tr th, table tbody tr td {
 			onclick="LW.location.forward('<%=basePath%>manage/crmpurchacse/post.html')">
 			<span class="glyphicon glyphicon-plus"></span> 新增
 		</button>
+		<button class="btn btn-primary"
+				onclick="LW.location.forward('<%=basePath%>manage/crmpurchacse/add.html')">
+			<span class="glyphicon glyphicon-plus"></span> 新增明细
+		</button>
 		<button class="btn btn-primary" id="delete">
 			<span class="glyphicon glyphicon-trash"></span> 清理数据
 		</button>
@@ -194,6 +195,7 @@ table thead tr th, table tbody tr td {
 	<!--左侧导航栏智能显示  -->
 		<script type="text/javascript">
 			$("#page_crmpurchacse_list").parent().attr("class","active");
+            sessionStorage.clear();
 		</script>
 	<%@ include file="../foot.jsp"%>
 </body>

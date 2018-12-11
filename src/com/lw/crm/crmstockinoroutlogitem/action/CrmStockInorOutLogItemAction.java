@@ -100,8 +100,7 @@ public class CrmStockInorOutLogItemAction extends BaseAction {
 		return "redirect:crmstockinoroutlogitem_list";
 	}
 
-	// 新增明细2
-
+	// 新增明细
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addcrmstockinoroutlogitemtwo(HttpServletRequest request, HttpServletResponse response) {
 		List<CrmName> crmNameList = crmNameService.getList();
@@ -114,7 +113,6 @@ public class CrmStockInorOutLogItemAction extends BaseAction {
 		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
 
 		List<DutyUsername> dutyUsernameList = dutyUsernameService.getList();
-		getRequest().setAttribute("dutyUsernameList", dutyUsernameList);
 
 		// 判断cookie有没有值,没有则生成number
 		String number = "";
@@ -151,15 +149,6 @@ public class CrmStockInorOutLogItemAction extends BaseAction {
 		  /*Users user=ContextUtil.getContextLoginUser();//登录账号的信息
 		  if(null!=String.valueOf(user.getId())) {
 		  obj.setUid(String.valueOf(user.getId())); }
-		 */
-
-		// crmStockInorOutLogItemService.save(obj);
-		/*
-		 * CrmStockInorOutLog obj2=new CrmStockInorOutLog();
-		 * obj2.setNumber(obj.getNumber()); obj2.setTitle(obj.getTitle());
-		 * obj2.setType(obj.getType()); obj2.setPrice(obj.getPrice());
-		 * obj2.setTitle(obj.getTitle()); obj2.setUid(String.valueOf(obj.getUid()));
-		 * obj2.setNote(obj.getNote()); obj2.setAddress(obj.getAddress());
 		 */
 
 		obj.setNumber(number);

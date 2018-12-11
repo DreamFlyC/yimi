@@ -1,24 +1,24 @@
 package com.lw.crm.crmpurchacseitem.action;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.lw.common.page.Pager;
 import com.lw.core.base.action.BaseAction;
 import com.lw.crm.crmpurchacseitem.entity.CrmPurchacseItem;
 import com.lw.crm.crmpurchacseitem.service.ICrmPurchacseItemService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
 * @author 作者:qw
 * @createDate 创建时间：2018年12月6日 上午10:34:04
+* @modified by CZP
+* @modified date 2018/12/11 15:13:09
+*
 */
 @Controller("CrmPurchacseItemAction")
 @RequestMapping(value="manage/crmpurchacseitem")
@@ -68,5 +68,20 @@ public class CrmPurchacseItemAction extends BaseAction{
 		CrmPurchacseItem crmPurchacseItem=crmPurchacseItemService.get(id);
 		getRequest().setAttribute("crmPurchacseItem",crmPurchacseItem);
 		return "/WEB-INF/crmpurchacseitem/crmpurchacseitem_detail";
+	}
+	
+	/*
+	 * create by: CZP
+	 * description:提交明细记录
+	 * create time: 15:58 2018/12/11
+	 * @return 
+	 */
+	@RequestMapping(value = "add",method = RequestMethod.POST)
+    @ResponseBody
+	public String saveAdd(@RequestParam("data")String data, @RequestParam("crmPurchacse")String crmPurchacse,HttpServletResponse response){
+	    if(StringUtils.isNoneEmpty(data)){
+            return crmPurchacseItemService.saveAll(data,crmPurchacse,response);
+        }
+        return null;
 	}
 }

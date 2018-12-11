@@ -38,7 +38,7 @@
 	<insert id="save" parameterMap="CrmPurchacseItemparaMap" keyProperty="id" useGeneratedKeys="true">
     	<![CDATA[
     		insert into crm_purchacse_item(number,num,sid,title,name,date,uid,price,note,type,stock_info_id) 
-    		values(#{number},#{num},#{sid},#{title},#{name},#{date},#{uid},#{price},#{note},#{type},#{stock_info_id});
+    		values(#{number},#{num},#{sid},#{title},#{name},now(),#{uid},#{price},#{note},#{type},#{stock_info_id});
     	]]>
 	</insert>
 	

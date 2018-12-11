@@ -10,7 +10,6 @@ import com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice;
 import com.lw.crm.crmsupplierprice.service.ICrmSupplierPriceService;
 import com.lw.crm.crmuser.entity.CrmUser;
 import com.lw.crm.crmuser.service.ICrmUserService;
-
 import com.lw.shiroaction.usersgroup.entity.ShiroActionUsersGroup;
 import com.lw.shiroaction.usersgroup.service.IShiroActionUsersGroupService;
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -47,13 +49,25 @@ public class CrmPurchacseAction extends BaseAction{
 	private ICrmSupplierPriceService crmSupplierPriceService;
 	
 	@RequestMapping(value= {"","/crmpurchacse_list"})
-	public String list(){
+	public String list(HttpServletRequest request,HttpServletResponse response){
 		instantPage(20); //20代表一页显示20条数据
 		List<CrmPurchacse> list=crmPurchacseService.getList();  //获取列表
 		int total=crmPurchacseService.getCount();   //获取总数
 		Pager pager=new Pager(super.getPage(),super.getRows(),total);
 		pager.setDatas(list);
 		getRequest().setAttribute("pager",pager);  //绑定数据到前台
+		// 清除cookie为pid的值
+		Cookie[] cookies = request.getCookies();
+		if (null!=cookies && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("pid")) {
+					cookie.setValue(null);
+					cookie.setMaxAge(0);// 销毁cookie
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
+			}
+		}
 		return  "/WEB-INF/crmpurchacse/crmpurchacse_list";
 	}	
 	
@@ -69,9 +83,6 @@ public class CrmPurchacseAction extends BaseAction{
 		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
 		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
 
-		//List<DutyUsername> dutyUsernameList = dutyUsernameService.getList();
-		//getRequest().setAttribute("dutyUsernameList", dutyUsernameList);
-		
 		return "/WEB-INF/crmpurchacse/crmpurchacse_add";
 	}
 	
@@ -146,5 +157,53 @@ public class CrmPurchacseAction extends BaseAction{
 			return false;
 		}
 		return crmPurchacseService.saveOrder(ids,nums,notes,title);
+	}
+	
+	/*
+	 * create by: CZP
+	 * description:跳转采购明细
+	 * create time: 10:18 2018/12/11
+	 * @return 
+	 */
+	// 新增明细
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String addTwo(HttpServletRequest request, HttpServletResponse response) {
+
+		List<CrmUser> crmUserList = crmUserService.getList();
+		getRequest().setAttribute("crmUserList", crmUserList);
+
+		List<CrmSupplier> crmSupplierList = crmSupplierService.getList();
+		getRequest().setAttribute("crmSupplierList", crmSupplierList);
+
+		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
+		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
+
+		// 判断cookie有没有值,没有则生成number
+		String number = "";
+		Cookie[] cookies = request.getCookies();
+		if (null!=cookies && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("pid")) {
+					number = cookie.getValue();
+				}
+			}
+		}
+		if (number == "") {
+			// 生成number
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddhhmm");
+			Date now = new Date();
+			int random = (int) (Math.random() * 10000 + 1);
+			number = sdf.format(now) + random;
+
+			// 生成cookie
+			Cookie cookie = new Cookie("pid", number.trim());
+			cookie.setMaxAge(30 * 60);// 设置为30min
+			cookie.setPath("/");
+			response.addCookie(cookie);
+		}
+
+		getRequest().setAttribute("number", number);
+
+		return "/WEB-INF/crmpurchacseitem/crmpurchacseitem_addtwo";
 	}
 }

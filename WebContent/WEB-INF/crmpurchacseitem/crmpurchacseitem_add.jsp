@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		</ul>
     	</div>
 		<div class="rightContainer">
-<script src="<%=basePath%>/resources/My97DatePicker/WdatePicker.js"></script>
+			<%--<script src="<%=basePath%>/resources/My97DatePicker/WdatePicker.js"></script>--%>
 			<form class="form-horizontal" role="form" method="post" action="<%=basePath%>manage/crmpurchacseitem/post.html" id="userForm">
 				<div class="list-group-item active glyphicon glyphicon-chevron-up" data-toggle="collapse" data-parent="#accordion" href="#panelInfo">采购明细管理信息</div>				
 				<div id="panelInfo" class="panel-collapse collapse in">

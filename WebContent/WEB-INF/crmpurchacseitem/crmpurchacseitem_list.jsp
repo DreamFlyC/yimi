@@ -133,6 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			{
 				LW.message.confirm("id","您确认要继续删除吗?",function(r){if(r){LW.location.forward("manage/crmpurchacseitem/del/"+id+".html");}});
 			}
+			sessionStorage.clear();
 		</script>
     	<%@ include file="../foot.jsp"%>
 	</body>

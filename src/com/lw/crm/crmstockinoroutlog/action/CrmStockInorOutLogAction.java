@@ -67,7 +67,7 @@ public class CrmStockInorOutLogAction extends BaseAction{
 				for(Cookie cookie : cookies){
 				    if(cookie.getName().equals("pid")){
 				    	 cookie.setValue(null);  
-		                 cookie.setMaxAge(0);// 立即销毁cookie  
+		                 cookie.setMaxAge(0);
 		                 cookie.setPath("/");  
 		                 response.addCookie(cookie); 
 				    }
