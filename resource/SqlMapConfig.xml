@@ -20,11 +20,12 @@
 		<typeAlias type="com.lw.crm.crmhistory.entity.CrmHistory" alias="CrmHistory"/>
 		<typeAlias type="com.lw.crm.crmname.entity.CrmName" alias="CrmName"/>
 		<typeAlias type="com.lw.crm.crmproduct.entity.CrmProduct" alias="CrmProduct"/>
-		<typeAlias type="com.lw.crm.crmpurchacse.entity.CrmPurchacse" alias="CrmPurchacse"/> 
+		<typeAlias type="com.lw.crm.crmpurchacse.entity.CrmPurchacse" alias="CrmPurchacse"/>
+		 <typeAlias type="com.lw.crm.crmpurchacseitem.entity.CrmPurchacseItem" alias="CrmPurchacseItem"/>
 		<typeAlias type="com.lw.crm.crmstock.entity.CrmStock" alias="CrmStock"/>
 		<typeAlias type="com.lw.crm.crmsupplier.entity.CrmSupplier" alias="CrmSupplier"/>
-		 <typeAlias type="com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice" alias="CrmSupplierPrice"/>
-		 <typeAlias type="com.lw.crm.crmuser.entity.CrmUser" alias="CrmUser"/>
+		<typeAlias type="com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice" alias="CrmSupplierPrice"/>
+		<typeAlias type="com.lw.crm.crmuser.entity.CrmUser" alias="CrmUser"/>
 		<typeAlias type="com.lw.crm.crmcompany.entity.CrmCompany" alias="CrmCompany"/>
 		<typeAlias type="com.lw.crm.crmcontact.entity.CrmContact" alias="CrmContact"/>
 		<typeAlias type="com.lw.crm.crmpayment.entity.CrmPayment" alias="CrmPayment"/>
@@ -36,9 +37,9 @@
 		<typeAlias type="com.lw.crm.crmstockinoroutlog.entity.CrmStockInorOutLog" alias="CrmStockInorOutLog"/>
 		<typeAlias type="com.lw.crm.crmstockinoroutlogitem.entity.CrmStockInorOutLogItem" alias="CrmStockInorOutLogItem"/> 
 		<typeAlias type="com.lw.crm.crmuserscertificate.entity.CrmUserScertificate" alias="CrmUserScertificate"/>
-		 <typeAlias type="com.lw.crm.complaints.entity.CrmComplaints" alias="CrmComplaints"/>
-		 <typeAlias type="com.lw.crm.complaintstype.entity.CrmComplaintsType" alias="CrmComplaintsType"/>
-		 <typeAlias type="com.lw.crm.crmreceipttype.entity.CrmReceiptType" alias="CrmReceiptType" />
+		<typeAlias type="com.lw.crm.complaints.entity.CrmComplaints" alias="CrmComplaints"/>
+		<typeAlias type="com.lw.crm.complaintstype.entity.CrmComplaintsType" alias="CrmComplaintsType"/>
+		<typeAlias type="com.lw.crm.crmreceipttype.entity.CrmReceiptType" alias="CrmReceiptType" />
 		 
 		 
 		 <typeAlias type="com.lw.cms.bnarticlealbums.entity.BnArticleAlbums" alias="BnArticleAlbums"/>

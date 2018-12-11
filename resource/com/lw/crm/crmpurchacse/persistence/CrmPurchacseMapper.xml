@@ -15,28 +15,32 @@
 <parameter property="note" resultMap="note" />
 <parameter property="type" resultMap="type" />
 <parameter property="ids" resultMap="ids" />
+<parameter property="address" resultMap="address" />
+<parameter property="is_approval" resultMap="is_approval" />
 </parameterMap>
 
 <resultMap type="CrmPurchacse" id="CrmPurchacseResultMap">
-<id property="id" column="id" />
-		<result property="number" column="number" />
-		<result property="num" column="num" />
-		<result property="sid" column="sid" />
-		<result property="title" column="title" />
-		<result property="name" column="name" />
-		<result property="date" column="date" />
-		<result property="uid" column="uid" />
-		<result property="price" column="price" />
-		<result property="note" column="note" />
-		<result property="type" column="type" />
-		<result property="ids" column="ids" />
-		<association property="crmUser" fetchType="lazy" column="uid" select="com.lw.crm.crmuser.persistence.CrmUserMapper.getById"></association>
-		<association property="crmSupplier" fetchType="lazy" column="sid" select="com.lw.crm.crmsupplier.persistence.CrmSupplierMapper.getById"></association>
+	<id property="id" column="id" />
+	<result property="number" column="number" />
+	<result property="num" column="num" />
+	<result property="sid" column="sid" />
+	<result property="title" column="title" />
+	<result property="name" column="name" />
+	<result property="date" column="date" />
+	<result property="uid" column="uid" />
+	<result property="price" column="price" />
+	<result property="note" column="note" />
+	<result property="type" column="type" />
+	<result property="ids" column="ids" />
+	<result property="address" column="address"/>
+	<result property="is_approval" column="is_approval" />
+	<association property="crmUser" fetchType="lazy" column="uid" select="com.lw.crm.crmuser.persistence.CrmUserMapper.getById"></association>
+	<association property="crmSupplier" fetchType="lazy" column="sid" select="com.lw.crm.crmsupplier.persistence.CrmSupplierMapper.getById"></association>
 </resultMap>
 
-<sql id="CrmPurchacseColumn">
-id,number,num,sid,title,name,date,uid,price,note,type
-</sql>
+	<sql id="CrmPurchacseColumn">
+		id,number,num,sid,title,name,date,uid,price,note,type,address,is_approval
+	</sql>
 
 <!--查询信息总条数 -->
 	<select id="getCount" resultType="int" parameterType="String">
@@ -90,38 +94,44 @@ id,number,num,sid,title,name,date,uid,price,note,type
 	</insert>-->
 
 	<insert id="save" parameterType="CrmPurchacse" keyColumn="id" useGeneratedKeys="true">
-    insert into crm_purchacse
-	<trim prefix="(" suffix=")" suffixOverrides=",">
-		<if test="number != null and number != ''">
-			number,
-		</if>
-		<if test="name != null and name != ''">
-			name,
-		</if>
-		<if test="price != null and price != ''">
-			price,
-		</if>
-        <if test="num != null and num != ''">
-            num,
-        </if>
-		<if test="note != null and note != ''">
-			note,
-		</if>
-		<if test="uid != null and uid != ''">
-			uid,
-		</if>
-		<if test="sid != null and sid != ''">
-			sid,
-		</if>
-		<if test="type != null and type != ''">
-			type,
-		</if>
-		<if test="title != null and title != ''">
-			title,
-		</if>
-		date
-	</trim>
-	<trim prefix="values(" suffix=")" suffixOverrides=",">
+		insert into crm_purchacse
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="number != null and number != ''">
+				number,
+			</if>
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="price != null and price != ''">
+				price,
+			</if>
+			<if test="num != null and num != ''">
+				num,
+			</if>
+			<if test="note != null and note != ''">
+				note,
+			</if>
+			<if test="uid != null and uid != ''">
+				uid,
+			</if>
+			<if test="sid != null and sid != ''">
+				sid,
+			</if>
+			<if test="type != null and type != ''">
+				type,
+			</if>
+			<if test="title != null and title != ''">
+				title,
+			</if>
+			<if test="address != null and address != ''">
+				address,
+			</if>
+			<if test="is_approval != null and is_approval != ''">
+				is_approval,
+			</if>
+			date
+		</trim>
+		<trim prefix="values(" suffix=")" suffixOverrides=",">
 		<if test="number != null and number != ''">
 			#{number},
 		</if>
@@ -150,9 +160,15 @@ id,number,num,sid,title,name,date,uid,price,note,type
 		<if test="title != null and title != ''">
 			#{title},
 		</if>
+		<if test="address != null and address != ''">
+			#{address},
+		</if>
+		<if test="is_approval != null and is_approval != ''">
+			#{is_approval},
+		</if>
 		now()
 	</trim>
-</insert>
+	</insert>
 	
 	<!--获取记录列表  -->
 	<select id="getList" parameterType="CrmPurchacse" resultMap="CrmPurchacseResultMap">
@@ -184,8 +200,7 @@ id,number,num,sid,title,name,date,uid,price,note,type
 	
 	<!--修改 -->
 	<update id="editById" parameterType="CrmPurchacse">
-		UPDATE
-		crm_purchacse
+		UPDATE crm_purchacse
 		<set>
 			<if test="number != null">
 				number = #{number},
@@ -216,12 +231,14 @@ id,number,num,sid,title,name,date,uid,price,note,type
 			</if>
 			<if test="type != null">
 				type = #{type}
-			</if> 
+			</if>
+			<if test="address != null">
+				address = #{address}
+			</if>
+			<if test="is_approval != is_approval">
+				is_approval = #{is_approval}
+			</if>
 		</set>
 		WHERE id = #{id}
-		<selectKey keyProperty="id" resultType="int"><!--必须 否则会修改失败 找不到id  -->
-			select
-			LAST_INSERT_ID()
-		</selectKey>
 	</update>
 </mapper>

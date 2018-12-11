@@ -18,12 +18,29 @@ public class CrmPurchacse implements Serializable{
 	private String uid;     //申请人ID
 	private Double price;   //采购产品单价
 	private String note;   //备注
+	private String address; //地址
+	private Integer is_approval; //审批
 	private int type;
 	private int ids;
 	private CrmSupplier crmSupplier;
 	private CrmUser crmUser;
-	
-	
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Integer getIs_approval() {
+		return is_approval;
+	}
+
+	public void setIs_approval(Integer is_approval) {
+		this.is_approval = is_approval;
+	}
+
 	public CrmSupplier getCrmSupplier() {
 		return crmSupplier;
 	}

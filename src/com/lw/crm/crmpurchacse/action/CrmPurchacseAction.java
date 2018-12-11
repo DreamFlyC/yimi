@@ -10,8 +10,7 @@ import com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice;
 import com.lw.crm.crmsupplierprice.service.ICrmSupplierPriceService;
 import com.lw.crm.crmuser.entity.CrmUser;
 import com.lw.crm.crmuser.service.ICrmUserService;
-import com.lw.duty.entity.DutyUsername;
-import com.lw.duty.service.IDutyUsernameService;
+
 import com.lw.shiroaction.usersgroup.entity.ShiroActionUsersGroup;
 import com.lw.shiroaction.usersgroup.service.IShiroActionUsersGroupService;
 import org.apache.commons.lang3.StringUtils;
@@ -40,8 +39,8 @@ public class CrmPurchacseAction extends BaseAction{
 	private ICrmUserService crmUserService;
 	@Autowired
 	private ICrmSupplierService crmSupplierService;
-	@Autowired
-	private IDutyUsernameService dutyUsernameService;
+//	@Autowired
+//	private IDutyUsernameService dutyUsernameService;
 	@Autowired
 	private IShiroActionUsersGroupService shiroActionUsersGroupService;
 	@Autowired
@@ -70,8 +69,8 @@ public class CrmPurchacseAction extends BaseAction{
 		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
 		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
 
-		List<DutyUsername> dutyUsernameList = dutyUsernameService.getList();
-		getRequest().setAttribute("dutyUsernameList", dutyUsernameList);
+		//List<DutyUsername> dutyUsernameList = dutyUsernameService.getList();
+		//getRequest().setAttribute("dutyUsernameList", dutyUsernameList);
 		
 		return "/WEB-INF/crmpurchacse/crmpurchacse_add";
 	}
@@ -80,21 +79,21 @@ public class CrmPurchacseAction extends BaseAction{
 	@RequestMapping(value="/post",method=RequestMethod.POST)
 	public String addCrmPurchacse(CrmPurchacse crmPurchacse){
 		crmPurchacseService.save(crmPurchacse);
-		return "redirect:crmpurchacse_list";
+		return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
 	}
 	
 	//删除
 	@RequestMapping(value="/del/{id}")
 	public String deleteCrmPurchacse(@PathVariable("id")int id,HttpServletResponse response){
-		System.out.println("id="+id+"---------");
+		 
 		crmPurchacseService.del(id);
-		return "redirect:../crmpurchacse_list";
+		return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
 	}
 	
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
 	public String updateCrmPurchacse(CrmPurchacse crmPurchacse,HttpServletResponse response){
 		crmPurchacseService.edit(crmPurchacse);
-		return "redirect:crmpurchacse_list";
+			return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
 	}
 	@RequestMapping(value="/{id}")
 	public String viewCrmPurchacse(@PathVariable("id")int id)
@@ -143,7 +142,7 @@ public class CrmPurchacseAction extends BaseAction{
 	public boolean doOrder(@RequestParam(value = "ids")int[] ids,@RequestParam(value = "nums")int[] nums,
 						   @RequestParam(value = "notes",required = false)String[] notes,
 						   @RequestParam(value = "title")String title){
-		if(ids.length<=0 || StringUtils.isBlank(title)){
+		if(ids.length<=0 || ids.length<=0 || StringUtils.isBlank(title)){
 			return false;
 		}
 		return crmPurchacseService.saveOrder(ids,nums,notes,title);
