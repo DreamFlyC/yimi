@@ -2,6 +2,8 @@ package com.lw.crm.crmpurchacse.action;
 
 import com.lw.common.page.Pager;
 import com.lw.core.base.action.BaseAction;
+import com.lw.crm.crmname.entity.CrmName;
+import com.lw.crm.crmname.service.ICrmNameService;
 import com.lw.crm.crmpurchacse.entity.CrmPurchacse;
 import com.lw.crm.crmpurchacse.service.ICrmPurchacseService;
 import com.lw.crm.crmsupplier.entity.CrmSupplier;
@@ -47,6 +49,8 @@ public class CrmPurchacseAction extends BaseAction{
 	private IShiroActionUsersGroupService shiroActionUsersGroupService;
 	@Autowired
 	private ICrmSupplierPriceService crmSupplierPriceService;
+	@Autowired
+	private ICrmNameService crmNameService;
 	
 	@RequestMapping(value= {"","/crmpurchacse_list"})
 	public String list(HttpServletRequest request,HttpServletResponse response){
@@ -171,6 +175,9 @@ public class CrmPurchacseAction extends BaseAction{
 
 		List<CrmUser> crmUserList = crmUserService.getList();
 		getRequest().setAttribute("crmUserList", crmUserList);
+
+		List<CrmName> crmNameList = crmNameService.getList();
+		getRequest().setAttribute("crmNameList", crmNameList);
 
 		List<CrmSupplier> crmSupplierList = crmSupplierService.getList();
 		getRequest().setAttribute("crmSupplierList", crmSupplierList);

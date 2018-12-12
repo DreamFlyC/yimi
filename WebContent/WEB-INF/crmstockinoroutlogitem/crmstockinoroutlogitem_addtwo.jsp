@@ -272,10 +272,6 @@ table thead tr th,table tbody tr td{text-align: center;}
 							        <div id="auto_div"></div>
 							    </div>
 								</td>
-					 			<!--<td>
-		              		  <button  class="form-control btn btn-default" onclick="selectstock();">查询</button>
-		                		</td>
-		                		-->
 							</tr>
 							<div class="stockitem" id="stockitem">
 							</div>

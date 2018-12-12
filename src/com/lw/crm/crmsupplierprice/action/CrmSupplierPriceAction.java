@@ -232,5 +232,27 @@ public class CrmSupplierPriceAction extends BaseAction {
         return null;
     }
 
+    /*
+     * create by: CZP
+     * description:获取供应商报价列表接口
+     * create time: 9:16 2018/12/12
+     * @return 
+     */
+    @RequestMapping(value = "/getsupplierpricelist")
+    @ResponseBody
+    public JsonMsgStatusEntity getList(HttpServletResponse response){
+        JSONObject json = new JSONObject();
+        List<CrmSupplierPrice> obj = crmSupplierPriceService.getList();
+        if (!obj.isEmpty()) {
+            json.put("code", 200);
+            json.put("msg", obj);
+            ResponseUtil.writeJson(response, json.toJSONString());
+        } else {
+            json.put("code", 404);
+            json.put("msg", "没有数据");
+            ResponseUtil.writeJson(response, json.toJSONString());
+        }
+        return null;
+    }
 
 }

@@ -15,9 +15,11 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier" %>
 <%@ page import="com.lw.crm.crmuser.entity.CrmUser" %>
+<%@ page import="com.lw.crm.crmname.entity.CrmName" %>
 <%
     ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
     ArrayList<CrmUser> crmUserList = (ArrayList) request.getAttribute("crmUserList");
+    ArrayList<CrmName> crmNameList = (ArrayList) request.getAttribute("crmNameList");
 %>
 <%
     java.util.Date date = new java.util.Date();
@@ -71,6 +73,8 @@
     <style>
         .modal {
             margin-top: 100px;
+            position: fixed;
+            top: -10%;
         }
 
         .nav {
@@ -113,11 +117,9 @@
         td {
             vertical-align: middle !important;
         }
-
-        .modal {
-            position: fixed;
-            top: -10%;
-        }
+        .stockitem{display: none;width:100%;}
+        .stockresult:hover{background-color:#d9edf7;}
+        .stockresult-ed{background-color:#d9edf7;}
     </style>
     <script>
         function saveTable() {
@@ -131,27 +133,24 @@
                         tableData.number = tdValue;
                     }
                     if (tdIndex == 2) {
-                        tableData.num = tdValue
-                    }
-                    if (tdIndex == 3) {
                         tableData.sid = tdValue
                     }
-                    if (tdIndex == 4) {
-                        tableData.title = tdValue
-                    }
-                    if (tdIndex == 5) {
+                    if (tdIndex == 3) {
                         tableData.name = tdValue
                     }
-                    if (tdIndex == 6) {//第0列是code
+                    if (tdIndex == 4) {
                         tableData.price = tdValue;
                     }
-                    if (tdIndex == 7) {
+                    if (tdIndex == 5) {
+                        tableData.num = tdValue
+                    }
+                    if (tdIndex == 6) {
                         tableData.type = tdValue
                     }
-                    if (tdIndex == 8) {
+                    if (tdIndex == 7) {
                         tableData.stock_info_id = tdValue
                     }
-                    if (tdIndex == 9) {
+                    if (tdIndex == 8) {
                         tableData.note = tdValue
                     }
                 });
@@ -159,14 +158,21 @@
             });
             return saveData;
         }
-
         function isValid() {
+            if (form1.title.value == "") {
+                LW.message.show("请输入采购名称");
+                return false;
+            }
             if (form1.uid.value == 0) {
                 LW.message.show("请选择申请人员");
                 return false;
             }
             if (form1.sid.value == 0) {
                 LW.message.show("请选择供应商");
+                return false;
+            }
+            if (form1.name.value == "") {
+                LW.message.show("请填写产品名称");
                 return false;
             }
             if (form1.type.value == 0) {
@@ -196,11 +202,6 @@
                 });
             }
         }
-
-        $(function () {
-            var para = JSON.stringify($('#form1').serializeObject()) ;
-            console.log(para);
-        })
         $.fn.serializeObject = function()
         {
             var o = {};
@@ -218,8 +219,6 @@
             return o;
         };
     </script>
-
-
 </head>
 <body>
 <%@ include file="../top.jsp" %>
@@ -307,45 +306,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="info col-md-1 text-right">产品类别:</td>
-                        <td class="col-md-11">
-                            <select
-                                    class="form-control" name="type" ng-model="userdata.sid">
-                                <option value="0">请选择产品类别</option>
-                                <option value="1">1类</option>
-                                <option value="2">2类</option>
-                                <option value="3">3类</option>
-                                <option value="4">4类</option>
-                                <option value="5">5类</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="info col-md-1 text-right">产品单价:</td>
-                        <td class="col-md-11">
-                            <input type="number" step="0.01" class="form-control" style="text-align: left;" name="price"
-                                   id="price" maxlength="10" nullmsg="产品单价不能为空" placeholder="请填写产品单价"
-                                   autocomplete="off" datatype="*1-10" errormsg="至少1个字符,最多10个字符!"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="info col-md-1 text-right">采购数量:</td>
-                        <td class="col-md-11">
-                            <input type="number" class="form-control " style="text-align: left;" name="num" id="num"
-                                   maxlength="10" nullmsg="采购数量不能为空" placeholder="请填写采购数量"
-                                   autocomplete="off" datatype="*1-10" errormsg="至少1个字符,最多10个字符!"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="info col-md-1 text-right">单位:</td>
-                        <td class="col-md-11">
-                            <select class="form-control">
-                                <option value="0"></option>
-                                <option value="1">件</option>
-                                <option value="2">箱</option>
-                                <option value="2">支</option>
-                                <option value="3">其他</option>
+                        <td class="info col-md-1 text-right">类型:</td>
+                        <td class="col-md-10">
+                            <select name="type" class="form-control" required datatype="select">
+                                <option value="0" selected="selected">请选择类型</option>
+                                <% for (int i = 0; i < crmNameList.size(); i++) { %>
+                                <option value="<%=crmNameList.get(i).getId() %>">
+                                    <%=crmNameList.get(i).getName() %>
+                                </option>
+                                <% } %>
                             </select>
                         </td>
                     </tr>
@@ -362,14 +331,12 @@
                     <strong>系统提示</strong> <span id="savemsg"></span>
                 </div>
                 <br/>
-                <div class="col-md-12 text-center">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="isValid(this);">保 存</button>
-                </div>
             </div>
         </div>
     </form>
     <div class="col-md-12 text-center" style="margin-bottom: 15px;">
-        <button class="btn btn-danger " data-toggle="modal" id="add"
+        <button type="button" class="btn btn-primary btn-lg" onclick="isValid(this);">保 存</button>
+        <button class="btn btn-danger btn-lg" data-toggle="modal" id="add"
                 data-target="#myModal">添加明细
         </button>
     </div>
@@ -379,11 +346,10 @@
         <tr id="bar" style="display: none;">
             <th>序号</th>
             <th>采购编号</th>
-            <th>采购数量</th>
             <th>供应商ID</th>
-            <th>标题</th>
             <th>产品名称</th>
             <th>采购产品单价</th>
+            <th>采购数量</th>
             <th>类型</th>
             <th>仓库id</th>
             <th>备注</th>
@@ -419,6 +385,25 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="info col-md-2 text-right">产品名称:</td>
+                            <td class="col-md-10" colspan="2">
+                                <div class="search">
+                                    <input type="text" name="name" class="form-control" id="nameitem"  value=""  autocomplete="off"
+                                           nullmsg="请输入名称" placeholder="搜索名称" errormsg="输入有误，请重新输入" datatype="*1-10">
+                                    <div id="auto_div"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <div class="stockitem" id="stockitem">
+                        </div>
+                        <tr>
+                            <td class="info col-md-2 text-right">单价:</td>
+                            <td class="col-md-10">
+                                <input type="text" class="form-control" id="priceitem" name="price" value=""
+                                       maxlength="50" placeholder="请输入采购产品单价" autocomplete="off" disabled>
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="info col-md-2 text-right">采购数量:</td>
                             <td class="col-md-10">
                                 <input type="text" class="form-control" id="numitem" name="num" value="" maxlength="50"
@@ -428,8 +413,7 @@
                         <tr>
                             <td class="info col-md-1 text-right"><span class="red">*</span>供应商名称:</td>
                             <td class="col-md-11">
-                                <select
-                                        class="form-control" name="sid" id="siditem">
+                                <select class="form-control" name="sid" id="siditem" disabled>
                                     <option value="0" selected="selected">请选择供应商</option>
                                     <!--动态从数据库查数据并组合成option  -->
                                     <%
@@ -445,33 +429,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="info col-md-2 text-right">标题:</td>
-                            <td class="col-md-10">
-                                <input type="text" class="form-control" id="titleitem" name="title" value=""
-                                       maxlength="50" placeholder="请输入标题" autocomplete="off">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="info col-md-2 text-right">产品名称:</td>
-                            <td class="col-md-10">
-                                <input type="text" class="form-control" id="nameitem" name="name" value=""
-                                       maxlength="50" placeholder="请输入产品名称" autocomplete="off">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="info col-md-2 text-right">采购产品单价:</td>
-                            <td class="col-md-10">
-                                <input type="text" class="form-control" id="priceitem" name="price" value=""
-                                       maxlength="50" placeholder="请输入采购产品单价" autocomplete="off">
-                            </td>
-                        </tr>
-                        <tr>
                             <td class="info col-md-2 text-right">类型:</td>
                             <td class="col-md-10">
-                                <select class="form-control" id="typeitem" name="type">
-                                    <option value="0">选择产品类型</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
+                                <select name="type" class="form-control" id="typeitem" required datatype="select" disabled>
+                                    <option value="0" selected="selected">请选择类型</option>
+                                    <% for (int i = 0; i < crmNameList.size(); i++) { %>
+                                    <option value="<%=crmNameList.get(i).getId() %>">
+                                        <%=crmNameList.get(i).getName() %>
+                                    </option>
+                                    <% } %>
                                 </select>
                             </td>
                         </tr>
@@ -617,15 +583,9 @@
     //拖动
     $(document).on("show.bs.modal", ".modal", function () {
         $(this).draggable({
-            handle: ".modal-header"   // 只能点击头部拖动
+            //handle: ".modal-header"
         });
-        $(this).css("overflow", "hidden"); // 防止出现滚动条，出现的话，你会把滚动条一起拖着走的
-    });
-</script>
-<script type="text/javascript">
-    $("#page_crmstockinoroutlogitem_list").parent().attr("class", "active");
-    $(function () {
-        LW.form.validate("form1");
+        $(this).css("overflow", "hidden");
     });
 </script>
 <script type="text/javascript">
@@ -640,11 +600,10 @@
                     result += "<tr id='item" + i + "'>";
                     result += "<td id='iTable" + i + "'>" + i + "</td>";
                     result += "<td id='numberTable" + i + "'>" + objAfter.itemNumber + "</td>";
-                    result += "<td id='numTable" + i + "'>" + objAfter.numitem + "</td>";
                     result += "<td id='sidTable" + i + "'>" + objAfter.siditem + "</td>";
-                    result += "<td id='titleTable" + i + "'>" + objAfter.titleitem + "</td>";
                     result += "<td id='nameTable" + i + "'>" + objAfter.nameitem + "</td>";
                     result += "<td id='priceTable" + i + "'>" + objAfter.priceitem + "</td>";
+                    result += "<td id='numTable" + i + "'>" + objAfter.numitem + "</td>";
                     result += "<td id='typeTable" + i + "'>" + objAfter.typeitem + "</td>";
                     result += "<td id='stockinfoidTable" + i + "'>" + objAfter.stockinfoiditem + "</td>";
                     result += "<td id='noteTable" + i + "'>" + objAfter.noteitem + "</td>";
@@ -658,8 +617,8 @@
             }
         }
     });
-    var i = sessionStorage.length == 0 ? 1 : sessionStorage.length + 1;
     $("#submititem").click(function () {
+        var i = sessionStorage.length == 0 ? 1 : sessionStorage.length + 1;
         var key = true;
         if ($("#numberitem").text() == "") {
             LW.message.show("采购编号不能为空");
@@ -673,11 +632,6 @@
         }
         if ($("#siditem").val() == 0) {
             LW.message.show("请选择供应商");
-            key = false;
-            return false;
-        }
-        if ($("#titleitem").val() == "") {
-            LW.message.show("请输入标题");
             key = false;
             return false;
         }
@@ -702,15 +656,13 @@
             return false;
         }
         if (key) {
-            //将数据缓存在sessionStorage中
             var item = {
                 i: i,
-                itemNumber: $('#itemNumber').val(),
-                numitem: $('#numitem').val(),
+                itemNumber: $('#numberitem').text(),
                 siditem: $('#siditem').val(),
-                titleitem: $('#titleitem').val(),
                 nameitem: $('#nameitem').val(),
                 priceitem: $('#priceitem').val(),
+                numitem: $('#numitem').val(),
                 typeitem: $('#typeitem').val(),
                 stockinfoiditem: $('#stockinfoiditem').val(),
                 noteitem: $('#noteitem').val()
@@ -721,11 +673,10 @@
             result += "<tr id='item" + i + "'>";
             result += "<td id='iTable" + i + "'>" + i + "</td>";
             result += "<td id='numberTable" + i + "'>" + objAfter.itemNumber + "</td>";
-            result += "<td id='numTable" + i + "'>" + objAfter.numitem + "</td>";
             result += "<td id='sidTable" + i + "'>" + objAfter.siditem + "</td>";
-            result += "<td id='titleTable" + i + "'>" + objAfter.titleitem + "</td>";
             result += "<td id='nameTable" + i + "'>" + objAfter.nameitem + "</td>";
             result += "<td id='priceTable" + i + "'>" + objAfter.priceitem + "</td>";
+            result += "<td id='numTable" + i + "'>" + objAfter.numitem + "</td>";
             result += "<td id='typeTable" + i + "'>" + objAfter.typeitem + "</td>";
             result += "<td id='stockinfoidTable" + i + "'>" + objAfter.stockinfoiditem + "</td>";
             result += "<td id='noteTable" + i + "'>" + objAfter.noteitem + "</td>";
@@ -734,7 +685,7 @@
             result += "<a href='javascript:void(0)' onclick='del(" + i + ")'>删除</a>";
             result += "</td>";
             result += "</tr>";
-            i++;
+            i=Number(i+1);
             $("#bar").show();
             $("#item").append(result);
             $("#tableitem input").val("");
@@ -827,6 +778,189 @@
         });
     }
 </script>
+<script type="text/javascript">
+    var name_list=[];
+    var price_list=[];
+    var type_list=[];
+    var sid_list=[];
+
+    //只请求一次
+    var key=false;
+    $("#add").click(function(){
+
+        $("#nameitem").click(function(){
+            var width= $(".search").width()-7;
+            $("#auto_div").css("width",width+"px");
+        });
+        if(!key)
+        {
+            $.ajax({
+                url:"/manage/crmsupplierprice/getsupplierpricelist",
+                type:"POST",
+                error:function(){
+                    LW.message.show("查询失败，请重新输入");
+                    $("#nameitem").val("");
+                    $("#nameitem").select();
+                },
+                success:function(data){
+                    if(data.code!=404)
+                    {
+                        for(var i=0;i<data.msg.length;i++)
+                        {
+                            name_list.push(data.msg[i].name);
+                            price_list.push(data.msg[i].price);
+                            type_list.push(data.msg[i].type);
+                            sid_list.push(data.msg[i].sid);
+                        }
+                        /* console.log(title_list);
+                        console.log(price_list);
+                        console.log(type_list); */
+                    }
+                    else
+                    {
+                        name_list.push("没有找到数据记录");
+                    }
+                }
+            });
+        }
+        key=true;
+    });
+    var old_value = "";
+    var highlightindex = -1;
+    function AutoComplete(auto, search, myname_list,myprice_list,mytype_list,mysid_list)
+    {
+        if ($("#" + search).val() != old_value || old_value == "")
+        {
+            var autoNode = $("#" + auto);   //缓存对象（弹出框）
+
+            var namelist = new Array();
+            var pricelist = new Array();
+            var typelist  = new Array();
+            var sidlist  = new Array();
+            var n = 0;
+            var j=0;
+            var k=0;
+            var m=0;
+            old_value = $("#" + search).val();
+            for (i in myname_list)
+            {
+                if (myname_list[i].indexOf(old_value) >= 0)
+                {
+                    namelist[n++] = myname_list[i];
+                    pricelist[j++] = myprice_list[i];
+                    typelist[k++] = mytype_list[i];
+                    sidlist[m++] = mysid_list[i];
+                }
+            }
+            if (namelist.length == 0)
+            {
+
+                //autoNode.hide();
+                autoNode.empty();
+                var result="";
+                result+="<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
+                result+="没有找到数据记录";
+                result+="</p>";
+                $("#auto_div").html(result);
+                return;
+            }
+            autoNode.empty();
+            for (i in namelist)
+            {
+                var wordNode = namelist[i];
+                var priceNode=pricelist[i];
+                var typeNode=typelist[i];
+                var sidNode=sidlist[i];
+                var newDivNode = $("<div>").attr("id", i).attr("data-price",priceNode).attr("data-type",typeNode).attr("data-sid",sidNode);    //设置每个节点的id值
+                newDivNode.attr("style", "font:14px/25px arial;height:30px;padding:0 8px;cursor: pointer;");
+                newDivNode.html(wordNode).appendTo(autoNode);
+                newDivNode.mouseover(function (){
+                    if (highlightindex != -1)
+                    {
+                        autoNode.children("div").eq(highlightindex).css("background-color", "white");
+                    }
+                    highlightindex = $(this).attr("id");
+                    $(this).css("background-color", "#ebebeb");
+                });
+                newDivNode.mouseout(function () {
+                    $(this).css("background-color", "white");
+                });
+                newDivNode.click(function () {
+                    var nameText = autoNode.hide().children("div").eq(highlightindex).text();
+                    var priceText = autoNode.hide().children("div").eq(highlightindex).attr("data-price");
+                    var typeText = autoNode.hide().children("div").eq(highlightindex).attr("data-type");
+                    var sidText = autoNode.hide().children("div").eq(highlightindex).attr("data-sid");
+                    highlightindex = -1;
+                    $("#" + search).val(nameText);
+                    $("#priceitem").val(priceText);
+                    $("#typeitem").val(typeText);
+                    $("#siditem").val(sidText);
+                    $("#numitem").select();
+                })
+                if (namelist.length > 0)
+                {
+                    autoNode.show();
+                }
+                else
+                {
+                    autoNode.show();
+                    var result="";
+                    result+="<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
+                    result+="没有找到数据记录";
+                    result+="</p>";
+                    $("#auto_div").html(result);
+                    highlightindex = -1;
+                }
+            }
+        }
+        document.onclick = function (e)
+        {
+            var e = e ? e : window.event;
+            var tar = e.srcElement || e.target;
+            if (tar.id != search)
+            {
+                if ($("#" + auto).is(":visible"))
+                {
+                    $("#" + auto).css("display", "none")
+                }
+            }
+        }
+    }
+    $(function () {
+        old_value = $("#nameitem").val();
+        $("#nameitem").focus(function () {
+            if ($("#nameitem").val() == "") {
+                AutoComplete("auto_div", "nameitem", name_list,price_list,type_list,sid_list);
+
+            }
+        });
+        $("#nameitem").keyup(function () {
+            AutoComplete("auto_div", "nameitem", name_list,price_list,type_list,sid_list);
+        });
+    });
+</script>
+<style type="text/css">
+    .search
+    {
+        left: 0;
+        position: relative;
+    }
+    #auto_div
+    {
+        width:450px;
+        display: none;
+        border: 1px #74c0f9 solid;
+        background: #FFF;
+        position: absolute;
+        top: 34px;
+        left: 0;
+        color: #323232;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px #888888;
+        height: 200px;
+        overflow: auto;
+    }
+</style>
 <%@ include file="../foot.jsp" %>
 </body>
 </html>

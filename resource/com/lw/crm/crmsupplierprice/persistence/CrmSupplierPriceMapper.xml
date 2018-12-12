@@ -185,7 +185,7 @@
                 sid = #{sid},
             </if>
             <if test=" snumber != null and snumber !=''">
-                snumber = #{snumber}
+                snumber = #{snumber},
             </if>
             <if test=" unit != null and unit !=''">
                 unit = #{unit},

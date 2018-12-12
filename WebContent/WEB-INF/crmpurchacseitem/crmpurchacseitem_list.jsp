@@ -103,10 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<td>${item.uid}</td>
 								<td>${item.price}</td>
 								<td>${item.note}</td>
-								<td>
-									<c:if test="${item.type==0}">0</c:if>
-									<c:if test="${item.type==1}">1</c:if>
-								</td>
+								<td>${item.type}</td>
 								<td>${item.stock_info_id}</td>
 								<td>
 					               <a href="<%=basePath%>manage/crmpurchacseitem/${item.id}.html">编辑</a>  <a href="javascript:void(0)" onclick="LW.crmpurchacseitem.del(${item.id})" >删除</a></td>

@@ -76,7 +76,7 @@
     </ul>
 </div>
 <div class="rightContainer">
-    <form class="form-horizontal" role="form" method="post" action="<%=basePath%>manage/crmsupplierprice/post.html" id="form1" name="form1">
+    <form class="form-horizontal" role="form" method="post" action="<%=basePath%>manage/crmsupplierprice/edit.html" id="form1" name="form1">
         <input type="hidden" name="id" value="${crmSupplierPrice.id}">
         <div class="list-group-item active glyphicon glyphicon-chevron-up" data-toggle="collapse"
              data-parent="#accordion" href="#panelInfo">修改供应商商品报价信息
