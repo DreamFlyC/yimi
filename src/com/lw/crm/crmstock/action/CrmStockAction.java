@@ -168,11 +168,7 @@ public class CrmStockAction extends BaseAction {
         session.setAttribute("fileName", fileName);
         String sessionId = session.getId();
         System.err.println("sessionId:" + sessionId);
-        if (fileName != null) {
-            return new JsonMsgStatusEntity(true, "success", fileName);
-        } else {
-            return new JsonMsgStatusEntity(false, "fail", null);
-        }
+        return new JsonMsgStatusEntity(true, "success", fileName);
     }
 
     @RequestMapping(value = "/crmstock_show")

@@ -13,10 +13,11 @@
 		<parameter property="name" resultMap="name"/>
 		<parameter property="date" resultMap="date"/>
 		<parameter property="uid" resultMap="uid"/>
-		<parameter property="price" resultMap="price"/>
+		<parameter property="price" resultMap="price" />
 		<parameter property="note" resultMap="note"/>
 		<parameter property="type" resultMap="type"/>
 		<parameter property="stock_info_id" resultMap="stock_info_id"/>
+		<parameter property="snumber" resultMap="snumber"/>
 	</parameterMap>
 	
 	<resultMap type="CrmPurchacseItem" id="CrmPurchacseItemResultMap">
@@ -32,27 +33,34 @@
 		<result property="note" column="note"/>
 		<result property="type" column="type"/>
 		<result property="stock_info_id" column="stock_info_id"/>
+		<result property="snumber" column="snumber"/>
 	</resultMap>
 	
-	<sql id="CrmPurchacseItemColumn">id,number,num,sid,title,name,date,uid,price,note,type,stock_info_id</sql>
+	<sql id="CrmPurchacseItemColumn">id,number,num,sid,title,name,date,uid,price,note,type,stock_info_id,snumber</sql>
 	<insert id="save" parameterMap="CrmPurchacseItemparaMap" keyProperty="id" useGeneratedKeys="true">
     	<![CDATA[
-    		insert into crm_purchacse_item(number,num,sid,title,name,date,uid,price,note,type,stock_info_id) 
-    		values(#{number},#{num},#{sid},#{title},#{name},now(),#{uid},#{price},#{note},#{type},#{stock_info_id});
+    		insert into crm_purchacse_item(number,num,sid,title,name,date,uid,price,note,type,stock_info_id,snumber)
+    		values(#{number},#{num},#{sid},#{title},#{name},now(),#{uid},#{price},#{note},#{type},#{stock_info_id},#{snumber});
     	]]>
 	</insert>
 	
 	<select id="getList" resultMap="CrmPurchacseItemResultMap" parameterType="map">
-		SELECT <include refid="CrmPurchacseItemColumn"/> FROM crm_purchacse_item  where 1=1
-		<if test="id!=null">and id=#{id}</if>
+		SELECT <include refid="CrmPurchacseItemColumn"/> FROM crm_purchacse_item
+		<where>
+			<if test="id!=null">and id=#{id}</if>
+			<if test="number!=null">and number=#{number}</if>
+		</where>
 		 order by id desc
 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
 	</select>
 	
 	<select id="getCount" resultType="int">
 	   select count(1) from crm_purchacse_item
-	   <if test="id!=null">and id=#{id}</if>
-		 order by id desc
+		<where>
+		   	<if test="id!=null">and id=#{id}</if>
+			<if test="number!=null">and number=#{number}</if>
+		</where>
+		order by id desc
 	</select>
 	
 	<select id="getById" resultMap="CrmPurchacseItemResultMap" parameterType="int">

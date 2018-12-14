@@ -1,19 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.*" %>
-<%@ page import="java.text.*"%>
-<%@ page import="java.lang.String"%>  
+<%@ page import="java.text.DateFormat"%>
+<%@ page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier"%>
-<%@ page import="com.lw.crm.crmuser.entity.CrmUser"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.UUID" %>
-<%
-		ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
-		ArrayList<CrmUser> crmUserList = (ArrayList) request.getAttribute("crmUserList");
-	%>
-
 <%
 java.util.Date date = new java.util.Date();
 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -82,12 +70,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				color: #c9d0c6;
 				position: absolute;
 				top: 5px;
-				right: 8px;
+				right: 25px;
 				font-size: 24px;
 				cursor:pointer;
 			}
 			.sup-xx:hover {
 				color: #a3a9a0;
+			}
+			.address{
+				width: 6%;
+				float: left;
+				font-size: 14px;
+				line-height: 34px;
 			}
 		</style>
 	</head>
@@ -106,10 +100,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="main">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title text-center" style="position: relative;">
-							<input type="text" class="form-control" id="title" placeholder="在这里填写采购名称" autocomplete="off" />
-							<i class="fa fa-times-circle sup-xx" id="keyword1" aria-hidden="true"></i>
+						<h3 class="panel-title" style="position: relative;">
+							<div class="col-md-12">
+								<%
+									SimpleDateFormat sdf1 = new SimpleDateFormat("YYYYMMddhhmm");
+									Date now1 = new Date();
+									int random = (int) (Math.random() * 10000 + 1);
+									String number = sdf1.format(now1) + random;
+								%>
+								<div class="address">
+									<label>采购编号：</label>
+								</div>
+								<div style="width: 94%;float: left;">
+									<label class="form-control" id="number" disabled><%=number%></label>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="address">
+									<label>采购名称：</label>
+								</div>
+								<div style="width: 94%;float: left;">
+									<input type="text" class="form-control" id="title" placeholder="在这里填写采购名称" autocomplete="off" />
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-top: 5px;">
+								<div class="address">
+									<label>收货地址：</label>
+								</div>
+								<div style="width: 94%;float: left;">
+									<input type="text" placeholder="在这里填写收货地址" name="address" id="address" class="form-control" autocomplete="off"  />
+								</div>
+							</div>
 						</h3>
+						<div class="cls"></div>
 					</div>
 					<table class="table">
 						<tr>
@@ -142,7 +165,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 								</td>
 								<td style="position: relative;">
-									<input type="text" class="form-control note" maxlength="20" datatype="*0-20" placeholder="这里可以填写备注信息" autocomplete="off" />
+									<input type="text" class="form-control note" maxlength="20" datatype="*0-20" placeholder="这里可以填写备注信息" autocomplete="off"  />
 								</td>
 							</tr>
 						</c:forEach>
@@ -162,13 +185,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<div class="cls"></div>
     	<script type="text/javascript">
 			$("#page_crmpurchacse_list").parent().attr("class","active");
-			$(function(){
-			    LW.form.validate("form1");
-                $("#keyword1").click(function(){
-                    $("#title").val("");
-                });
-			});
-
 			var count=0;
             function decr(id,price) {
                 var num=Number($("#num"+id).val());
@@ -221,6 +237,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    LW.message.show("采购名称还没有填写哦");
                     return false;
 				};
+                if($("#address").val()==""){
+                    key=false;
+                    LW.message.show("收货地址不能为空");
+                    return false;
+                };
+                if($("#number").text()==""){
+                    key=false;
+                    LW.message.show("非法的订单");
+                    return false;
+                };
 				$(".btn-num").each(function () {
                     if ($(this).val() == 0) {
                         LW.message.show("有未选择数量的订单");
@@ -239,12 +265,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                            	nums: nums,
 							notes:notes,
 							title:$("#title").val(),
-
-
+							number:$("#number").text(),
+							address:$("#address").val(),
                         },
                         cache: false,
 						success: function (data) {
-							if (!data) {
+						    console.log(data);
+							if (data=="false") {
 								console.log(data);
                                 LW.message.show("结算失败！");
 							} else {

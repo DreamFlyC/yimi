@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -27,10 +29,12 @@ public class CrmPurchacseItemAction extends BaseAction{
 	private ICrmPurchacseItemService crmPurchacseItemService;
 	
 	@RequestMapping("")
-	public String list(){
+	public String list(String number){
 		instantPage(20);
-		List<CrmPurchacseItem> list=crmPurchacseItemService.getList();
-		int total=crmPurchacseItemService.getCount();
+		Map<String,Object> param=new HashMap<>();
+		param.put("number",number);
+		List<CrmPurchacseItem> list=crmPurchacseItemService.getList(param);
+		int total=crmPurchacseItemService.getCount(param);
 		Pager pager=new Pager(super.getPage(),super.getRows(),total);
 		pager.setDatas(list);
 		getRequest().setAttribute("pager",pager);

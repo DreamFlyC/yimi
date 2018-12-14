@@ -23,7 +23,6 @@ import java.util.List;
  */
 @Service("CrmPurchacseItemServiceImpl")
 @Transactional(rollbackFor = Exception.class)
-//@ActionModel(description="采购明细管理")
 public class CrmPurchacseItemServiceImpl extends BaseServiceImpl<CrmPurchacseItem> implements ICrmPurchacseItemService {
 
     @Autowired

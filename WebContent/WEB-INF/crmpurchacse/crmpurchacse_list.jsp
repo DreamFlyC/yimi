@@ -165,7 +165,10 @@ table thead tr th, table tbody tr td {
 								<!--对总价保留两位小数  -->
 								<fmt:formatNumber value="${crmPurchacse.price*crmPurchacse.num}" pattern="#.00#"/> 元</td>
 								<td >${crmPurchacse.note}</td>
-								<td ><a href="manage/crmpurchacse/${crmPurchacse.id}.html">修改订单</a></td>
+								<td >
+									<a href="manage/crmpurchacse/${crmPurchacse.id}.html">修改订单</a>
+									<a href="manage/crmpurchacse/showitem.html?number=${crmPurchacse.number}">查看明细</a>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:when>

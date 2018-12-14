@@ -65,29 +65,23 @@ $(function() {
 					window.location.href = "manage/crmsupplierprice/export?ids="
 					+ ids.substring(0, ids.length - 1); //去掉最后一个逗号
 					$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
-				}
+				}else {
+                    $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+                    return false;
+                }
 			});
-			
-		} else if (window.confirm('要导出全部数据吗？')) {
-			//LW.message.show("确定");
-			window.location.href = "manage/crmsupplierprice/export";
-		} else {
-			//LW.message.show("取消");
-			$("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
-			return false;
+		}
+		if(ids=="" || ids ==null){
+            LW.message.confirm("id","要导出全部数据吗",function(r){
+                if(r) {
+                    window.location.href = "manage/crmsupplierprice/export";
+                }
+            });
 		}
 	});
 });
 </script>
 	<script type="text/javascript">
-	function isValid() {
-		/* if (form1.number.value == "" && form1.title.value == ""
-				&& form1.snumber.value == "" && form1.supplier.value == "") {
-			LW.message.show("请输入查询条件！");
-			form1.number.select();
-			return false;
-		} */
-	}
 	$(function(){
 		$("#keyword1").click(function(){
 			$("#keyword").val("");
@@ -105,30 +99,14 @@ $(function() {
                     ids += $(this).val() + ",";
                 });
                 if (ids != "") {
-                    if (window.confirm('你确定吗？')) {
-                       httpPost('manage/crmpurchacse/create_order', {ids :ids.substring(0, ids.length - 1)});
-					   function httpPost(URL, PARAMS) {
-						   var temp = document.createElement("form");
-						   temp.action = URL;
-						   temp.method = "post";
-						   temp.style.display = "none";
-
-						   for (var x in PARAMS) {
-							   var opt = document.createElement("textarea");
-							   opt.name = x;
-							   opt.value = PARAMS[x];
-							   temp.appendChild(opt);
-						   }
-
-						   document.body.appendChild(temp);
-						   temp.submit();
-						   return temp;
-					   }
-						//window.location.href="manage/crmpurchacse/create_order?ids="+ ids.substring(0, ids.length - 1);
-                    } else {
-                        $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
-                        return false;
-                    }
+                    LW.message.confirm("id","确定订单无误后点击确认",function(r){
+                        if(r){
+                            httpPost('manage/crmpurchacse/create_order', {ids :ids.substring(0, ids.length - 1)});
+                        }else {
+                            $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
+                            return false;
+						}
+                    });
                 } else {
                     LW.message.show("请勾选您要采购的商品");
                     $("input[type='checkbox']").attr("checked", false); //将所有的checkbox置为未选中状态
@@ -136,6 +114,23 @@ $(function() {
                 }
             });
         });
+        function httpPost(URL, PARAMS) {
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                temp.appendChild(opt);
+            }
+
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
 	</script>
 </head>
 <body>

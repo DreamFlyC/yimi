@@ -112,8 +112,6 @@ public class CrmStockInorOutLogItemAction extends BaseAction {
 		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
 		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
 
-		List<DutyUsername> dutyUsernameList = dutyUsernameService.getList();
-
 		// 判断cookie有没有值,没有则生成number
 		String number = "";
 		Cookie[] cookies = request.getCookies();

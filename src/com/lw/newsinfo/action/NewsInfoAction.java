@@ -115,7 +115,7 @@ public class NewsInfoAction extends BaseAction{
 	@RequestMapping(value="/del/{id}")
 	public String delyiminews(HttpServletResponse response,@PathVariable("id") int id)
 	{
-		int count=newsInfoService.del(id);
+		newsInfoService.del(id);
 		return "redirect:/yiminews";
 	}
 	

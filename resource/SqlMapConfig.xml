@@ -21,7 +21,7 @@
 		<typeAlias type="com.lw.crm.crmname.entity.CrmName" alias="CrmName"/>
 		<typeAlias type="com.lw.crm.crmproduct.entity.CrmProduct" alias="CrmProduct"/>
 		<typeAlias type="com.lw.crm.crmpurchacse.entity.CrmPurchacse" alias="CrmPurchacse"/>
-		 <typeAlias type="com.lw.crm.crmpurchacseitem.entity.CrmPurchacseItem" alias="CrmPurchacseItem"/>
+		<typeAlias type="com.lw.crm.crmpurchacseitem.entity.CrmPurchacseItem" alias="CrmPurchacseItem"/>
 		<typeAlias type="com.lw.crm.crmstock.entity.CrmStock" alias="CrmStock"/>
 		<typeAlias type="com.lw.crm.crmsupplier.entity.CrmSupplier" alias="CrmSupplier"/>
 		<typeAlias type="com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice" alias="CrmSupplierPrice"/>

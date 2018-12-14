@@ -31,7 +31,7 @@ import java.util.List;
  * create by: CZP
  * description:采购管理
  * create time: 10:17 2018/11/27
- *  * @Param: null
+ * @Param: null
  * @return 
  */
 @Controller("CrmPurchacseAction")
@@ -43,8 +43,6 @@ public class CrmPurchacseAction extends BaseAction{
 	private ICrmUserService crmUserService;
 	@Autowired
 	private ICrmSupplierService crmSupplierService;
-//	@Autowired
-//	private IDutyUsernameService dutyUsernameService;
 	@Autowired
 	private IShiroActionUsersGroupService shiroActionUsersGroupService;
 	@Autowired
@@ -54,19 +52,19 @@ public class CrmPurchacseAction extends BaseAction{
 	
 	@RequestMapping(value= {"","/crmpurchacse_list"})
 	public String list(HttpServletRequest request,HttpServletResponse response){
-		instantPage(20); //20代表一页显示20条数据
-		List<CrmPurchacse> list=crmPurchacseService.getList();  //获取列表
-		int total=crmPurchacseService.getCount();   //获取总数
+		instantPage(20);
+		List<CrmPurchacse> list=crmPurchacseService.getList();
+		int total=crmPurchacseService.getCount();
 		Pager pager=new Pager(super.getPage(),super.getRows(),total);
 		pager.setDatas(list);
-		getRequest().setAttribute("pager",pager);  //绑定数据到前台
+		getRequest().setAttribute("pager",pager);
 		// 清除cookie为pid的值
 		Cookie[] cookies = request.getCookies();
 		if (null!=cookies && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("pid")) {
+				if ("pid".equals(cookie.getName())) {
 					cookie.setValue(null);
-					cookie.setMaxAge(0);// 销毁cookie
+					cookie.setMaxAge(0);
 					cookie.setPath("/");
 					response.addCookie(cookie);
 				}
@@ -155,12 +153,13 @@ public class CrmPurchacseAction extends BaseAction{
 	@RequestMapping(value = "/do_order",method = RequestMethod.POST)
 	@ResponseBody
 	public boolean doOrder(@RequestParam(value = "ids")int[] ids,@RequestParam(value = "nums")int[] nums,
-						   @RequestParam(value = "notes",required = false)String[] notes,
-						   @RequestParam(value = "title")String title){
-		if(ids.length<=0 || ids.length<=0 || StringUtils.isBlank(title)){
+		@RequestParam(value = "notes",required = false)String[] notes,@RequestParam(value = "title")String title,
+						   @RequestParam(value = "number")String number,@RequestParam(value = "address")String address){
+		if(ids.length<=0 || nums.length<=0 || StringUtils.isEmpty(title) || StringUtils.isEmpty(number)){
 			return false;
 		}
-		return crmPurchacseService.saveOrder(ids,nums,notes,title);
+
+		return crmPurchacseService.saveOrder(ids,nums,notes,title,number,address);
 	}
 	
 	/*
@@ -190,21 +189,21 @@ public class CrmPurchacseAction extends BaseAction{
 		Cookie[] cookies = request.getCookies();
 		if (null!=cookies && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("pid")) {
+				if ("pid".equals(cookie.getName())) {
 					number = cookie.getValue();
 				}
 			}
 		}
-		if (number == "") {
+		if ("".equals(number)) {
 			// 生成number
-			SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddhhmm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
 			Date now = new Date();
 			int random = (int) (Math.random() * 10000 + 1);
 			number = sdf.format(now) + random;
 
 			// 生成cookie
 			Cookie cookie = new Cookie("pid", number.trim());
-			cookie.setMaxAge(30 * 60);// 设置为30min
+			cookie.setMaxAge(30 * 60);
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		}
@@ -213,4 +212,19 @@ public class CrmPurchacseAction extends BaseAction{
 
 		return "/WEB-INF/crmpurchacseitem/crmpurchacseitem_addtwo";
 	}
+
+	/*
+	 * create by: CZP
+	 * description:查看明细
+	 * create time: 11:54 2018/12/13
+	 * @return
+	 */
+	@RequestMapping(value = "/showitem")
+	public String showItem(String number){
+		return "/manage/crmpurchacseitem.html?number="+number;
+	}
+
+
+
+
 }

@@ -5,12 +5,13 @@ import com.lw.crm.crmsupplier.entity.CrmSupplier;
 import com.lw.crm.crmunit.entity.CrmUnit;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @SuppressWarnings("serial")
 public class CrmSupplierPrice implements Serializable{
 	private int id;     //库存id
-	private double price;
+	private BigDecimal price;
 	private int type;  //产品类型
 	private String name;   //产品id
 	private Date date;  //添加时间
@@ -63,11 +64,11 @@ public class CrmSupplierPrice implements Serializable{
 		this.id = id;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

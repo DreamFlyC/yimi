@@ -171,7 +171,7 @@
 	</insert>
 	
 	<!--获取记录列表  -->
-	<select id="getList" parameterType="CrmPurchacse" resultMap="CrmPurchacseResultMap">
+	<select id="getList" parameterType="map" resultMap="CrmPurchacseResultMap">
 	select
 		<include refid="CrmPurchacseColumn" />
 		from crm_purchacse  where 1=1

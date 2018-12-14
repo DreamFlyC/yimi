@@ -4,6 +4,7 @@ import com.lw.crm.crmsupplier.entity.CrmSupplier;
 import com.lw.crm.crmuser.entity.CrmUser;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -16,7 +17,7 @@ public class CrmPurchacse implements Serializable{
 	private String name;    //产品名称
 	private Date date;      //申请日期
 	private String uid;     //申请人ID
-	private Double price;   //采购产品单价
+	private BigDecimal price;   //采购产品单价
 	private String note;   //备注
 	private String address; //地址
 	private Integer is_approval; //审批
@@ -119,10 +120,10 @@ public class CrmPurchacse implements Serializable{
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	

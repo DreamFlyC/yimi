@@ -11,6 +11,7 @@ import jxl.Workbook;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ImportExcelUtil {
 							obj.setUnit(result);
 							break;
 						case 4:
-							obj.setPrice(Double.parseDouble(result));
+							obj.setPrice(BigDecimal.valueOf(Double.parseDouble(result)));
 							break;
 						case 5:
 							obj.setId(Integer.parseInt(result));

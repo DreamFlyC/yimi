@@ -779,20 +779,8 @@ public class dutyAction extends BaseAction {
         user.put("dkey", 3);
         user.put("stime", stime);
         user.put("etime", etime);
-        List<DutyUser> dutyUserList = dutyUserService.getListByUid(user);
         // 根据uid查询log表的最后一条记录，返回一个对象
         if (userid != 0) {
-            //System.out.println("进入判断的userid为：" + userid);
-			/*DutyLog obj = dutyLogService.getLast(userid);
-			if (obj != null) {
-				date = obj.getDate();
-			//	System.out.println("最后更新时间为：" + date + "-------");
-			}
-			for (int i = 0; i < dutyUserList.size(); i++) {
-				getRequest().setAttribute("dutyUserList", dutyUserList);
-				getRequest().setAttribute("date", date);
-			//	System.out.println("时间为：" + date + "----------");
-			}*/
             // 信息提醒,根据当前uid查询当前dkey=3的，返回一个列表
             List<DutyUser> dutyUserDkeyList = dutyUserService.getListByDkey(user);
             for (int i = 0; i < dutyUserDkeyList.size(); i++) {

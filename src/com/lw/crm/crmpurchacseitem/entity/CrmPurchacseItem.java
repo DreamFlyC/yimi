@@ -11,7 +11,7 @@ import java.util.Date;
 public class CrmPurchacseItem implements Serializable{
 	private int id;
 	private String number;
-	private String num;
+	private int num;
 	private String sid;
 	private String title;
 	private String name;
@@ -21,6 +21,16 @@ public class CrmPurchacseItem implements Serializable{
 	private String note;
 	private int type;
 	private int stock_info_id;
+	private String snumber;
+
+	public String getSnumber() {
+		return snumber;
+	}
+
+	public void setSnumber(String snumber) {
+		this.snumber = snumber;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -33,10 +43,10 @@ public class CrmPurchacseItem implements Serializable{
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public String getNum() {
+	public int getNum() {
 		return num;
 	}
-	public void setNum(String num) {
+	public void setNum(int num) {
 		this.num = num;
 	}
 	public String getSid() {

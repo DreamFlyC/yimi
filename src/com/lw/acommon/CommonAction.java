@@ -15,9 +15,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @Desc 
@@ -30,7 +27,7 @@ public class CommonAction {
 	private static int type=0;
 	
 	@RequestMapping(value="/ablums")
-	public String View() {
+	public String view() {
 		return "/ablums";
 	}
 	
@@ -42,7 +39,7 @@ public class CommonAction {
 	 */
 	@RequestMapping(value="/createloginqrcode")
 	//public static void main(String[] args) throws IOException{
-		public void CreateLoginQrcode(HttpServletResponse response) throws IOException{
+		public void createLoginQRCode(HttpServletResponse response) throws IOException{
 		
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
@@ -65,8 +62,6 @@ public class CommonAction {
 		x.setQrcodeEncodeMode('B');
         //版本号  1-40
 		x.setQrcodeVersion(v);
-		
-        String uuid = UUID.randomUUID().toString().replaceAll("-","");
 
 		//内容信息
 		String qrData="http://192.168.1.144:8848/Introduction_of_dishes/access_login.html";
@@ -115,11 +110,9 @@ public class CommonAction {
 	
 	@RequestMapping(value="dologin")
 	@ResponseBody
-	public void doLogin(HttpServletResponse response,int token) {
+	public void doLogin(HttpServletResponse response) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		System.err.println("登录成功！");
-		type=token;
-		Map map=new HashMap();
 	}
 	
 	@RequestMapping(value="login_success")

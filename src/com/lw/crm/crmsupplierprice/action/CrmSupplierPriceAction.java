@@ -151,11 +151,7 @@ public class CrmSupplierPriceAction extends BaseAction {
         String fileName = Upload.upload(request, file, path);
         HttpSession session = request.getSession();
         session.setAttribute("fileName", fileName);
-        if (fileName != null) {
-            return new JsonMsgStatusEntity(true, "success", fileName);
-        } else {
-            return new JsonMsgStatusEntity(false, "fail", null);
-        }
+        return new JsonMsgStatusEntity(true, "success", fileName);
     }
 
     @RequestMapping(value = "/crmsupplierprice_show")

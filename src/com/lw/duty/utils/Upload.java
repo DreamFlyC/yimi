@@ -3,14 +3,13 @@
  */
 package com.lw.duty.utils;
 
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author CZP
@@ -35,10 +34,10 @@ public class Upload {
 	           File filepath = new File(path,filename);
 	           //判断路径是否存在，如果不存在就创建一个
 	           if (!filepath.getParentFile().exists()) { 
-	               filepath.getParentFile().mkdirs();
+	              if(filepath.getParentFile().mkdirs()){
+					  file.transferTo(new File(path + File.separator + filename));
+				  }
 	           }
-	           //将上传文件保存到一个目标文件当中
-	          file.transferTo(new File(path + File.separator + filename));
 	          return filename;
 		       } else {
 		           return "";
