@@ -63,13 +63,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	</div>
 		<div class="rightContainer">
 		<script src="<%=basePath%>resources/My97DatePicker/WdatePicker.js"></script>
-			
-				<button class="btn btn-primary" onclick="javascript:window.location.reload()">
-					<span class="glyphicon glyphicon-refresh"></span> 刷新
-				</button>
-				<button class="btn btn-primary" onclick="LW.location.forward('<%=basePath%>manage/crmpurchacseitem/post.html')">
-					<span class="glyphicon glyphicon-plus"></span> 新增
-				</button>	
+			<button class="btn btn-primary" onclick="javascript:window.history.go(-1)">
+				<span class="glyphicon glyphicon-refresh"></span> 返回
+			</button>
+			<button class="btn btn-primary" onclick="javascript:window.location.reload()">
+				<span class="glyphicon glyphicon-refresh"></span> 刷新
+			</button>
+			<button class="btn btn-primary" onclick="LW.location.forward('<%=basePath%>manage/crmpurchacseitem/post.html')">
+				<span class="glyphicon glyphicon-plus"></span> 新增
+			</button>
 			<div class="cls"></div>
 			<table fit="true" fitColumns="true" class="table table-striped table-hover table-bordered">
 				<thead>
@@ -112,6 +114,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</c:forEach>
 				</tbody>
 			</table>
+			<c:if test="${pager.datas.size()<=0||pager.datas.size()==null}">
+				<div style="text-align: center;">
+					<p>没有找到数据记录</p>
+				</div>
+			</c:if>
 			<nav>
 				<span>当前${pager.pageNo}/${pager.totalPage} 共${pager.totalCount}条数据</span>
 				<div class="btn-group pull-right" role="group">

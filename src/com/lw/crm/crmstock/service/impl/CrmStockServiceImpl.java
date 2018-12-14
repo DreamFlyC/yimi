@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service("CrmStockServiceImpl")
-@Transactional(rollbackFor = {Exception.class})
 public class CrmStockServiceImpl extends BaseServiceImpl<CrmStock> implements ICrmStockService{
 	@Autowired
 	private CrmStockMapper crmStockMapper;
@@ -45,4 +44,20 @@ public class CrmStockServiceImpl extends BaseServiceImpl<CrmStock> implements IC
     public List<CrmStock> getStatisticsByType(Map map) {
         return crmStockMapper.getStatisticsByType(map);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+	public int test(){
+    	CrmStock crmStock=new CrmStock();
+    	crmStock.setSnumber("1111");
+		crmStock.setTitle("test");
+		crmStock.setPrice(6.56);
+    	crmStock.setType(1);
+		crmStock.setUid(1);
+		crmStock.setStocknum("22");
+    	crmStockMapper.save(crmStock);
+    	int i=1/0;
+		crmStockMapper.editById(crmStock);
+		return i;
+	}
 }

@@ -37,8 +37,6 @@ public class CrmAction extends BaseAction {
 	private ICrmService crmService;
 	@Autowired
 	private ICrmStockService crmStockService;
-	/*@Autowired
-	private ICrmBuyInfoService crmBuyInfoService;*/
 	@Autowired
 	private ICrmNameService crmNameService;
 	@Autowired
@@ -51,7 +49,6 @@ public class CrmAction extends BaseAction {
 	private ICrmHistoryService crmHistoryService;
 	@Autowired
 	private  ICrmUnitService crmUnitService;
-	// private static ExportExcelForCrm eeu = new ExportExcelForCrm();
 
 	// 1产品管理
 	@RequestMapping(value = "/crm_list")
@@ -348,4 +345,39 @@ public class CrmAction extends BaseAction {
 		pager.setDatas(crmHistoryList);
 		return "/WEB-INF/crm/crm_history";
 	}
+	
+	/*
+	 * create by: CZP
+	 * description:测试事务
+	 * create time: 15:16 2018/12/14
+	 * @return 
+	 */
+	@RequestMapping(value = "/test.do")
+	public int test(){
+		return crmStockService.test();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

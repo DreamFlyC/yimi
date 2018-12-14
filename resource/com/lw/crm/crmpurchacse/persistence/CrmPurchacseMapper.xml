@@ -5,15 +5,11 @@
 <parameterMap type="CrmPurchacse" id="CrmPurchacseMap">
 <parameter property="id" resultMap="id" />
 <parameter property="number" resultMap="number" />
-<parameter property="num" resultMap="num" />
-<parameter property="sid" resultMap="sid" />
 <parameter property="title" resultMap="title" />
-<parameter property="name" resultMap="name" />
 <parameter property="date" resultMap="date" />
 <parameter property="uid" resultMap="uid" />
 <parameter property="price" resultMap="price" />
 <parameter property="note" resultMap="note" />
-<parameter property="type" resultMap="type" />
 <parameter property="ids" resultMap="ids" />
 <parameter property="address" resultMap="address" />
 <parameter property="is_approval" resultMap="is_approval" />
@@ -22,15 +18,11 @@
 <resultMap type="CrmPurchacse" id="CrmPurchacseResultMap">
 	<id property="id" column="id" />
 	<result property="number" column="number" />
-	<result property="num" column="num" />
-	<result property="sid" column="sid" />
 	<result property="title" column="title" />
-	<result property="name" column="name" />
 	<result property="date" column="date" />
 	<result property="uid" column="uid" />
 	<result property="price" column="price" />
 	<result property="note" column="note" />
-	<result property="type" column="type" />
 	<result property="ids" column="ids" />
 	<result property="address" column="address"/>
 	<result property="is_approval" column="is_approval" />
@@ -39,24 +31,16 @@
 </resultMap>
 
 	<sql id="CrmPurchacseColumn">
-		id,number,num,sid,title,name,date,uid,price,note,type,address,is_approval
+		id,number,title,date,uid,price,note,type,address,is_approval
 	</sql>
 
 <!--查询信息总条数 -->
 	<select id="getCount" resultType="int" parameterType="String">
 		select count(1) from crm_purchacse
 		<where>
-			1 = 1
 			<if test="number != null and number != ''">
 				<bind name="pattern" value="'%' + number + '%'" />
 				AND number LIKE #{pattern}
-			</if>
-			<if test="name != null and name != ''">
-				<bind name="pattern" value="'%' + name + '%'" />
-				AND name LIKE #{pattern}
-			</if>
-			<if test="type != null and type !=0">
-				AND type=#{type}
 			</if>
 		</where>
 	</select>
@@ -67,14 +51,9 @@
 		<include refid="CrmPurchacseColumn" />
 		from crm_purchacse  
 		<where>
-			1 = 1
 			<if test="number != null and number != ''">
 				<bind name="pattern" value="'%' + number + '%'" />
 				AND number LIKE #{pattern}
-			</if>
-			<if test="name != null and name != ''">
-				<bind name="pattern" value="'%' + name + '%'" />
-				AND name LIKE #{pattern}
 			</if>
 			<if test="type != null and type !=0 ">
 				AND type = #{type}
@@ -83,15 +62,6 @@
 		 order by id desc limit #{currentpage},#{pagesize} 
 	</select>
 
-	<!--保存  -->
-	<!--<insert id="save" parameterType="CrmPurchacse"
-		keyColumn="id" useGeneratedKeys="true">
-		<![CDATA[
-    		insert into crm_purchacse
-    		(number,name,price,num,note,date,uid,sid,type,title)
-    		values(#{number},#{name},#{price},#{num},#{note},#{date},#{uid},#{sid},#{type},#{title});
-    	]]>
-	</insert>-->
 
 	<insert id="save" parameterType="CrmPurchacse" keyColumn="id" useGeneratedKeys="true">
 		insert into crm_purchacse
@@ -99,26 +69,14 @@
 			<if test="number != null and number != ''">
 				number,
 			</if>
-			<if test="name != null and name != ''">
-				name,
-			</if>
 			<if test="price != null and price != ''">
 				price,
-			</if>
-			<if test="num != null and num != ''">
-				num,
 			</if>
 			<if test="note != null and note != ''">
 				note,
 			</if>
 			<if test="uid != null and uid != ''">
 				uid,
-			</if>
-			<if test="sid != null and sid != ''">
-				sid,
-			</if>
-			<if test="type != null and type != ''">
-				type,
 			</if>
 			<if test="title != null and title != ''">
 				title,
@@ -135,27 +93,14 @@
 		<if test="number != null and number != ''">
 			#{number},
 		</if>
-		<if test="name != null and name != ''">
-			#{name},
-		</if>
 		<if test="price != null and price != ''">
 			#{price},
 		</if>
-        <if test="num != null and num != ''">
-            #{num},
-        </if>
 		<if test="note != null and note != ''">
 			#{note},
 		</if>
 		<if test="uid != null and uid != ''">
 			#{uid},
-		</if>
-		<if test="sid != null and sid != ''">
-			#{sid},
-		</if>
-		<if test="type != null and type != ''">
-			#{type},
-
 		</if>
 		<if test="title != null and title != ''">
 			#{title},
@@ -174,8 +119,10 @@
 	<select id="getList" parameterType="map" resultMap="CrmPurchacseResultMap">
 	select
 		<include refid="CrmPurchacseColumn" />
-		from crm_purchacse  where 1=1
-		<if test="id!=null">and id=#{id}</if>
+		from crm_purchacse
+		<where>
+			<if test="id!=null">and id=#{id}</if>
+		</where>
 		order by date desc
 		<if test="firstResult!=null and maxResult!=null">limit #{firstResult} , #{maxResult};</if>
 	</select>
@@ -205,20 +152,8 @@
 			<if test="number != null">
 				number = #{number},
 			</if>
-			<if test="num != null">
-				num = #{num},
-			</if>
-			<if test="sid != null">
-				sid = #{sid},
-			</if>
 			<if test="title != null and title != ''">
 				title = #{title},
-			</if>
-			<if test="name != null and name != ''">
-				name = #{name},
-			</if>
-			<if test="date != null and date != ''">
-				date = #{date},
 			</if>
 			<if test="uid != null">
 				uid = #{uid},
@@ -228,9 +163,6 @@
 			</if>
 			<if test="note != null">
 				note = #{note},
-			</if>
-			<if test="type != null">
-				type = #{type}
 			</if>
 			<if test="address != null">
 				address = #{address}

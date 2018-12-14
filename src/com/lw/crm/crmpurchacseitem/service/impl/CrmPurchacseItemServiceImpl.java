@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,13 +36,17 @@ public class CrmPurchacseItemServiceImpl extends BaseServiceImpl<CrmPurchacseIte
     public String saveAll(String data, String crmPurchacse, HttpServletResponse response) {
         if (data != null && crmPurchacse != null) {
             List<CrmPurchacseItem> crmPurchacseItemList = JSON.parseArray(data, CrmPurchacseItem.class);
-            CrmPurchacse obj=JSON.parseObject(crmPurchacse,new TypeReference<CrmPurchacse>() {});
-            crmPurchacseService.save(obj);
+
             int result=0;
+            BigDecimal price=new BigDecimal(0);
             JSONObject json=new JSONObject();
             for(int i=0;i<crmPurchacseItemList.size();i++){
+                price=price.add(crmPurchacseItemList.get(i).getPrice());
                 result=crmPurchacseItemMapper.save(crmPurchacseItemList.get(i));
             }
+            CrmPurchacse obj=JSON.parseObject(crmPurchacse,new TypeReference<CrmPurchacse>() {});
+            obj.setPrice(price);
+            crmPurchacseService.save(obj);
             if (result>0) {
                 json.put("code", 200);
                 json.put("msg", "保存成功");

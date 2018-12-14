@@ -1,9 +1,9 @@
 package com.lw.crm.crm.service;
 
-import java.util.List;
-
 import com.lw.core.base.service.IBaseService;
 import com.lw.crm.crm.entity.Crm;
+
+import java.util.List;
 
 public interface ICrmService extends IBaseService<Crm>{
 	

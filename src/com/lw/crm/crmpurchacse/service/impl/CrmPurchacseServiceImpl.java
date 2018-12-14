@@ -54,8 +54,6 @@ public class CrmPurchacseServiceImpl extends BaseServiceImpl<CrmPurchacse> imple
         }
 	    int count=0;
 		BigDecimal price=new BigDecimal(0);
-		Integer[] sids=new Integer[ids.length];
-		String[] names=new String[ids.length];
         // 根据id查询报价单表一条记录
         for(int i=0;i<ids.length;i++){
 			CrmSupplierPrice crmSupplierPrice=crmSupplierPriceService.get(ids[i]);
@@ -72,19 +70,13 @@ public class CrmPurchacseServiceImpl extends BaseServiceImpl<CrmPurchacse> imple
 			crmPurchacseItem.setNumber(number);
             count=crmPurchacseItemServiceService.save(crmPurchacseItem);
             price=price.add(crmPurchacseItem.getPrice());
-			sids[i]=crmSupplierPrice.getSid();
-			names[i]=crmSupplierPrice.getName();
         }
         CrmPurchacse crmPurchacse=new CrmPurchacse();
         crmPurchacse.setNumber(number);
-        crmPurchacse.setNum(0);
-        crmPurchacse.setSid(Arrays.toString(sids).replace("[","").replace("]","").trim());
 		crmPurchacse.setTitle(title);
         crmPurchacse.setUid(crmPurchacse.getUid());
         crmPurchacse.setPrice(price);
         crmPurchacse.setNote(Arrays.toString(notes).replace("[","").replace("]","").trim());
-        crmPurchacse.setName(Arrays.toString(names).replace("[","").replace("]","").trim());
-        crmPurchacse.setType(0);
         crmPurchacse.setAddress(address);
         crmPurchacseMapper.save(crmPurchacse);
         if(count<=0){

@@ -1,15 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.*" %>
 <%@ page import="java.text.*"%>
 <%@ page import="java.lang.String"%>  
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier"%>
 <%@ page import="com.lw.crm.crmuser.entity.CrmUser"%>
 <%@ page import="java.util.ArrayList" %>
 <%
-		ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
 		ArrayList<CrmUser> crmUserList = (ArrayList) request.getAttribute("crmUserList");
 	%>
 
@@ -58,27 +54,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<title>${appName}_采购信息管理</title>
 		
 		<script>
-			function IsNum(number) {
-				//var reNum = /(^\+?|^\d?)\d*\.\d+$/; //正浮点数  ^[1-9]\d*$
-				var reNum=/^[0-9]+(.[0-9]{2})?$/;
-				return (reNum.test(number));
-			}
-			function IsNumI(number) {
-				  
-				var reNum=/^[1-9]\d*$/;
-				return (reNum.test(number));
-			}
 		function isValid() {
 			if(form1.uid.value==0){
 				LW.message.show("请选择申请人员");
-				return false;
-			}
-			if(form1.sid.value==0){
-				LW.message.show("请选择供应商");
-				return false;
-			}
-			if(form1.type.value==0){
-				LW.message.show("请选择产品类别");
 				return false;
 			}
 			else
@@ -124,9 +102,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    	 <input type="hidden" name="number" id="number" value="<%=number %>">
 						    </tr>
 						     <tr>
-						    	<td class="info col-md-1 text-right"><span class="red">*</span>采购名称:</td>
+						    	<td class="info col-md-1 text-right"><span class="red">*</span>标题:</td>
 						    	<td class="col-md-11">
-						    		<input type="text" class="form-control" name="title" id="title"  value="" maxlength="50" nullmsg="采购名称不能为空" placeholder="请输入采购名称" autocomplete="off" datatype="*1-50" errormsg="至少1个字符,最多50个字符！">
+						    		<input type="text" class="form-control" name="title" id="title"  value="" maxlength="50" nullmsg="标题不能为空" placeholder="请输入标题" autocomplete="off" datatype="*1-50" errormsg="至少1个字符,最多50个字符！">
 						    	</td>
 						    </tr>
 						    <tr>
@@ -148,82 +126,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</select>
 						    	</td>
 						    </tr>
-						     <tr>
-						    	<td class="info col-md-1 text-right"><span class="red">*</span>供应商名称:</td>
-						    	<td class="col-md-11">
-						    	<select
-									class="form-control" name="sid" id="sid">
-									<option value="0" selected="selected">请选择供应商</option>
-									<!--动态从数据库查数据并组合成option  -->
-									<%
-										for (int i = 0; i < crmSupplierList.size(); i++) {
-									%>
-									<option value="<%=crmSupplierList.get(i).getId()%>">
-										<%=crmSupplierList.get(i).getSupplier()%>
-									</option>
-									<%
-										}
-									%>
-								</select>
-						    	</td>
-						    </tr>
 							<tr>
-						    	<td class="info col-md-1 text-right">产品名称:</td>
-						    	<td class="col-md-11">
-						    		<input type="text"
-									class="form-control " style="text-align: left;" name="name" id="name"  value=""
-									 maxlength="50" nullmsg="产品名称不能为空" placeholder="请填写产品名称"
-									autocomplete="off" datatype="*1-50" errormsg="至少1个字符,最多50个字符！">
-						    	</td>
-						    </tr>
-						    <tr>
-						    	<td class="info col-md-1 text-right">产品类别:</td>
-						    	<td class="col-md-11">
-						    		<select
-										class="form-control" name="type" ng-model="userdata.sid">
-										<option value="0">请选择产品类别</option>
-										<option value="1">1类</option>
-										<option value="2">2类</option>
-										<option value="3">3类</option>
-										<option value="4">4类</option>
-										<option value="5">5类</option>
-									</select>
-						    	</td>
-						    </tr>
-						     <tr>
-						    	<td class="info col-md-1 text-right">产品单价:</td>
+						    	<td class="info col-md-1 text-right">价格:</td>
 						    	<td class="col-md-11">
 						    	<input type="number" step="0.01" class="form-control" style="text-align: left;" name="price"
-								id="price" maxlength="10" nullmsg="产品单价不能为空" placeholder="请填写产品单价"
+								id="price" maxlength="10" nullmsg="价格不能为空" placeholder="请填写价格"
 									autocomplete="off" datatype="*1-10" errormsg="至少1个字符,最多10个字符!" />
 						    	</td>
 						    </tr>
-						    <tr>
-						    	<td class="info col-md-1 text-right">采购数量:</td>
-						    	<td class="col-md-11">
-						    		<input type="number" class="form-control " style="text-align: left;" name="num" id="num"
-						    		maxlength="10" nullmsg="采购数量不能为空" placeholder="请填写采购数量"
-									autocomplete="off" datatype="*1-10" errormsg="至少1个字符,最多10个字符!"
-						    		 />
-						    	</td>
-						    </tr>
-						    <tr>
-						    	<td class="info col-md-1 text-right">单位:</td>
-						    	<td class="col-md-11">
-									 <select class="form-control">
-										<option value="0"></option>
-										<option value="1">件</option>
-										<option value="2">箱</option>
-										<option value="2">支</option>
-										<option value="3">其他</option>
-									</select>
-						    	</td>
-						    </tr>
+							<tr>
+								<td class="info col-md-1 text-right">地址:</td>
+								<td class="col-md-11">
+									<input type="text" class="form-control" style="text-align: left;" name="address"
+										   id="address" maxlength="20" nullmsg="地址不能为空" placeholder="请填写地址"
+										   autocomplete="off" datatype="*1-20" errormsg="至少1个字符,最多20个字符!" />
+								</td>
+							</tr>
 						    <tr>
 						    	<td class="info col-md-1 text-right">备注:</td>
 						    	<td class="col-md-11">
-									 <input type="text" name="note" style="width: 100%; height: 300px; text-align: left;"
-										class="form-control" />
+									<textarea name="note" class="form-control" rows="5" cols="50" maxlength="50" datatype="*0-50" placeholder="50个汉字以内"></textarea>
 						    	</td>
 						    </tr>
 					    </table> 

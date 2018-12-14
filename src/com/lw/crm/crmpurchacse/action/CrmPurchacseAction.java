@@ -12,7 +12,6 @@ import com.lw.crm.crmsupplierprice.entity.CrmSupplierPrice;
 import com.lw.crm.crmsupplierprice.service.ICrmSupplierPriceService;
 import com.lw.crm.crmuser.entity.CrmUser;
 import com.lw.crm.crmuser.service.ICrmUserService;
-import com.lw.shiroaction.usersgroup.entity.ShiroActionUsersGroup;
 import com.lw.shiroaction.usersgroup.service.IShiroActionUsersGroupService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,7 @@ public class CrmPurchacseAction extends BaseAction{
 	@Autowired
 	private ICrmNameService crmNameService;
 	
-	@RequestMapping(value= {"","/crmpurchacse_list"})
+	@RequestMapping(value = "")
 	public String list(HttpServletRequest request,HttpServletResponse response){
 		instantPage(20);
 		List<CrmPurchacse> list=crmPurchacseService.getList();
@@ -78,12 +77,6 @@ public class CrmPurchacseAction extends BaseAction{
 		
 		List<CrmUser> crmUserList = crmUserService.getList();
 		getRequest().setAttribute("crmUserList", crmUserList);
-		
-		List<CrmSupplier> crmSupplierList = crmSupplierService.getList();
-		getRequest().setAttribute("crmSupplierList", crmSupplierList);
-		
-		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
-		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
 
 		return "/WEB-INF/crmpurchacse/crmpurchacse_add";
 	}
@@ -92,21 +85,21 @@ public class CrmPurchacseAction extends BaseAction{
 	@RequestMapping(value="/post",method=RequestMethod.POST)
 	public String addCrmPurchacse(CrmPurchacse crmPurchacse){
 		crmPurchacseService.save(crmPurchacse);
-		return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
+		return "redirect:/manage/crmpurchacse.html";
 	}
 	
 	//删除
 	@RequestMapping(value="/del/{id}")
-	public String deleteCrmPurchacse(@PathVariable("id")int id,HttpServletResponse response){
+	public String deleteCrmPurchacse(@PathVariable("id")int id){
 		 
 		crmPurchacseService.del(id);
-		return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
+		return "redirect:/manage/crmpurchacse.html";
 	}
 	
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String updateCrmPurchacse(CrmPurchacse crmPurchacse,HttpServletResponse response){
+	public String updateCrmPurchacse(CrmPurchacse crmPurchacse){
 		crmPurchacseService.edit(crmPurchacse);
-			return "redirect:/manage/crmpurchacse/crmpurchacse_list.html";
+			return "redirect:/manage/crmpurchacse.html";
 	}
 	@RequestMapping(value="/{id}")
 	public String viewCrmPurchacse(@PathVariable("id")int id)
@@ -131,7 +124,7 @@ public class CrmPurchacseAction extends BaseAction{
 	 * @return
 	 */
 	@RequestMapping(value = "/create_order")
-	public String createOrder(@RequestParam("ids") int[] ids, HttpServletRequest request){
+	public String createOrder(@RequestParam("ids") int[] ids){
 		if(ids.length<=0){
 			return null;
 		}
@@ -181,9 +174,6 @@ public class CrmPurchacseAction extends BaseAction{
 		List<CrmSupplier> crmSupplierList = crmSupplierService.getList();
 		getRequest().setAttribute("crmSupplierList", crmSupplierList);
 
-		List<ShiroActionUsersGroup> shiroActionUsersGroupList = shiroActionUsersGroupService.getList();
-		getRequest().setAttribute("shiroActionUsersGroupList", shiroActionUsersGroupList);
-
 		// 判断cookie有没有值,没有则生成number
 		String number = "";
 		Cookie[] cookies = request.getCookies();
@@ -221,7 +211,8 @@ public class CrmPurchacseAction extends BaseAction{
 	 */
 	@RequestMapping(value = "/showitem")
 	public String showItem(String number){
-		return "/manage/crmpurchacseitem.html?number="+number;
+		System.out.println("number:"+number);
+		return "redirect:/manage/crmpurchacseitem.html?number="+number;
 	}
 
 

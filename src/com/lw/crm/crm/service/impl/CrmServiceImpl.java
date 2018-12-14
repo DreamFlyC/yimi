@@ -1,15 +1,14 @@
 package com.lw.crm.crm.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.lw.core.base.service.impl.BaseServiceImpl;
 import com.lw.crm.crm.entity.Crm;
 import com.lw.crm.crm.persistence.CrmMapper;
 import com.lw.crm.crm.service.ICrmService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service("CrmServiceImpl")
 @Transactional
@@ -37,5 +36,6 @@ public class CrmServiceImpl extends BaseServiceImpl<Crm> implements ICrmService 
 	public List<Crm> getListOut(Crm obj) {
 		return crmMapper.getListOut(obj);
 	}
+
 
 }

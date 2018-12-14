@@ -117,10 +117,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="col-md-12">
 								<div class="address">
-									<label>采购名称：</label>
+									<label>标题：</label>
 								</div>
 								<div style="width: 94%;float: left;">
-									<input type="text" class="form-control" id="title" placeholder="在这里填写采购名称" autocomplete="off" />
+									<input type="text" class="form-control" id="title" placeholder="在这里填写标题" autocomplete="off" />
 								</div>
 							</div>
 							<div class="col-md-12" style="margin-top: 5px;">

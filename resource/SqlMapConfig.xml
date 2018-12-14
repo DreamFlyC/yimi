@@ -69,8 +69,6 @@
 		<typeAlias type="com.lw.duty.entity.DutyUserLastTime" alias="DutyUserLastTime"/> 
 		<typeAlias type="com.lw.duty.entity.FeedBack" alias="FeedBack"/>  
 		
-		<typeAlias type="com.lw.mobilemsisdninfo.entity.MobileMsisdnInfo" alias="MobileMsisdnInfo"/>
-
 		<typeAlias type="com.lw.newsinfo.entity.NewsInfo" alias="NewsInfo"/>
 		
 		<typeAlias type="com.lw.toabbslog.entity.ToaBbsLog" alias="ToaBbsLog"/>
@@ -102,7 +100,7 @@
 		<typeAlias type="com.lw.qaquestion.entity.QaQuestion" alias="QaQuestion"/>
 		
 		<typeAlias type="com.lw.tpartnerbasicinfo.entity.TPartnerBasicInfo" alias="TPartnerBasicInfo"/>
-		
+
 	</typeAliases> 
 	<!-- Mybatis 全局配置 end -->
 	</configuration>

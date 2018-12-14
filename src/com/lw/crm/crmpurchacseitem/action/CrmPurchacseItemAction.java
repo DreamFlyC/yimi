@@ -31,7 +31,7 @@ public class CrmPurchacseItemAction extends BaseAction{
 	@RequestMapping("")
 	public String list(String number){
 		instantPage(20);
-		Map<String,Object> param=new HashMap<>();
+		Map<String,Object> param=new HashMap<>(1);
 		param.put("number",number);
 		List<CrmPurchacseItem> list=crmPurchacseItemService.getList(param);
 		int total=crmPurchacseItemService.getCount(param);

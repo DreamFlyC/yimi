@@ -12,10 +12,8 @@
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<!--  注解扫描包-->	 
-	<context:component-scan base-package="com.lw"> 
-	 	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" /> 
-	</context:component-scan>  
-	<!-- 开启mvc注解 -->	
+	<context:component-scan base-package="com.lw.**.action" />
+	<!-- 开启mvc注解 -->
 	<mvc:default-servlet-handler/>  
 	
 	<!--json数据配置 防止406错误  -->

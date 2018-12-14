@@ -128,16 +128,12 @@ table thead tr th, table tbody tr td {
 					<th class="a"><input type="checkbox" id="all" name="allCK"
 						onclick="selectAll()" /></th>
 					<th class="a">ID</th>
-					<th class="a">产品类型</th>
 					<th class="a">采购编号</th>
-					<th class="a">申请人ID</th>
-					<th class="a">供应商ID</th>
 					<th class="a">标题</th>
-					<th class="a">产品名称</th>
+					<th class="a">申请人ID</th>
 					<th class="a">申请日期</th>
-					<th class="a">采购产品单价</th>
-					<th class="a">采购数量</th>
-					<th class="a">小计</th>
+					<th class="a">价格</th>
+					<th class="a">地址</th>
 					<th class="a">备注</th>
 					<th class="a">操作</th>
 				</tr>
@@ -151,19 +147,13 @@ table thead tr th, table tbody tr td {
 								<td ><input type="checkbox" name="box"
 									onclick="selectOne()" value="${crmPurchacse.id}"></td>
 								<td >${crmPurchacse.id}</td>
-								<td >${crmPurchacse.type}</td>
 								<td >${crmPurchacse.number}</td>
-								<td >${crmPurchacse.uid}</td>
-								<td >${crmPurchacse.sid}</td>
 								<td >${crmPurchacse.title==''||crmPurchacse.title==null?"无":crmPurchacse.title}</td>
-								<td >${crmPurchacse.name}</td>
+								<td >${crmPurchacse.uid}</td>
 								<td ><fmt:formatDate value="${crmPurchacse.date}"
 										pattern="yyyy-MM-dd HH:mm:ss" /></td>
 								<td >${crmPurchacse.price}元</td>
-								<td >${crmPurchacse.num}</td>
-								<td >
-								<!--对总价保留两位小数  -->
-								<fmt:formatNumber value="${crmPurchacse.price*crmPurchacse.num}" pattern="#.00#"/> 元</td>
+								<td >${crmPurchacse.address}</td>
 								<td >${crmPurchacse.note}</td>
 								<td >
 									<a href="manage/crmpurchacse/${crmPurchacse.id}.html">修改订单</a>

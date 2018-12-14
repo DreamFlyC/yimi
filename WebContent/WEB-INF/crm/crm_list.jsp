@@ -194,7 +194,7 @@ $(function() {
 					<i class="fa fa-times-circle sup-xx" id="keyword1" aria-hidden="true"></i>
 				</div>
 				<div class="col-md-5" style="position: relative;">
-					<label for="snumber">供应商名称：</label>
+					<label for="titleitem">供应商名称：</label>
 					<input type="text" name="supplier" id="titleitem" autocomplete="off" placeholder="输入供应商名称" maxlength="20" onkeyup="this.value=this.value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\w]/g,'')"
 						class="form-control" value="${supplier}">
 						<i class="fa fa-times-circle sup-xx" id="keyword2" aria-hidden="true"></i>

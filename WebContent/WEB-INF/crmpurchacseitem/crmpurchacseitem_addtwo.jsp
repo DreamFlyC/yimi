@@ -11,15 +11,14 @@
 <%@ page import="java.lang.String" %>
 <%@page import="java.util.Date" %>
 <%@page import="java.text.SimpleDateFormat" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier" %>
 <%@ page import="com.lw.crm.crmuser.entity.CrmUser" %>
 <%@ page import="com.lw.crm.crmname.entity.CrmName" %>
+<%@ page import="com.lw.crm.crmsupplier.entity.CrmSupplier" %>
 <%
-    ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
     ArrayList<CrmUser> crmUserList = (ArrayList) request.getAttribute("crmUserList");
     ArrayList<CrmName> crmNameList = (ArrayList) request.getAttribute("crmNameList");
+    ArrayList<CrmSupplier> crmSupplierList = (ArrayList) request.getAttribute("crmSupplierList");
 %>
 <%
     java.util.Date date = new java.util.Date();
@@ -68,7 +67,6 @@
     <script src="<%=basePath%>resources/js/weixin.js"></script>
     <script src="<%=basePath%>resources/duty/js/selectAll.js"></script>
     <script src="<%=basePath%>resources/duty/js/My97DatePicker/WdatePicker.js"></script>
-    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
     <title>${appName}_采购明细</title>
     <style>
         .modal {
@@ -86,12 +84,6 @@
         ul {
             list-style: none;
             padding: 0px;
-        }
-
-        .center {
-            width: 200px;
-            height: auto;
-            margin: 0px auto;
         }
 
         .nav-takeuid ul {
@@ -117,14 +109,15 @@
         td {
             vertical-align: middle !important;
         }
-        .stockitem{display: none;width:100%;}
-        .stockresult:hover{background-color:#d9edf7;}
-        .stockresult-ed{background-color:#d9edf7;}
+
+        .stockitem {
+            display: none;
+            width: 100%;
+        }
     </style>
     <script>
         function saveTable() {
             var saveData = [];
-            var number, num, sid, title, name, price, type, stock_info_id, note;
             $("#table tbody tr").each(function (trindex, tritem) {
                 var tableData = {};
                 $(tritem).find("td").each(function (tdIndex, tditem) {
@@ -158,55 +151,68 @@
             });
             return saveData;
         }
+
         function isValid() {
             if (form1.title.value == "") {
-                LW.message.show("请输入采购名称");
+                LW.message.show("请输入标题");
                 return false;
             }
             if (form1.uid.value == 0) {
                 LW.message.show("请选择申请人员");
                 return false;
             }
-            if (form1.sid.value == 0) {
-                LW.message.show("请选择供应商");
-                return false;
-            }
-            if (form1.name.value == "") {
-                LW.message.show("请填写产品名称");
-                return false;
-            }
-            if (form1.type.value == 0) {
-                LW.message.show("请选择产品类别");
+            if (form1.address.value == "") {
+                LW.message.show("请填写地址");
                 return false;
             }
             else {
-                var data = saveTable("table");
-                var json=JSON.stringify(data).toString();
-                $.ajax({
-                    url: '/manage/crmpurchacseitem/add',
-                    type: 'POST',
-                    dateType:'json',
-                    data: {
-                        data:json,
-                        crmPurchacse:JSON.stringify($('#form1').serializeObject()),
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        LW.message.show("保存失败!");
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        LW.message.show("保存成功!");
-                        window.location.href = "/manage/crmpurchacseitem.html";
-                    }
-                });
+                checkItem();
             }
+
         }
-        $.fn.serializeObject = function()
-        {
+
+        function checkItem() {
+            if ($("#item").find("tr").length == 0) {
+                LW.message.confirm("id", "还未添加明细，确认要提交吗？", function (r) {
+                    if (r) {
+                        submitData();
+                    } else {
+                        return false;
+                    }
+                })
+            }else{
+                submitData();
+            }
+
+        }
+
+        function submitData(){
+            var data = saveTable("table");
+            var json = JSON.stringify(data).toString();
+            $.ajax({
+                url: '/manage/crmpurchacseitem/add',
+                type: 'POST',
+                dateType: 'json',
+                data: {
+                    data: json,
+                    crmPurchacse: JSON.stringify($('#form1').serializeObject()),
+                },
+                error: function (data) {
+                    console.log(data);
+                    LW.message.show("保存失败!");
+                },
+                success: function (data) {
+                    console.log(data);
+                    LW.message.show("保存成功!");
+                    window.location.href = "/manage/crmpurchacse.html";
+                }
+            });
+        }
+
+        $.fn.serializeObject = function () {
             var o = {};
             var a = this.serializeArray();
-            $.each(a, function() {
+            $.each(a, function () {
                 if (o[this.name]) {
                     if (!o[this.name].push) {
                         o[this.name] = [o[this.name]];
@@ -252,10 +258,10 @@
                         <input type="hidden" name="number" id="number" value="${number}">
                     </tr>
                     <tr>
-                        <td class="info col-md-1 text-right"><span class="red">*</span>采购名称:</td>
+                        <td class="info col-md-1 text-right"><span class="red">*</span>标题:</td>
                         <td class="col-md-11">
                             <input type="text" class="form-control" name="title" id="title" value="" maxlength="50"
-                                   nullmsg="采购名称不能为空" placeholder="请输入采购名称" autocomplete="off" datatype="*1-50"
+                                   nullmsg="标题不能为空" placeholder="请输入标题" autocomplete="off" datatype="*1-50"
                                    errormsg="至少1个字符,最多50个字符！">
                         </td>
                     </tr>
@@ -278,50 +284,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="info col-md-1 text-right"><span class="red">*</span>供应商名称:</td>
+                        <td class="info col-md-1 text-right"><span class="red">*</span>地址:</td>
                         <td class="col-md-11">
-                            <select
-                                    class="form-control" name="sid" id="sid">
-                                <option value="0" selected="selected">请选择供应商</option>
-                                <!--动态从数据库查数据并组合成option  -->
-                                <%
-                                    for (int i = 0; i < crmSupplierList.size(); i++) {
-                                %>
-                                <option value="<%=crmSupplierList.get(i).getId()%>">
-                                    <%=crmSupplierList.get(i).getSupplier()%>
-                                </option>
-                                <%
-                                    }
-                                %>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="info col-md-1 text-right">产品名称:</td>
-                        <td class="col-md-11">
-                            <input type="text"
-                                   class="form-control " style="text-align: left;" name="name" id="name" value=""
-                                   maxlength="50" nullmsg="产品名称不能为空" placeholder="请填写产品名称"
-                                   autocomplete="off" datatype="*1-50" errormsg="至少1个字符,最多50个字符！">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="info col-md-1 text-right">类型:</td>
-                        <td class="col-md-10">
-                            <select name="type" class="form-control" required datatype="select">
-                                <option value="0" selected="selected">请选择类型</option>
-                                <% for (int i = 0; i < crmNameList.size(); i++) { %>
-                                <option value="<%=crmNameList.get(i).getId() %>">
-                                    <%=crmNameList.get(i).getName() %>
-                                </option>
-                                <% } %>
-                            </select>
+                            <input type="text" class="form-control" style="text-align: left;" name="address"
+                                   id="address" maxlength="20" nullmsg="地址不能为空" placeholder="请填写地址"
+                                   autocomplete="off" datatype="*1-20" errormsg="至少1个字符,最多20个字符!"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="info col-md-1 text-right">备注:</td>
                         <td class="col-md-11">
-                            <input type="text" name="note" class="form-control"/>
+                            <textarea name="note" class="form-control" rows="5" cols="50" maxlength="50"
+                                      datatype="*0-50" placeholder="50个汉字以内"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -356,8 +330,7 @@
             <th>操作</th>
         </tr>
         </thead>
-        <tbody id="item">
-        </tbody>
+        <tbody id="item"></tbody>
     </table>
 </div>
 <div class="cls"></div>
@@ -388,8 +361,9 @@
                             <td class="info col-md-2 text-right">产品名称:</td>
                             <td class="col-md-10" colspan="2">
                                 <div class="search">
-                                    <input type="text" name="name" class="form-control" id="nameitem"  value=""  autocomplete="off"
-                                           nullmsg="请输入名称" placeholder="搜索名称" errormsg="输入有误，请重新输入" datatype="*1-10">
+                                    <input type="text" name="name" class="form-control" id="nameitem" value=""
+                                           autocomplete="off"
+                                           nullmsg="请输入名称" placeholder="搜索名称">
                                     <div id="auto_div"></div>
                                 </div>
                             </td>
@@ -406,8 +380,10 @@
                         <tr>
                             <td class="info col-md-2 text-right">采购数量:</td>
                             <td class="col-md-10">
-                                <input type="text" class="form-control" id="numitem" name="num" value="" maxlength="50"
-                                       placeholder="请输入采购数量" autocomplete="off">
+                                <input type="number" step="1" class="form-control" id="numitem" name="num" value="" maxlength="50"
+                                       placeholder="请输入采购数量" autocomplete="off"
+                                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  
+                                           onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}">
                             </td>
                         </tr>
                         <tr>
@@ -431,7 +407,8 @@
                         <tr>
                             <td class="info col-md-2 text-right">类型:</td>
                             <td class="col-md-10">
-                                <select name="type" class="form-control" id="typeitem" required datatype="select" disabled>
+                                <select name="type" class="form-control" id="typeitem" required datatype="select"
+                                        disabled>
                                     <option value="0" selected="selected">请选择类型</option>
                                     <% for (int i = 0; i < crmNameList.size(); i++) { %>
                                     <option value="<%=crmNameList.get(i).getId() %>">
@@ -444,8 +421,8 @@
                         <tr>
                             <td class="info col-md-2 text-right">仓库id:</td>
                             <td class="col-md-10">
-                                <input type="text" class="form-control" id="stockinfoiditem" name="stock_info_id"
-                                       value="" maxlength="50" placeholder="请输入仓库id" autocomplete="off">
+                                <input type="number" class="form-control" id="stockinfoiditem" name="stock_info_id"
+                                       value="" maxlength="2" placeholder="请输入仓库id" autocomplete="off">
                             </td>
                         </tr>
                         <tr>
@@ -459,7 +436,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearitem()">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >
                     关闭
                 </button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="submititem">
@@ -625,29 +602,28 @@
             key = false;
             return false;
         }
-        if ($("#numitem").val() == "") {
-            LW.message.show("请输入数量");
+        if ($("#nameitem").val() == "") {
+            LW.message.show("请选择产品名称");
+            $("#nameitem").select();
             key = false;
             return false;
         }
         if ($("#siditem").val() == 0) {
-            LW.message.show("请选择供应商");
+            LW.message.show("产品名称信息有误，请重新选择");
             key = false;
-            return false;
-        }
-        if ($("#nameitem").val() == "") {
-            LW.message.show("请输入产品名称");
-            key = false;
+            $("#nameitem").select();
             return false;
         }
         if ($("#priceitem").val() == "") {
-            LW.message.show("请输入产品单价");
+            LW.message.show("产品名称信息有误，请重新选择");
             key = false;
+            $("#nameitem").select();
             return false;
         }
         if ($("#typeitem").val() == 0) {
-            LW.message.show("请输入产品类型");
+            LW.message.show("产品名称信息有误，请重新选择");
             key = false;
+            $("#nameitem").select();
             return false;
         }
         if ($("#stockinfoiditem").val() == "") {
@@ -685,13 +661,20 @@
             result += "<a href='javascript:void(0)' onclick='del(" + i + ")'>删除</a>";
             result += "</td>";
             result += "</tr>";
-            i=Number(i+1);
+            i = Number(i + 1);
             $("#bar").show();
             $("#item").append(result);
             $("#tableitem input").val("");
             $("#tableitem select").val(0);
         }
     });
+
+    $("#nameitem").keydown(function () {
+        $("#priceitem").val("");
+        $("#siditem").val("");
+        $("#typeitem").val("");
+        $("#numitem").val("");
+    })
 
     function storageObj(obj, key) {
         var checkedIdStr = JSON.stringify(obj);
@@ -779,34 +762,31 @@
     }
 </script>
 <script type="text/javascript">
-    var name_list=[];
-    var price_list=[];
-    var type_list=[];
-    var sid_list=[];
+    var name_list = [];
+    var price_list = [];
+    var type_list = [];
+    var sid_list = [];
 
     //只请求一次
-    var key=false;
-    $("#add").click(function(){
+    var key = false;
+    $("#add").click(function () {
 
-        $("#nameitem").click(function(){
-            var width= $(".search").width()-7;
-            $("#auto_div").css("width",width+"px");
+        $("#nameitem").click(function () {
+            var width = $(".search").width() - 7;
+            $("#auto_div").css("width", width + "px");
         });
-        if(!key)
-        {
+        if (!key) {
             $.ajax({
-                url:"/manage/crmsupplierprice/getsupplierpricelist",
-                type:"POST",
-                error:function(){
+                url: "/manage/crmsupplierprice/getsupplierpricelist",
+                type: "POST",
+                error: function () {
                     LW.message.show("查询失败，请重新输入");
                     $("#nameitem").val("");
                     $("#nameitem").select();
                 },
-                success:function(data){
-                    if(data.code!=404)
-                    {
-                        for(var i=0;i<data.msg.length;i++)
-                        {
+                success: function (data) {
+                    if (data.code != 404) {
+                        for (var i = 0; i < data.msg.length; i++) {
                             name_list.push(data.msg[i].name);
                             price_list.push(data.msg[i].price);
                             type_list.push(data.msg[i].type);
@@ -816,67 +796,60 @@
                         console.log(price_list);
                         console.log(type_list); */
                     }
-                    else
-                    {
+                    else {
                         name_list.push("没有找到数据记录");
                     }
                 }
             });
         }
-        key=true;
+        key = true;
     });
     var old_value = "";
     var highlightindex = -1;
-    function AutoComplete(auto, search, myname_list,myprice_list,mytype_list,mysid_list)
-    {
-        if ($("#" + search).val() != old_value || old_value == "")
-        {
+
+    function AutoComplete(auto, search, myname_list, myprice_list, mytype_list, mysid_list) {
+        if ($("#" + search).val() != old_value || old_value == "") {
             var autoNode = $("#" + auto);   //缓存对象（弹出框）
 
             var namelist = new Array();
             var pricelist = new Array();
-            var typelist  = new Array();
-            var sidlist  = new Array();
+            var typelist = new Array();
+            var sidlist = new Array();
             var n = 0;
-            var j=0;
-            var k=0;
-            var m=0;
+            var j = 0;
+            var k = 0;
+            var m = 0;
             old_value = $("#" + search).val();
-            for (i in myname_list)
-            {
-                if (myname_list[i].indexOf(old_value) >= 0)
-                {
+            for (i in myname_list) {
+                if (myname_list[i].indexOf(old_value) >= 0) {
                     namelist[n++] = myname_list[i];
                     pricelist[j++] = myprice_list[i];
                     typelist[k++] = mytype_list[i];
                     sidlist[m++] = mysid_list[i];
                 }
             }
-            if (namelist.length == 0)
-            {
+            if (namelist.length == 0) {
 
                 //autoNode.hide();
                 autoNode.empty();
-                var result="";
-                result+="<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
-                result+="没有找到数据记录";
-                result+="</p>";
+                var result = "";
+                result += "<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
+                result += "没有找到数据记录";
+                result += "</p>";
                 $("#auto_div").html(result);
                 return;
             }
             autoNode.empty();
-            for (i in namelist)
-            {
+            for (i in namelist) {
                 var wordNode = namelist[i];
-                var priceNode=pricelist[i];
-                var typeNode=typelist[i];
-                var sidNode=sidlist[i];
-                var newDivNode = $("<div>").attr("id", i).attr("data-price",priceNode).attr("data-type",typeNode).attr("data-sid",sidNode);    //设置每个节点的id值
+                var priceNode = pricelist[i];
+                var typeNode = typelist[i];
+                var sidNode = sidlist[i];
+                var newDivNode = $("<div>").attr("id", i).attr("data-price", priceNode).attr("data-type", typeNode).attr("data-sid", sidNode);    //设置每个节点的id值
                 newDivNode.attr("style", "font:14px/25px arial;height:30px;padding:0 8px;cursor: pointer;");
                 newDivNode.html(wordNode).appendTo(autoNode);
-                newDivNode.mouseover(function (){
-                    if (highlightindex != -1)
-                    {
+                newDivNode.mouseover(function () {
+                    if (highlightindex != -1) {
                         autoNode.children("div").eq(highlightindex).css("background-color", "white");
                     }
                     highlightindex = $(this).attr("id");
@@ -897,57 +870,52 @@
                     $("#siditem").val(sidText);
                     $("#numitem").select();
                 })
-                if (namelist.length > 0)
-                {
+                if (namelist.length > 0) {
                     autoNode.show();
                 }
-                else
-                {
+                else {
                     autoNode.show();
-                    var result="";
-                    result+="<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
-                    result+="没有找到数据记录";
-                    result+="</p>";
+                    var result = "";
+                    result += "<p style='text-align: center;font-size: 13px; margin-top: 15px;' >";
+                    result += "没有找到数据记录";
+                    result += "</p>";
                     $("#auto_div").html(result);
                     highlightindex = -1;
                 }
             }
         }
-        document.onclick = function (e)
-        {
+        document.onclick = function (e) {
             var e = e ? e : window.event;
             var tar = e.srcElement || e.target;
-            if (tar.id != search)
-            {
-                if ($("#" + auto).is(":visible"))
-                {
+            if (tar.id != search) {
+                if ($("#" + auto).is(":visible")) {
                     $("#" + auto).css("display", "none")
                 }
             }
         }
     }
+
     $(function () {
         old_value = $("#nameitem").val();
         $("#nameitem").focus(function () {
             if ($("#nameitem").val() == "") {
-                AutoComplete("auto_div", "nameitem", name_list,price_list,type_list,sid_list);
+                AutoComplete("auto_div", "nameitem", name_list, price_list, type_list, sid_list);
 
             }
         });
         $("#nameitem").keyup(function () {
-            AutoComplete("auto_div", "nameitem", name_list,price_list,type_list,sid_list);
+            AutoComplete("auto_div", "nameitem", name_list, price_list, type_list, sid_list);
         });
     });
 </script>
 <style type="text/css">
-    .search
-    {
+    .search {
         left: 0;
         position: relative;
     }
-    #auto_div
-    {
-        width:450px;
+
+    #auto_div {
+        width: 450px;
         display: none;
         border: 1px #74c0f9 solid;
         background: #FFF;
